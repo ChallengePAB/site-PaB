@@ -1,0 +1,37 @@
+{
+  "peneiras": [
+    {
+      "id": 1,
+      "clube": "Santos FC",
+      "categoria": "Sub-20",
+      "posicoes": ["Goleira", "Zagueira", "Lateral"],
+      "data": "2025-10-15",
+      "local": "Santos, SP",
+      "contato": "peneiras@santos.com.br",
+      "descricao": "Peneira para formação de equipe sub-20 feminina.",
+      "vagas": 15
+    },
+    {
+      "id": 2,
+      "clube": "Corinthians",
+      "categoria": "Sub-18",
+      "posicoes": ["Meio-campo", "Atacante"],
+      "data": "2025-10-20",
+      "local": "São Paulo, SP",
+      "contato": "peneiras@corinthians.com.br",
+      "descricao": "Seleção para time de base feminino.",
+      "vagas": 10
+    },
+    {
+      "id": 3,
+      "clube": "Palmeiras",
+      "categoria": "Sub-18",
+      "posicoes": ["Todas as posições"],
+      "data": "2025-10-25",
+      "local": "São Paulo, SP",
+      "contato": "peneiras@palmeiras.com.br",
+      "descricao": "Peneira para time profissional feminino.",
+      "vagas": 8
+    }
+  ]
+}

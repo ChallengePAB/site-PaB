@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+
+
+/* Esconde o ícone de "revelar senha" padrão dos navegadores (Chrome, Edge, Safari) */
+input[type="password"]::-webkit-reveal,
+input[type="password"]::-webkit-password-reveal-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+}
+
+/* Esconde o ícone de "revelar senha" padrão do Internet Explorer */
+input[type="password"]::-ms-reveal {
+  display: none;
+}
+

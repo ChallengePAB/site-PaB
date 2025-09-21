@@ -1,0 +1,354 @@
+{
+  "jogadoras": [
+    {
+      "id": 101,
+      "nome": "Camila Vieira",
+      "idade": 19,
+      "altura": "1.82m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Santos FC",
+      "posicao": "Goleira",
+      "foto": null
+    },
+    {
+      "id": 102,
+      "nome": "Juliana Bastos",
+      "idade": 21,
+      "altura": "1.85m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "SC Internacional",
+      "posicao": "Goleira",
+      "foto": null
+    },
+    {
+      "id": 103,
+      "nome": "Fernanda Lima",
+      "idade": 20,
+      "altura": "1.80m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Corinthians",
+      "posicao": "Goleira",
+      "foto": null
+    },
+    {
+      "id": 104,
+      "nome": "Patrícia Mota",
+      "idade": 22,
+      "altura": "1.83m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Flamengo",
+      "posicao": "Goleira",
+      "foto": null
+    },
+    {
+      "id": 105,
+      "nome": "Sofia Arantes",
+      "idade": 18,
+      "altura": "1.81m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "Palmeiras",
+      "posicao": "Goleira",
+      "foto": null
+    },
+    {
+      "id": 201,
+      "nome": "Bruna Marques",
+      "idade": 20,
+      "altura": "1.78m",
+      "pe_dominante": "Direito",
+      "clube_atual": "São Paulo FC",
+      "posicao": "Zagueira",
+      "foto": null
+    },
+    {
+      "id": 202,
+      "nome": "Letícia Gomes",
+      "idade": 22,
+      "altura": "1.80m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Ferroviária",
+      "posicao": "Zagueira",
+      "foto": null
+    },
+    {
+      "id": 203,
+      "nome": "Rafaela Costa",
+      "idade": 19,
+      "altura": "1.79m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "Grêmio",
+      "posicao": "Zagueira",
+      "foto": null
+    },
+    {
+      "id": 204,
+      "nome": "Clara Nogueira",
+      "idade": 21,
+      "altura": "1.81m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Cruzeiro",
+      "posicao": "Zagueira",
+      "foto": null
+    },
+    {
+      "id": 205,
+      "nome": "Tatiane Farias",
+      "idade": 23,
+      "altura": "1.77m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Santos FC",
+      "posicao": "Zagueira",
+      "foto": null
+    },
+    {
+      "id": 301,
+      "nome": "Alice Pereira",
+      "idade": 19,
+      "altura": "1.68m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Flamengo",
+      "posicao": "Lateral Direita",
+      "foto": null
+    },
+    {
+      "id": 302,
+      "nome": "Luiza Monteiro",
+      "idade": 20,
+      "altura": "1.70m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Corinthians",
+      "posicao": "Lateral Direita",
+      "foto": null
+    },
+    {
+      "id": 303,
+      "nome": "Vitória Barros",
+      "idade": 18,
+      "altura": "1.67m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Palmeiras",
+      "posicao": "Lateral Direita",
+      "foto": null
+    },
+    {
+      "id": 304,
+      "nome": "Carolina Justino",
+      "idade": 21,
+      "altura": "1.69m",
+      "pe_dominante": "Direito",
+      "clube_atual": "SC Internacional",
+      "posicao": "Lateral Direita",
+      "foto": null
+    },
+    {
+      "id": 305,
+      "nome": "Yasmin Rocha",
+      "idade": 22,
+      "altura": "1.71m",
+      "pe_dominante": "Direito",
+      "clube_atual": "São Paulo FC",
+      "posicao": "Lateral Direita",
+      "foto": null
+    },
+    {
+      "id": 401,
+      "nome": "Laura Martins",
+      "idade": 20,
+      "altura": "1.70m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "Grêmio",
+      "posicao": "Lateral Esquerda",
+      "foto": null
+    },
+    {
+      "id": 402,
+      "nome": "Manuela Dias",
+      "idade": 19,
+      "altura": "1.68m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "Cruzeiro",
+      "posicao": "Lateral Esquerda",
+      "foto": null
+    },
+    {
+      "id": 403,
+      "nome": "Cristina Azevedo",
+      "idade": 22,
+      "altura": "1.71m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "Ferroviária",
+      "posicao": "Lateral Esquerda",
+      "foto": null
+    },
+    {
+      "id": 404,
+      "nome": "Paula Novaes",
+      "idade": 21,
+      "altura": "1.69m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "Santos FC",
+      "posicao": "Lateral Esquerda",
+      "foto": null
+    },
+    {
+      "id": 405,
+      "nome": "Gabriela Matos",
+      "idade": 18,
+      "altura": "1.67m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "Corinthians",
+      "posicao": "Lateral Esquerda",
+      "foto": null
+    },
+    {
+      "id": 501,
+      "nome": "Amanda Pires",
+      "idade": 23,
+      "altura": "1.72m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Palmeiras",
+      "posicao": "Volante",
+      "foto": null
+    },
+    {
+      "id": 502,
+      "nome": "Helena de Souza",
+      "idade": 21,
+      "altura": "1.74m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Flamengo",
+      "posicao": "Volante",
+      "foto": null
+    },
+    {
+      "id": 503,
+      "nome": "Giovanna Nunes",
+      "idade": 20,
+      "altura": "1.73m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "SC Internacional",
+      "posicao": "Volante",
+      "foto": null
+    },
+    {
+      "id": 504,
+      "nome": "Fernanda Borges",
+      "idade": 19,
+      "altura": "1.75m",
+      "pe_dominante": "Direito",
+      "clube_atual": "São Paulo FC",
+      "posicao": "Volante",
+      "foto": null
+    },
+    {
+      "id": 505,
+      "nome": "Larissa Oliveira",
+      "idade": 22,
+      "altura": "1.71m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Grêmio",
+      "posicao": "Volante",
+      "foto": null
+    },
+    {
+      "id": 601,
+      "nome": "Isabela Ramos",
+      "idade": 21,
+      "altura": "1.69m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Corinthians",
+      "posicao": "Meia",
+      "foto": null
+    },
+    {
+      "id": 602,
+      "nome": "Marina Albuquerque",
+      "idade": 20,
+      "altura": "1.70m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "Cruzeiro",
+      "posicao": "Meia",
+      "foto": null
+    },
+    {
+      "id": 603,
+      "nome": "Camila Andrade",
+      "idade": 23,
+      "altura": "1.68m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Santos FC",
+      "posicao": "Meia",
+      "foto": null
+    },
+    {
+      "id": 604,
+      "nome": "Natasha Vasconcelos",
+      "idade": 19,
+      "altura": "1.72m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Palmeiras",
+      "posicao": "Meia",
+      "foto": null
+    },
+    {
+      "id": 605,
+      "nome": "Beatriz Santos",
+      "idade": 22,
+      "altura": "1.67m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "Flamengo",
+      "posicao": "Meia",
+      "foto": null
+    },
+    {
+      "id": 701,
+      "nome": "Débora Siqueira",
+      "idade": 20,
+      "altura": "1.75m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Ferroviária",
+      "posicao": "Atacante",
+      "foto": null
+    },
+    {
+      "id": 702,
+      "nome": "Erica Santos",
+      "idade": 22,
+      "altura": "1.77m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "SC Internacional",
+      "posicao": "Atacante",
+      "foto": null
+    },
+    {
+      "id": 703,
+      "nome": "Fabiana Cruz",
+      "idade": 19,
+      "altura": "1.73m",
+      "pe_dominante": "Direito",
+      "clube_atual": "São Paulo FC",
+      "posicao": "Atacante",
+      "foto": null
+    },
+    {
+      "id": 704,
+      "nome": "Gabriela Ferraz",
+      "idade": 21,
+      "altura": "1.76m",
+      "pe_dominante": "Direito",
+      "clube_atual": "Grêmio",
+      "posicao": "Atacante",
+      "foto": null
+    },
+    {
+      "id": 705,
+      "nome": "Ingrid Melo",
+      "idade": 23,
+      "altura": "1.74m",
+      "pe_dominante": "Esquerdo",
+      "clube_atual": "Corinthians",
+      "posicao": "Atacante",
+      "foto": null
+    }
+  ]
+}

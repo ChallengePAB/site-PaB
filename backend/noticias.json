@@ -1,0 +1,25 @@
+{
+  "noticiaPrincipal": {
+    "id": 101,
+    "imagem": "mainPageNews1.png",
+    "titulo": "Corinthians é o maior campeão do futebol feminino brasileiro",
+    "subtitulo": "Um novo capítulo se inicia no futebol feminino com a chegada de novos talentos.",
+    "conteudo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+  },
+  "noticiasSecundarias": [
+    {
+      "id": 1,
+      "imagem": "mainPageNews2.png",
+      "titulo": "Com mais de 40 mil ingressos vendidos, Corinthians busca novo recorde no futebol feminino",
+      "subtitulo": "Dos cinco maiores públicos da modalidade no Brasil, quatro são na Neo Química Arena; Brabas têm o recorde sul-americano.",
+      "conteudo": "A partida contra o Internacional promete casa cheia. A torcida corintiana, sempre engajada, abraçou o time feminino e está prestes a quebrar mais um recorde de público, consolidando a Neo Química Arena como um dos grandes palcos do futebol feminino no continente. As Brabas são detentoras do recorde de público entre clubes do futebol feminino nacional e sul-americano, com 44.529 mil torcedores na Neo Química Arena. A marca foi alcançada na última temporada, também na final do Brasileirão contra o São Paulo, quando o Corinthians conquistou a sexta taça."
+    },
+    {
+      "id": 2,
+      "imagem": "mainPageNews3.png",
+      "titulo": "Elenco feminino do Manchester United encara sumiço de chuteiras antes da Champions Feminina",
+      "subtitulo": "Clube inglês precisou desembolsar cerca de R$ 29 mil para comprar novos equipamentos a tempo de disputar a partida.",
+      "conteudo": "Um imprevisto logístico causou apreensão na equipe do Manchester United. O sumiço de dezenas de pares de chuteiras personalizadas forçou o clube a uma corrida contra o tempo para garantir que as atletas tivessem o equipamento necessário para a importante partida da Champions League Feminina."
+    }
+  ]
+}
