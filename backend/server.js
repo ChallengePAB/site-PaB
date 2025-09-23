@@ -1,22 +1,21 @@
-// 1. Importar os módulos necessários
-require('dotenv').config(); // Lembre-se de ter o arquivo .env
+require('dotenv').config(); 
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs/promises'); // Usando a versão de Promises para consistência
+const fs = require('fs/promises'); 
 const path = require('path');
-const bcrypt = require('bcryptjs'); // Para criptografar senhas
-const jwt = require('jsonwebtoken'); // Para criar tokens de autenticação
+const bcrypt = require('bcryptjs'); 
+const jwt = require('jsonwebtoken'); 
 
 
-// 2. Inicializar o aplicativo Express
+
 const app = express();
 const PORT = 3001;
 
-// 3. Configurar os Middlewares
+
 app.use(cors());
 app.use(express.json());
 
-// --- CAMINHOS PARA TODOS OS ARQUIVOS JSON ---
+//Caminho para os arquivos json
 const dbInscricoesPath = path.join(__dirname, 'db.json');
 const dbUsersPath = path.join(__dirname, 'users.json');
 const dbPeneirasPath = path.join(__dirname, 'peneiras.json');
@@ -24,7 +23,7 @@ const dbPromessasPath = path.join(__dirname, 'promessas.json');
 const dbNoticiasPath = path.join(__dirname, 'noticias.json');
 
 
-// --- FUNÇÕES AUXILIARES PARA LER/ESCREVER NOS ARQUIVOS JSON ---
+
 const readJsonFile = async (filePath) => {
   try {
     const data = await fs.readFile(filePath, 'utf8');
@@ -53,7 +52,7 @@ app.get('/noticias/home', async (req, res) => {
 });
 
 
-// ROTA PARA BUSCAR UMA ÚNICA NOTÍCIA PELO ID
+// Rota para buscar uma notícia pelo id
 app.get('/noticia/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -71,7 +70,7 @@ app.get('/noticia/:id', async (req, res) => {
       // Filtra as notícias secundárias para não incluir a notícia atual
       const outrosArtigos = data.noticiasSecundarias
         .filter(n => n.id != id) // Garante que a notícia atual não seja sugerida
-        .slice(0, 2); // Pega apenas as duas primeiras
+        .slice(0, 4); // Pega apenas as duas primeiras
 
       // Retorna um objeto com a notícia atual e as sugestões
       res.status(200).json({ artigoAtual, outrosArtigos });
@@ -178,7 +177,7 @@ app.post('/auth/login', async (req, res) => {
 });
 
 
-// 5. Iniciar o servidor
+//Iniciar o servidor
 app.listen(PORT, () => {
   console.log(`🚀 Servidor backend rodando na porta ${PORT}`);
 });

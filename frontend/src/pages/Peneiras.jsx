@@ -5,19 +5,17 @@ import { MapPin, Calendar, Users } from 'lucide-react';
 const DEFAULT_PLAYER_IMAGE = '/jogadora-padrao.png';
 
 const Peneiras = () => {
-  // Estados para as Peneiras
+  
   const [peneiras, setPeneiras] = useState([]);
   const [loadingPeneiras, setLoadingPeneiras] = useState(true);
   const [errorPeneiras, setErrorPeneiras] = useState(null);
   const [filtroCategoria, setFiltroCategoria] = useState('todas');
   
-  // Estados para as Promessas
   const [promessas, setPromessas] = useState([]);
   const [loadingPromessas, setLoadingPromessas] = useState(true);
   const [errorPromessas, setErrorPromessas] = useState(null);
 
 
-  // Fetch para as Peneiras
   useEffect(() => {
     const fetchPeneiras = async () => {
       try {
@@ -35,7 +33,7 @@ const Peneiras = () => {
     fetchPeneiras();
   }, []);
 
-  // Fetch para as Promessas (teste)
+ 
   useEffect(() => {
     const fetchPromessas = async () => {
       try {
@@ -53,7 +51,7 @@ const Peneiras = () => {
     fetchPromessas();
   }, []);
   
-  // Lógica de filtragem e agrupamento...
+  // Lógica de filtragem e agrupamento
   const categoriasFiltro = ['todas', 'Sub-18', 'Sub-20'];
   const peneirasFiltradas = filtroCategoria === 'todas' ? peneiras : peneiras.filter(p => p.categoria === filtroCategoria);
   const promessasAgrupadas = promessas.reduce((acc, player) => {
@@ -65,7 +63,7 @@ const Peneiras = () => {
 
   return (
     <>
-      {/* SEÇÃO PENEIRAS EM ABERTO */}
+      {/* Seção peneiras em aberto */}
       <section id="peneiras" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -108,7 +106,7 @@ const Peneiras = () => {
 
       <div className="border-t-2 border-gray-100"></div>
 
-      {/* SEÇÃO PROMESSAS DA BASE */}
+      {/* Seção promessas da base*/}
       <section id="promessas" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">

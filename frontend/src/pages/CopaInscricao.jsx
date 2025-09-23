@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'; 
 import { Trophy, Users, User, Calendar, MapPin } from 'lucide-react';
-// A importação de 'InscricaoPage' foi removida por não ser necessária aqui.
+
 
 const CopaInscricao = () => {
   return (
@@ -80,7 +80,6 @@ const CopaInscricao = () => {
           </div>
           
           <div className="text-center mt-12">
-            {/* CORREÇÃO: O 'to' agora aponta para "/inscricao" */}
             <Link
               to="/inscricao"
               className="inline-block bg-purple-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-purple-700 transition-transform transform hover:scale-105"

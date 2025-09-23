@@ -4,8 +4,6 @@ import { Calendar, User } from 'lucide-react';
 
 export default function NoticiaPage() {
   const { id } = useParams();
-  
-  // Estados separados para a notícia principal e as sugestões
   const [artigo, setArtigo] = useState(null);
   const [outrosArtigos, setOutrosArtigos] = useState([]);
 

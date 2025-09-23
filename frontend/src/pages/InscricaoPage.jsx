@@ -23,7 +23,8 @@ const InscricaoPage = () => {
 
   const posicoes = ['Goleira', 'Zagueira', 'Lateral Direita', 'Lateral Esquerda', 'Volante', 'Meia', 'Atacante'];
   
-  // --- LÓGICA PARA O FORMULÁRIO DE TIME ---
+
+  // Formulário de time
 
   const handleAdicionarJogadora = () => {
     const { nome, idade, posicao } = novaJogadora;
@@ -52,7 +53,7 @@ const InscricaoPage = () => {
     }));
   };
 
-  // --- VALIDAÇÃO EM TEMPO REAL PARA O TIME ---
+  // Validação do formulário de time
   const validacaoTime = useMemo(() => {
     const totalJogadoras = formDataTime.jogadoras.length;
     const posicoesPreenchidas = new Set(formDataTime.jogadoras.map(j => j.posicao));
@@ -148,7 +149,7 @@ const InscricaoPage = () => {
               {submitMessage}
             </div>
           )}
-
+          {/* Formulário individual */}
           <form onSubmit={handleSubmit}>
             {tipoInscricao === 'individual' ? (
               <div className="space-y-6 animate-fade">
@@ -178,6 +179,7 @@ const InscricaoPage = () => {
               </div>
 
             ) : (
+              // Formulário de time
               <div className="space-y-8 animate-fade">
                 <div className="p-4 bg-gray-200 border-l-4 border-gray-400 text-violet-900">
                   <p><b>Atenção:</b> A inscrição de time permite até <b>18 jogadoras</b>. Para que a inscrição seja válida, é necessário cadastrar no mínimo <b>11 jogadoras</b> e preencher todas as posições principais (Goleira, Zagueira, etc.).</p>

@@ -2,18 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 
 const Home = ()=> {
-  // Estados para as Notícias
   const [noticiaPrincipal, setNoticiaPrincipal] = useState(null);
   const [noticiasSecundarias, setNoticiasSecundarias] = useState([]);
   const [loadingNoticias, setLoadingNoticias] = useState(true);
   const [errorNoticias, setErrorNoticias] = useState(null);
 
-  // --- NOVO: Estados para o Widget da Tabela ---
-  const [top5Tabela, setTop5Tabela] = useState([]);
-  const [loadingTabela, setLoadingTabela] = useState(true);
-  const [errorTabela, setErrorTabela] = useState(null)
 
-  // Fetch para as Notícias
   useEffect(() => {
     const fetchNoticias = async () => {
       try {
@@ -55,7 +49,7 @@ const Home = ()=> {
   return (
     <div className="bg-white">
       <div className="container mx-auto px-4 py-8">
-        
+        {/* Seção notícia principal */}
         {noticiaPrincipal && (
           <Link to={`/noticia/${noticiaPrincipal.id}`} className="block group rounded-2xl overflow-hidden">
             <section 
@@ -72,7 +66,7 @@ const Home = ()=> {
         )}
 
         <section className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
+          {/* Seção das notícias principais */}
           <div className="lg:col-span-2">
             <h2 className="text-3xl font-bold text-black mb-6 pb-4 border-b">
               Principais Notícias
