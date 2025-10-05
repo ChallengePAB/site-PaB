@@ -1,21 +1,24 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Calendar, Users } from 'lucide-react';
+import { Link } from "react-router-dom";
 
-//Imagem padrão para jogadoras sem foto
+// Imagem padrão para jogadoras sem foto
 const DEFAULT_PLAYER_IMAGE = '/jogadora-padrao.png';
 
 const Peneiras = () => {
-  
   const [peneiras, setPeneiras] = useState([]);
   const [loadingPeneiras, setLoadingPeneiras] = useState(true);
   const [errorPeneiras, setErrorPeneiras] = useState(null);
   const [filtroCategoria, setFiltroCategoria] = useState('todas');
-  
+
   const [promessas, setPromessas] = useState([]);
   const [loadingPromessas, setLoadingPromessas] = useState(true);
   const [errorPromessas, setErrorPromessas] = useState(null);
 
+  const role = localStorage.getItem("role");
+  const token = localStorage.getItem("token");
 
+  // Carregar peneiras do backend
   useEffect(() => {
     const fetchPeneiras = async () => {
       try {
@@ -24,41 +27,99 @@ const Peneiras = () => {
         const data = await response.json();
         setPeneiras(data);
       } catch (error) {
-        console.error("Erro ao buscar peneiras:", error);
-        setErrorPeneiras("Não foi possível carregar as peneiras. Verifique se o backend está rodando.");
+        setErrorPeneiras("Não foi possível carregar as peneiras. Verifique o backend.");
       } finally {
         setLoadingPeneiras(false);
       }
     };
+
     fetchPeneiras();
   }, []);
 
- 
+  // Carregar promessas do backend
   useEffect(() => {
-    const fetchPromessas = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/jogadoras/promessas');
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-        setPromessas(data);
-      } catch (error) {
-        console.error("Erro ao buscar promessas:", error);
-        setErrorPromessas("Não foi possível carregar as promessas. Verifique o backend.");
-      } finally {
-        setLoadingPromessas(false);
+  const fetchPromessas = async () => {
+    try {
+      // Lê o token do localStorage sempre que for buscar as jogadoras
+      const token = localStorage.getItem("token");
+
+      // Monta o header apenas se houver token
+      const headers = token ? { "Authorization": `Bearer ${token}` } : {};
+
+      const response = await fetch('http://localhost:3001/jogadoras/promessas', { headers });
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+      const data = await response.json();
+      setPromessas(data);
+    } catch (error) {
+      setErrorPromessas("Não foi possível carregar as promessas. Verifique o backend.");
+    } finally {
+      setLoadingPromessas(false);
+    }
+  };
+
+  fetchPromessas();
+}, []);
+
+  // Ocultar jogadora (só admins)
+  const handleOcultarJogadora = async (id) => {
+    if (!token) return alert("Você precisa estar logado como admin.");
+    try {
+      const response = await fetch(`http://localhost:3001/jogadoras/${id}/ocultar`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setPromessas(prev => prev.map(p => p.id === id ? { ...p, oculta: true } : p));
+        alert("Jogadora ocultada com sucesso!");
+      } else {
+        alert(data.message || "Erro ao ocultar jogadora.");
       }
-    };
-    fetchPromessas();
-  }, []);
-  
-  // Lógica de filtragem e agrupamento
-  const categoriasFiltro = ['todas', 'Sub-18', 'Sub-20'];
-  const peneirasFiltradas = filtroCategoria === 'todas' ? peneiras : peneiras.filter(p => p.categoria === filtroCategoria);
-  const promessasAgrupadas = promessas.reduce((acc, player) => {
+    } catch (error) {
+      alert("Erro de conexão ao ocultar jogadora.");
+    }
+  };
+
+  // Desocultar jogadora (só admins)
+  const handleDesocultarJogadora = async (id) => {
+    if (!token) return alert("Você precisa estar logado como admin.");
+    try {
+      const response = await fetch(`http://localhost:3001/jogadoras/${id}/desocultar`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setPromessas(prev => prev.map(p => p.id === id ? { ...p, oculta: false } : p));
+        alert("Jogadora desocultada com sucesso!");
+      } else {
+        alert(data.message || "Erro ao desocultar jogadora.");
+      }
+    } catch (error) {
+      alert("Erro de conexão ao desocultar jogadora.");
+    }
+  };
+
+  // Filtra jogadoras visíveis para o usuário
+  const promessasVisiveis = promessas.filter(player => role === "admin" || !player.oculta);
+
+  // Agrupa por posição
+  const promessasAgrupadas = promessasVisiveis.reduce((acc, player) => {
     if (!acc[player.posicao]) acc[player.posicao] = [];
     acc[player.posicao].push(player);
     return acc;
   }, {});
+
+  const categoriasFiltro = ['todas', 'Sub-18', 'Sub-20'];
+  const peneirasFiltradas = filtroCategoria === 'todas' ? peneiras : peneiras.filter(p => p.categoria === filtroCategoria);
+
   const formatarData = (data) => new Date(data).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 
   return (
@@ -106,39 +167,54 @@ const Peneiras = () => {
 
       <div className="border-t-2 border-gray-100"></div>
 
-      {/* Seção promessas da base*/}
+      {/* Seção promessas */}
       <section id="promessas" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <div className="flex justify-center mb-4"><Users className="h-16 w-16 text-purple-600" /></div>
+            <div className="flex justify-center mb-4">
+              <Users className="h-16 w-16 text-purple-600" />
+            </div>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Conheça as promessas da base</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Descubra o talento que está surgindo.</p>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Descubra o talento que está surgindo.
+            </p>
           </div>
-          {loadingPromessas ? <p className="text-center">Carregando promessas...</p> : 
-            errorPromessas ? <p className="text-center text-red-600 bg-red-100 p-4 rounded-md">{errorPromessas}</p> :
-            promessas.length > 0 ? (
+
+          {loadingPromessas ? (
+            <p className="text-center">Carregando promessas...</p>
+          ) : errorPromessas ? (
+            <p className="text-center text-red-600 bg-red-100 p-4 rounded-md">
+              {errorPromessas}
+            </p>
+          ) : promessasVisiveis.length > 0 ? (
             <div className="max-w-7xl mx-auto space-y-10">
               {Object.entries(promessasAgrupadas).map(([posicao, players]) => (
                 <div key={posicao}>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-3 pb-3 border-b-2 border-gray-200 text-left capitalize">{posicao.replace('-', ' ')}s</h3>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-3 pb-3 border-b-2 border-gray-200 text-left capitalize">
+                    {posicao.replace('-', ' ')}s
+                  </h3>
                   <div className="grid grid-flow-col auto-cols-min gap-8 py-4 overflow-x-auto">
-                    {players.map(player => (
-                      // Card da jogadora
+                    {players.map((player) => (
                       <div key={player.id} className="flex flex-col items-center w-52 flex-shrink-0 text-center">
-                        <div className="relative w-52 h-62 shadow-md group overflow-hidden border-2 border-purple-200">
-                          <img 
-                            src={player.foto || DEFAULT_PLAYER_IMAGE} 
-                            alt={player.nome} 
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"/>
-                            {/* Efeito hover do card */}
+                        <Link to={`/jogadora/${player.id}`} className="relative w-52 h-62 shadow-md group overflow-hidden border-2 border-purple-200">
+                          <img src={player.foto || DEFAULT_PLAYER_IMAGE} alt={player.nome} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
                           <div className="absolute inset-0 bg-gray-100/40 flex flex-col justify-center items-center p-2 text-black transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
                             <p className="text-sm font-semibold">{player.clube_atual}</p>
-                            <p className="text-xs mt-1">Idade: {player.idade} anos </p>
+                            <p className="text-xs mt-1">Idade: {player.idade} anos</p>
                             <p className="text-xs mt-1">Altura: {player.altura}</p>
                             <p className="text-xs mt-1">Pé dominante: {player.pe_dominante}</p>
+                            {player.oculta && role === "admin" && (
+                              <p className="text-red-600 text-xs mt-1 font-bold">Oculta</p>
+                            )}
                           </div>
-                        </div>
+                        </Link>
                         <p className="text-gray-900 font-bold text-lg mt-3">{player.nome}</p>
+
+                        {role === "admin" && (
+                          <button onClick={() => player.oculta ? handleDesocultarJogadora(player.id) : handleOcultarJogadora(player.id) } className={`mt-2 px-3 py-1 text-sm rounded text-white ${player.oculta ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}`}>
+                            {player.oculta ? "Desocultar" : "Ocultar"}
+                          </button>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -146,7 +222,9 @@ const Peneiras = () => {
               ))}
             </div>
           ) : (
-            <p className="text-center text-gray-500">Nenhuma promessa da base encontrada no momento.</p>
+            <p className="text-center text-gray-500">
+              Nenhuma promessa da base encontrada no momento.
+            </p>
           )}
         </div>
       </section>

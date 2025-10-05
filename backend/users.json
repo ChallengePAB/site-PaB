@@ -3,12 +3,280 @@
     "id": 1757981100094,
     "nome": "Thayná Ferreira Lopes",
     "email": "tflopes01@gmail.com",
-    "password": "$2b$10$qBcLjbaHakvZmyAl1.WR6.G/8l/.5aUoidbm7ERfdt25o3.uISpLu"
+    "password": "$2b$10$qBcLjbaHakvZmyAl1.WR6.G/8l/.5aUoidbm7ERfdt25o3.uISpLu",
+    "role": "jogadora"
   },
   {
     "id": 1758015668662,
     "nome": "Thayná Ferreira Lopes",
     "email": "teste01@hotmail.com",
-    "password": "$2b$10$dizaejhHAMAu4vhSKnnnf.ReQrnuOq4SntZN1p0kSvs1mQH6xE2e2"
+    "password": "$2b$10$dizaejhHAMAu4vhSKnnnf.ReQrnuOq4SntZN1p0kSvs1mQH6xE2e2",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759265786399,
+    "nome": "Teste",
+    "email": "ninguemtemesseemail@gmail.com",
+    "password": "$2b$10$kfxPlhzxQ7g3aJo5xW06/O3W/Bb045YdeNBS9bFrSoODabyRQAvzi",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759408199799,
+    "nome": "admin",
+    "email": "admin@gmail.com",
+    "password": "$2b$10$rHDeVvFK1kjhP9kRmQX76uowmH6aUnJ/rchodsd.5jO.2/eQbUfYa",
+    "role": "admin"
+  },
+  {
+    "id": 1759503939247,
+    "nome": "1",
+    "email": "1@1.com",
+    "password": "$2b$10$jhP/e4OXVwTwXOvIacH/H.kWo1J6x.064JPoEcjIdM3Mcg/gTVgsu",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505885551,
+    "nome": "Camila Vieira",
+    "email": "camila.vieira@peneiras.com",
+    "password": "$2b$10$gCltco20xoHZuoE8VFw4V.MKlCbS0MCN3liYe1mxkiYPcO0hwm1GS",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505885919,
+    "nome": "Juliana Bastos",
+    "email": "juliana.bastos@peneiras.com",
+    "password": "$2b$10$oQZqXFAX.rrGRMlzKE7c3.3pH1a6HL/TNC1VjOpi3pj4vcDzc59um",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505885793,
+    "nome": "Fernanda Lima",
+    "email": "fernanda.lima@peneiras.com",
+    "password": "$2b$10$0kaFZdRY7ZXfyj7zs.OGDOE58KveNaViF6LDew6U3BP1KTghOmaei",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505885308,
+    "nome": "Patrícia Mota",
+    "email": "patricia.mota@peneiras.com",
+    "password": "$2b$10$NYjd1BndWlIVCc7KqH5nTOhk//DtTvLxfNc6emiLXHEzF./xTquLK",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505885791,
+    "nome": "Sofia Arantes",
+    "email": "sofia.arantes@peneiras.com",
+    "password": "$2b$10$HKwazV5OyugmF4QhC9g6zuJgnauu4umffBj4iM0NSmQhr/R1y5CX.",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505885663,
+    "nome": "Bruna Marques",
+    "email": "bruna.marques@peneiras.com",
+    "password": "$2b$10$MiWTG0KgAzVRu6onJHWzfOVcXxfXscmgHTgdK6EAIGgdkwsfSgia.",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886136,
+    "nome": "Letícia Gomes",
+    "email": "leticia.gomes@peneiras.com",
+    "password": "$2b$10$xvBxu8TKbktFKSgFhRGPeeJpBRX5Hs7lWrWlf6n90f9BgBlJnRAg2",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886400,
+    "nome": "Rafaela Costa",
+    "email": "rafaela.costa@peneiras.com",
+    "password": "$2b$10$BxOQ53BIGZTxJ0rzjOOt0uE.CBn3.XsIyFwwHBBjSOKnajKJYZnFm",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505885806,
+    "nome": "Clara Nogueira",
+    "email": "clara.nogueira@peneiras.com",
+    "password": "$2b$10$CzTmm3BuIKv/J3XrBXz37uiANr7vJctK54usRsTaOENIo8A0YxNP.",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505885953,
+    "nome": "Tatiane Farias",
+    "email": "tatiane.farias@peneiras.com",
+    "password": "$2b$10$1FdbN9A9gMv/xlQav2FdNeJJjgzltHVOqXUcWKJbLjCUpLT/88TsC",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886294,
+    "nome": "Alice Pereira",
+    "email": "alice.pereira@peneiras.com",
+    "password": "$2b$10$2nDtAChsDLoATB4AXvzSMOK/G7YJVZFnY.MMz3BvVZLgTfg0JVZ82",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886413,
+    "nome": "Luiza Monteiro",
+    "email": "luiza.monteiro@peneiras.com",
+    "password": "$2b$10$QdxWmpAh/VexrllUEifk9OZMD2DOs14Iq/IH.WX0r4Sztld2pEBQq",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886043,
+    "nome": "Vitória Barros",
+    "email": "vitoria.barros@peneiras.com",
+    "password": "$2b$10$FXnZZiiqpYfxBz1/z//7KeAXzhrgZEI3X.76YicU4yZ.PrON5mcEO",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505885963,
+    "nome": "Carolina Justino",
+    "email": "carolina.justino@peneiras.com",
+    "password": "$2b$10$vmQ9WIunAOQ9RrBzR7ulbO7XDklllobzHHNp.OcpMPC9rv2HdFom.",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886992,
+    "nome": "Yasmin Rocha",
+    "email": "yasmin.rocha@peneiras.com",
+    "password": "$2b$10$huS9OyZQwKTt1C8BnazLaemHJz1wQSCKXQ3TiGQRvN5EBE7B.wS3y",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886797,
+    "nome": "Laura Martins",
+    "email": "laura.martins@peneiras.com",
+    "password": "$2b$10$NTp.wfkX.97RmnTECucd5OVgFECH.pVEZGdjxyZ1Vpv/KRr6F/l9K",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886838,
+    "nome": "Manuela Dias",
+    "email": "manuela.dias@peneiras.com",
+    "password": "$2b$10$.Q6IgE8wjaagcs7l0aJMruGmjyVRhZM/vkBhvuEMvZH9J0xLRDex.",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886710,
+    "nome": "Cristina Azevedo",
+    "email": "cristina.azevedo@peneiras.com",
+    "password": "$2b$10$sGaV.NrgiqyflveLBcQgm.78NsWz.qOLQtW/K4yI3pGEmA/wNszFm",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886772,
+    "nome": "Paula Novaes",
+    "email": "paula.novaes@peneiras.com",
+    "password": "$2b$10$5w04DTqqc5PmWbA15qjS1.0nTt/i/SQfH890yAcPb10XNDnRYzpLq",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887029,
+    "nome": "Gabriela Matos",
+    "email": "gabriela.matos@peneiras.com",
+    "password": "$2b$10$RD8oX69OOEzsc5LEIf3xeOjSckamtx4iP0KBy6G54yBf6EF9IAOyu",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886983,
+    "nome": "Amanda Pires",
+    "email": "amanda.pires@peneiras.com",
+    "password": "$2b$10$wFKnBC9QkLnzW40aEOJYQe/UKC2d6yeO/x2m3ozl1KZe3Utbay8R.",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887062,
+    "nome": "Helena de Souza",
+    "email": "helena.de.souza@peneiras.com",
+    "password": "$2b$10$y53WCle2TaxYm0QqpZO9jOMg69gRUUBVPOcpflByTaPttXzcltB/a",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887140,
+    "nome": "Giovanna Nunes",
+    "email": "giovanna.nunes@peneiras.com",
+    "password": "$2b$10$ODUDFZoYpxAmBDjG66CG0.T5fRMpJOvkdR3br6AXLOijmCBaezYy6",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505886728,
+    "nome": "Fernanda Borges",
+    "email": "fernanda.borges@peneiras.com",
+    "password": "$2b$10$fnMnJYw21HSIdUUL09jwA.hSlkwefl5g2kRgg8dy75Ov1Uj2iGUDm",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887425,
+    "nome": "Larissa Oliveira",
+    "email": "larissa.oliveira@peneiras.com",
+    "password": "$2b$10$OLvaqmOk9KbCdvpTA4XTROlnJvPdVlxqVqnMLCkyYlezKpMPhK9BW",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887117,
+    "nome": "Isabela Ramos",
+    "email": "isabela.ramos@peneiras.com",
+    "password": "$2b$10$CZP5D6BPpVaMGEJihimbce1aoIWChl7fVCIcffBYpCrKps/Z./hxK",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887416,
+    "nome": "Marina Albuquerque",
+    "email": "marina.albuquerque@peneiras.com",
+    "password": "$2b$10$bxIMv7sncscsYLklE5VtQ.Gi4Opkk.ViAbudpdtojef8qOsVTnSXS",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887867,
+    "nome": "Camila Andrade",
+    "email": "camila.andrade@peneiras.com",
+    "password": "$2b$10$X1r7ADKl8rTZHfxkFgqoC.dmDfBpvkuNAYxSXqzA1X9J883jYxXN2",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887898,
+    "nome": "Natasha Vasconcelos",
+    "email": "natasha.vasconcelos@peneiras.com",
+    "password": "$2b$10$HoP9RoKdVWsayuemN0GBZeLcSbqEA5WclStUgOvsyTzgtubFfDnwS",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887776,
+    "nome": "Beatriz Santos",
+    "email": "beatriz.santos@peneiras.com",
+    "password": "$2b$10$r0b8nKi9lxAOxTCEgTWus.3eA8lBu0OAuHjanyajSTxWwxE..TgeS",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505888208,
+    "nome": "Débora Siqueira",
+    "email": "debora.siqueira@peneiras.com",
+    "password": "$2b$10$W9Er6X6et60ZqOPZkznDHO4D7zSwDJDE.kDXgW9eTzgM9Tc991efG",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505888017,
+    "nome": "Erica Santos",
+    "email": "erica.santos@peneiras.com",
+    "password": "$2b$10$P..dq8qe4t6MFxVcawlFoezifYMumGTmvHXaWkrqAI/IucfCDm6xm",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887825,
+    "nome": "Fabiana Cruz",
+    "email": "fabiana.cruz@peneiras.com",
+    "password": "$2b$10$5toCN0GMGkJZ5rOeh3rSzuXTDzbBG8DBP5kAyfXIcVxFO.7trU6oW",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887716,
+    "nome": "Gabriela Ferraz",
+    "email": "gabriela.ferraz@peneiras.com",
+    "password": "$2b$10$OAklgtbz3lgTeoZTJuO2.uQSEsjHIIzKAVb5T.pTAyfWs9W4uIEIK",
+    "role": "jogadora"
+  },
+  {
+    "id": 1759505887725,
+    "nome": "Ingrid Melo",
+    "email": "ingrid.melo@peneiras.com",
+    "password": "$2b$10$jMIf0wO.IXJOj/Y3TC2veu4FWhX5d8TuDjATlH9HjL89100UktDFW",
+    "role": "jogadora"
   }
 ]

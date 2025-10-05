@@ -1,3 +1,31 @@
 {
-  "inscricoes": []
+  "times": [],
+  "jogadoresIndividuais": [
+    {
+      "tipoInscricao": "individual",
+      "nome": "segujilsd",
+      "email": "seu@email.com",
+      "telefone": "119999999",
+      "idade": "18",
+      "posicao": "Goleiro",
+      "cpf": "406.748.010-59",
+      "dataInscricao": "2025-10-05T03:43:15.702Z"
+    }
+  ],
+  "estatisticas": [
+    {
+      "id": 1,
+      "totalTimes": 0,
+      "totalJogadoresIndividuais": 1,
+      "posicoesOcupadas": {
+        "Goleiro": 1,
+        "Zagueiro": 0,
+        "Lateral Esquerdo": 0,
+        "Lateral Direito": 0,
+        "Volante": 0,
+        "Meio-campista": 0,
+        "Atacante": 0
+      }
+    }
+  ]
 }

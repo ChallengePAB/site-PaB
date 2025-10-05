@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../components/AuthContext';
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -8,10 +10,19 @@ const Login = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    nome: ''
+    nome: '',
+    role: 'jogadora',
+    idade: '',
+    altura: '',
+    pe_dominante: 'Direito',
+    clube_atual: '',
+    posicao: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
+
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +45,17 @@ const Login = () => {
       const url = `http://localhost:3001/auth/${isLogin ? 'login' : 'register'}`;
       const body = isLogin 
         ? { email: formData.email, password: formData.password }
-        : { nome: formData.nome, email: formData.email, password: formData.password };
+        : { 
+            nome: formData.nome, 
+            email: formData.email, 
+            password: formData.password, 
+            role: formData.role,
+            idade: formData.idade,
+            altura: formData.altura,
+            pe_dominante: formData.pe_dominante,
+            clube_atual: formData.clube_atual,
+            posicao: formData.posicao
+          };
         
       const response = await fetch(url, {
         method: 'POST',
@@ -49,14 +70,25 @@ const Login = () => {
       }
 
       if (isLogin) {
-        localStorage.setItem('token', data.token);
-        setMessage('Login realizado com sucesso!');
+        login(data.token, data.role, data.jogadoraId);   // atualiza contexto
+        navigate('/home');              // redireciona
       } else {
         setMessage('Conta criada com sucesso! Faça login para continuar.');
         setIsLogin(true); 
       }
       
-      setFormData({ email: '', password: '', confirmPassword: '', nome: '' });
+      setFormData({ 
+        email: '', 
+        password: '', 
+        confirmPassword: '', 
+        nome: '', 
+        role: 'jogadora',
+        idade: '',
+        altura: '',
+        pe_dominante: 'Direito',
+        clube_atual: '',
+        posicao: ''
+      });
 
     } catch (error) {
       setMessage(error.message);
@@ -72,9 +104,25 @@ const Login = () => {
       email: '',
       password: '',
       confirmPassword: '',
-      nome: ''
+      nome: '',
+      role: 'jogadora',
+      idade: '',
+      altura: '',
+      pe_dominante: 'Direito',
+      clube_atual: '',
+      posicao: ''
     });
   };
+
+  const posicoes = [
+    'Goleira',
+    'Zagueira',
+    'Lateral Direita',
+    'Lateral Esquerda',
+    'Volante',
+    'Meia',
+    'Atacante'
+  ];
 
   return (
     <section id="login" className="py-16 bg-gray-50">
@@ -106,13 +154,110 @@ const Login = () => {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 {!isLogin && (
-                  <div>
-                    <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                      <input type="text" id="nome" name="nome" value={formData.nome} onChange={handleInputChange} required={!isLogin} className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" placeholder="Digite seu nome completo"/>
+                  <>
+                    <div>
+                      <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                        <input type="text" id="nome" name="nome" value={formData.nome} onChange={handleInputChange} required={!isLogin} className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" placeholder="Digite seu nome completo"/>
+                      </div>
                     </div>
-                  </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Conta</label>
+                      <select
+                        name="role"
+                        value={formData.role}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full pl-3 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400"
+                      >
+                        <option value="jogadora">Jogadora</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </div>
+
+                    {formData.role === 'jogadora' && (
+                      <>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label htmlFor="idade" className="block text-sm font-medium text-gray-700 mb-2">Idade</label>
+                            <input 
+                              type="number" 
+                              id="idade" 
+                              name="idade" 
+                              value={formData.idade} 
+                              onChange={handleInputChange} 
+                              required 
+                              min="14"
+                              max="40"
+                              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" 
+                              placeholder="Ex: 20"
+                            />
+                          </div>
+
+                          <div>
+                            <label htmlFor="altura" className="block text-sm font-medium text-gray-700 mb-2">Altura</label>
+                            <input 
+                              type="text" 
+                              id="altura" 
+                              name="altura" 
+                              value={formData.altura} 
+                              onChange={handleInputChange} 
+                              required 
+                              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" 
+                              placeholder="Ex: 1.70m"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Pé Dominante</label>
+                          <select
+                            name="pe_dominante"
+                            value={formData.pe_dominante}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400"
+                          >
+                            <option value="Direito">Direito</option>
+                            <option value="Esquerdo">Esquerdo</option>
+                            <option value="Ambos">Ambos</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label htmlFor="clube_atual" className="block text-sm font-medium text-gray-700 mb-2">Clube Atual</label>
+                          <input 
+                            type="text" 
+                            id="clube_atual" 
+                            name="clube_atual" 
+                            value={formData.clube_atual} 
+                            onChange={handleInputChange} 
+                            required 
+                            className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" 
+                            placeholder="Ex: Corinthians"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Posição</label>
+                          <select
+                            name="posicao"
+                            value={formData.posicao}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400"
+                          >
+                            <option value="">Selecione uma posição</option>
+                            {posicoes.map(pos => (
+                              <option key={pos} value={pos}>{pos}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </>
+                    )}
+                  </>
                 )}
 
                 <div>
@@ -149,7 +294,6 @@ const Login = () => {
                 </button>
               </form>
               
-              {/* linha para separação */}
               <div className="my-6 flex items-center">
                 <div className="flex-grow border-t border-gray-300"></div>
               </div>

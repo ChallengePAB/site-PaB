@@ -8,39 +8,52 @@ import Peneiras from './pages/Peneiras';
 import InscricaoPage from './pages/InscricaoPage';
 import Login from './pages/Login';
 import Footer from './components/Footer';
-
+import PlayerProfile from './pages/PlayerProfile'; 
+import { AuthProvider } from './components/AuthContext';
+import EditarPerfil from './pages/EditarPerfil';
+import AdminJogadoras from './admin/AdminJogadoras';
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header /> 
-      <main className="flex-grow">
-        <Routes>
-          {/* Rota para a página inicial */}
-          <Route path="/" element={<Home />} />
+    <AuthProvider>
+      <div className="flex flex-col min-h-screen">
+        <Header /> 
+        <main className="flex-grow">
+          <Routes>
+            {/* Rota para a página inicial */}
+            <Route path="/" element={<Home />} />
 
-          {/* Rota para a página de notícias */}
-          <Route path="/home" element={<Home />} />
+            {/* Rota para a página de notícias */}
+            <Route path="/home" element={<Home />} />
 
-          {/* Rota para a página de detalhes da notícia */}
-          <Route path="/noticia/:id" element={<NoticiaPage />} />
-          
-          {/* Rota para a página da Copa */}
-          <Route path="/copa" element={<CopaInscricao />} />
+            {/* Rota para a página de detalhes da notícia */}
+            <Route path="/noticia/:id" element={<NoticiaPage />} />
+            
+            {/* Rota para a página da Copa */}
+            <Route path="/copa" element={<CopaInscricao />} />
 
-          {/* Rota para a página de Peneiras e Promessas */}
-          <Route path="/talentos" element={<Peneiras />} />
-          
-          {/* Rota para a pagina do formulario */}
-          <Route path="/inscricao" element={<InscricaoPage />} />
-          
-          {/* Rota para a página de Login */}
-          <Route path="/login" element={<Login />} />
+            {/* Rota para a página de Peneiras e Promessas */}
+            <Route path="/talentos" element={<Peneiras />} />
+            
+            {/* Rota para a pagina do formulario */}
+            <Route path="/inscricao" element={<InscricaoPage />} />
+            
+            {/* Rota para a página de Login */}
+            <Route path="/login" element={<Login />} />
 
-        </Routes>
-      </main>
-      <Footer /> 
-    </div>
+            {/* Rota para a página de edição de perfil */}
+            <Route path="/perfil/editar" element={<EditarPerfil />} />
+
+            {/* Rota para a página de perfil da jogadora */}
+            <Route path="/jogadora/:id" element={<PlayerProfile />} />
+
+            {/* Rota para a página de administração de jogadoras */}
+            <Route path="/admin/jogadoras" element={<AdminJogadoras />} />
+          </Routes>
+        </main>
+        <Footer /> 
+      </div>
+    </AuthProvider>
   );
 }
 
