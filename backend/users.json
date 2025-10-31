@@ -1,19 +1,5 @@
 [
   {
-    "id": 1757981100094,
-    "nome": "Thayná Ferreira Lopes",
-    "email": "tflopes01@gmail.com",
-    "password": "$2b$10$qBcLjbaHakvZmyAl1.WR6.G/8l/.5aUoidbm7ERfdt25o3.uISpLu",
-    "role": "jogadora"
-  },
-  {
-    "id": 1758015668662,
-    "nome": "Thayná Ferreira Lopes",
-    "email": "teste01@hotmail.com",
-    "password": "$2b$10$dizaejhHAMAu4vhSKnnnf.ReQrnuOq4SntZN1p0kSvs1mQH6xE2e2",
-    "role": "jogadora"
-  },
-  {
     "id": 1759265786399,
     "nome": "Teste",
     "email": "ninguemtemesseemail@gmail.com",
@@ -278,5 +264,40 @@
     "email": "ingrid.melo@peneiras.com",
     "password": "$2b$10$jMIf0wO.IXJOj/Y3TC2veu4FWhX5d8TuDjATlH9HjL89100UktDFW",
     "role": "jogadora"
+  },
+  {
+    "id": 1761772823720,
+    "nome": "Ana Clara",
+    "email": "anaclara@gmail.com",
+    "password": "$2b$10$NCDKox2hjlpC9TUeUSWod.aAOOIn1MpKtx9iD7.A8f7IHxm0YgZGe",
+    "role": "jogadora"
+  },
+  {
+    "id": 1761772919172,
+    "nome": "bruna fernandes",
+    "email": "bruna123@gmail.com",
+    "password": "$2b$10$EP5v7xtvGlVEIu3dm.0rRu7AzDCMd85ESg8pMlcE3iiTS5VWZX2wi",
+    "role": "jogadora"
+  },
+  {
+    "id": 1761773003227,
+    "nome": "Ana Maria",
+    "email": "mariaana@gmail.com",
+    "password": "$2b$10$zd4mVd36iUe5MLup71plxeV9fVPnRsneO0qZOfX3Khr/OnFdB69Ju",
+    "role": "admin"
+  },
+  {
+    "id": 1761938354165,
+    "nome": "Admin Thayna",
+    "email": "adminthayna@gmail.com",
+    "password": "$2b$10$7OYBRH1bLDXHQ.breE73UeEtjwf/1Fz2pEn3p9sa46lpd4KA7GL/y",
+    "role": "admin"
+  },
+  {
+    "id": 1761942807120,
+    "nome": "admin teste",
+    "email": "adminteste@gmail.com",
+    "password": "$2b$10$gbBO.HOSI0sNUkWHZ6FDeupKo2wihJ4v/KNyNWwMqzDmft8bVNDUu",
+    "role": "admin"
   }
 ]

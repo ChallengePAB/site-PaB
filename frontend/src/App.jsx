@@ -12,6 +12,7 @@ import PlayerProfile from './pages/PlayerProfile';
 import { AuthProvider } from './components/AuthContext';
 import EditarPerfil from './pages/EditarPerfil';
 import AdminJogadoras from './admin/AdminJogadoras';
+import AdminNoticias from './admin/AdminNoticias';
 
 function App() {
   return (
@@ -49,6 +50,9 @@ function App() {
 
             {/* Rota para a página de administração de jogadoras */}
             <Route path="/admin/jogadoras" element={<AdminJogadoras />} />
+            
+            {/* Rota para a página de administração de notícias */}
+            <Route path="/admin/noticias" element={<AdminNoticias />} />
           </Routes>
         </main>
         <Footer /> 

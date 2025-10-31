@@ -58,6 +58,15 @@ const Header = () => {
                     Gerenciar Jogadoras
                   </NavLink>
                 )}
+                {role === 'admin' && (
+                  <NavLink 
+                    to="/admin/noticias" 
+                    className="text-gray-700 hover:text-purple-600 transition-colors font-semibold"
+                    style={({ isActive }) => isActive ? activeLinkStyle : undefined}
+                  >
+                    Gerenciar Notícias
+                  </NavLink>
+                )}
                 <button onClick={handleLogout} className="text-gray-700 hover:text-purple-600 transition-colors font-semibold">Logout</button>
               </>
             ) : (

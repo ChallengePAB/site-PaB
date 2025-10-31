@@ -11,15 +11,16 @@ const Home = ()=> {
   useEffect(() => {
     const fetchNoticias = async () => {
       try {
-        const response = await fetch('http://localhost:3001/noticias/home');
+        const response = await fetch('http://localhost:3001/api/news');
         if (!response.ok) {
           throw new Error('Não foi possível carregar as notícias.');
         }
-        const data = await response.json();
+        const allNews = await response.json();
         
-        if (data && data.noticiaPrincipal && data.noticiasSecundarias) {
-          setNoticiaPrincipal(data.noticiaPrincipal);
-          setNoticiasSecundarias(data.noticiasSecundarias);
+        // A primeira notícia é a principal, o restante são secundárias
+        if (allNews.length > 0) {
+          setNoticiaPrincipal(allNews[0]);
+          setNoticiasSecundarias(allNews.slice(1));
         } else {
           setNoticiaPrincipal(null);
           setNoticiasSecundarias([]);

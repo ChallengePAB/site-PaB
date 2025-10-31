@@ -11,20 +11,26 @@ export default function NoticiaPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Rola a página para o topo sempre que uma nova notícia é carregada
     window.scrollTo(0, 0);
 
     const fetchNoticia = async () => {
-      setLoading(true); // Reinicia o loading para transições de página
+      setLoading(true);
       try {
-        const response = await fetch(`http://localhost:3001/noticia/${id}`);
+        
+        const response = await fetch(`http://localhost:3001/api/news/${id}`);
         if (!response.ok) {
           throw new Error('Notícia não encontrada.');
         }
         const data = await response.json();
-        // Atualiza os dois estados com os dados recebidos da API
-        setArtigo(data.artigoAtual);
-        setOutrosArtigos(data.outrosArtigos);
+        setArtigo(data);
+        
+       
+        const allNewsResponse = await fetch('http://localhost:3001/api/news');
+        const allNews = await allNewsResponse.json();
+        // Garante que o ID da notícia atual seja comparado corretamente 
+        const outros = allNews.filter(n => n.id != id).slice(0, 4);
+        setOutrosArtigos(outros);
+
       } catch (err) {
         setError(err.message);
       } finally {
@@ -32,7 +38,7 @@ export default function NoticiaPage() {
       }
     };
     fetchNoticia();
-  }, [id]); // O [id] garante que a busca é refeita se o usuário clicar em uma notícia sugerida
+  }, [id]); 
 
   if (loading) {
     return <div className="text-center py-24">Carregando notícia...</div>;
@@ -41,6 +47,29 @@ export default function NoticiaPage() {
   if (error || !artigo) {
     return <div className="text-center py-24 text-red-500">{error || 'Artigo não encontrado.'}</div>;
   }
+
+  // --- FUNÇÃO AUXILIAR PARA RENDERIZAR O CONTEÚDO ---
+  
+  const renderConteudo = () => {
+    // Se 'artigo.conteudo' for um array (formato novo), mapeia
+    if (Array.isArray(artigo.conteudo)) {
+      return artigo.conteudo.map((bloco, index) => {
+        if (bloco.type === 'paragraph') {
+          return <p key={index}>{bloco.value}</p>;
+        }
+        if (bloco.type === 'subtitle') {
+          return <h2 key={index}>{bloco.value}</h2>;
+        }
+        return null;
+      });
+    }
+    // Se 'artigo.conteudo' for uma string exibe
+    if (typeof artigo.conteudo === 'string') {
+      return <p>{artigo.conteudo}</p>;
+    }
+    // Se for qualquer outra coisa, não renderiza nada
+    return null;
+  };
 
   return (
     <div className="bg-white">
@@ -61,12 +90,14 @@ export default function NoticiaPage() {
             <div className="flex items-center mr-6"><User size={16} className="mr-2" /><span>Por Passa a Bola</span></div>
             <div className="flex items-center"><Calendar size={16} className="mr-2" /><span>Publicado em 15 de Setembro de 2025</span></div>
           </div>
+          
+          {/* O conteúdo agora é renderizado pela função segura */}
           <div className="prose lg:prose-xl max-w-none text-gray-800">
-            <p>{artigo.conteudo}</p>
+            {renderConteudo()}
           </div>
         </article>
         
-        {/* --- NOVA SEÇÃO "CONTINUE LENDO" --- */}
+        {/* --- SEÇÃO "CONTINUE LENDO" --- */}
         {outrosArtigos.length > 0 && (
           <section className="max-w-4xl mx-auto mt-16 pt-8 border-t">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Continue Lendo</h2>

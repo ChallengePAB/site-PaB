@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // Caminhos para arquivos JSON
-const dbPath = path.join(__dirname, "db.json"); // Caminho para o db.json principal
+const dbPath = path.join(__dirname, "db.json"); 
 const dbUsersPath = path.join(__dirname, "users.json");
 const dbPeneirasPath = path.join(__dirname, "peneiras.json");
 const dbPromessasPath = path.join(__dirname, "promessas.json");
@@ -83,38 +83,112 @@ const adminMiddleware = (req, res, next) => {
 };
 
 // ---------------- ROTAS DE NOTÍCIAS ----------------
-app.get("/noticias/home", async (req, res) => {
+// Rota para LISTAR todas as notícias
+app.get('/api/news', async (req, res) => {
   try {
     const data = await readJsonFile(dbNoticiasPath);
-    res.status(200).json(data || { noticiaPrincipal: {}, noticiasSecundarias: [] });
+    const allNews = [];
+    if (data.noticiaPrincipal) {
+      allNews.push(data.noticiaPrincipal);
+    }
+    allNews.push(...(data.noticiasSecundarias || []));
+    res.status(200).json(allNews);
   } catch (error) {
-    res.status(500).json({ message: "Erro ao ler o banco de dados de notícias." });
+    res.status(500).json({ message: 'Erro ao ler o banco de notícias.' });
   }
 });
 
-app.get("/noticia/:id", async (req, res) => {
+// Rota para OBTER UMA notícia pelo ID
+app.get('/api/news/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const data = await readJsonFile(dbNoticiasPath);
-
-    let artigoAtual = null;
+    let noticia = null;
     if (data.noticiaPrincipal && data.noticiaPrincipal.id == id) {
-      artigoAtual = data.noticiaPrincipal;
+      noticia = data.noticiaPrincipal;
     } else {
-      artigoAtual = data.noticiasSecundarias.find((n) => n.id == id);
+      noticia = data.noticiasSecundarias.find(n => n.id == id);
     }
-
-    if (artigoAtual) {
-      const outrosArtigos = data.noticiasSecundarias
-        .filter((n) => n.id != id)
-        .slice(0, 4);
-
-      res.status(200).json({ artigoAtual, outrosArtigos });
+    if (noticia) {
+      res.status(200).json(noticia);
     } else {
-      res.status(404).json({ message: "Notícia não encontrada." });
+      res.status(404).json({ message: 'Notícia não encontrada' });
     }
   } catch (error) {
-    res.status(500).json({ message: "Erro ao ler o banco de dados de notícias." });
+    res.status(500).json({ message: 'Erro ao ler o banco de notícias.' });
+  }
+});
+
+// Rota para CRIAR uma nova notícia
+app.post('/api/news', async (req, res) => {
+  try {
+    const noticiaData = req.body;
+    const data = await readJsonFile(dbNoticiasPath);
+    
+    // Gera um novo ID simples (você já tem uma função assim no seu Python)
+    const allIds = [data.noticiaPrincipal?.id || 0, ...data.noticiasSecundarias.map(n => n.id)];
+    const newId = Math.max(...allIds) + 1;
+    
+    const newNoticia = { id: newId, ...noticiaData };
+    data.noticiasSecundarias.push(newNoticia);
+    await writeJsonFile(dbNoticiasPath, data);
+    res.status(201).json(newNoticia);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao criar notícia.' });
+  }
+});
+
+// Rota para ATUALIZAR uma notícia
+app.put('/api/news/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const noticiaData = req.body;
+    const data = await readJsonFile(dbNoticiasPath);
+    let updated = false;
+
+    if (data.noticiaPrincipal && data.noticiaPrincipal.id == id) {
+      data.noticiaPrincipal = { ...data.noticiaPrincipal, ...noticiaData, id: parseInt(id) };
+      updated = true;
+    } else {
+      const index = data.noticiasSecundarias.findIndex(n => n.id == id);
+      if (index !== -1) {
+        data.noticiasSecundarias[index] = { ...data.noticiasSecundarias[index], ...noticiaData, id: parseInt(id) };
+        updated = true;
+      }
+    }
+
+    if (updated) {
+      await writeJsonFile(dbNoticiasPath, data);
+      res.status(200).json({ ...noticiaData, id: parseInt(id) });
+    } else {
+      res.status(404).json({ message: 'Notícia não encontrada para atualizar.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao atualizar notícia.' });
+  }
+});
+
+// Rota para DELETAR uma notícia
+app.delete('/api/news/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await readJsonFile(dbNoticiasPath);
+    
+    if (data.noticiaPrincipal && data.noticiaPrincipal.id == id) {
+      return res.status(400).json({ message: 'Não é permitido deletar a notícia principal.' });
+    }
+    
+    const initialLength = data.noticiasSecundarias.length;
+    data.noticiasSecundarias = data.noticiasSecundarias.filter(n => n.id != id);
+    
+    if (data.noticiasSecundarias.length < initialLength) {
+      await writeJsonFile(dbNoticiasPath, data);
+      res.status(204).send(); // 204 = No Content (sucesso, sem corpo)
+    } else {
+      res.status(404).json({ message: 'Notícia não encontrada para deletar.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao deletar notícia.' });
   }
 });
 
