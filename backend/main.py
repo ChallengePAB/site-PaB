@@ -23,7 +23,7 @@ app.add_middleware(
 )
 
 # Caminho para o arquivo JSON de dados
-ARQUIVO_NOTICIAS = os.path.join(os.path.dirname(__file__), "noticias.json")
+ARQUIVO_NOTICIAS = os.path.join(os.path.dirname(__file__), "data", "noticias.json")
 
 
 
@@ -186,4 +186,4 @@ migrar_conteudo_antigo()
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=3001)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

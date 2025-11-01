@@ -5,6 +5,7 @@ const fs = require("fs/promises");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const campeonatoRoutes = require('./routes/campeonatoRoutes');
 
 const app = express();
 const PORT = 3001;
@@ -13,11 +14,11 @@ app.use(cors());
 app.use(express.json());
 
 // Caminhos para arquivos JSON
-const dbPath = path.join(__dirname, "db.json"); 
-const dbUsersPath = path.join(__dirname, "users.json");
-const dbPeneirasPath = path.join(__dirname, "peneiras.json");
-const dbPromessasPath = path.join(__dirname, "promessas.json");
-const dbNoticiasPath = path.join(__dirname, "noticias.json");
+const dbPath = path.join(__dirname, "data", "db.json"); 
+const dbUsersPath = path.join(__dirname, "data", "users.json");
+const dbPeneirasPath = path.join(__dirname,"data", "peneiras.json");
+const dbPromessasPath = path.join(__dirname,"data",  "promessas.json");
+const dbNoticiasPath = path.join(__dirname,"data",  "noticias.json");
 
 const readJsonFile = async (filePath) => {
   try {
@@ -81,6 +82,9 @@ const adminMiddleware = (req, res, next) => {
   }
   next();
 };
+
+// ---------------- ROTAS DE CAMPEONATOS ----------------
+app.use('/api/campeonatos', campeonatoRoutes);
 
 // ---------------- ROTAS DE NOTÍCIAS ----------------
 // Rota para LISTAR todas as notícias

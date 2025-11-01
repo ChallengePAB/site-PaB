@@ -13,6 +13,9 @@ import { AuthProvider } from './components/AuthContext';
 import EditarPerfil from './pages/EditarPerfil';
 import AdminJogadoras from './admin/AdminJogadoras';
 import AdminNoticias from './admin/AdminNoticias';
+import TabelaCompleta from './pages/TabelaPage';
+import DetalheJogo from './pages/DetalheJogo';
+import AdminCampeonatos from './admin/AdminCampeonatos';
 
 function App() {
   return (
@@ -53,6 +56,13 @@ function App() {
             
             {/* Rota para a página de administração de notícias */}
             <Route path="/admin/noticias" element={<AdminNoticias />} />
+            
+            {/* Rotas de Campeonato */}
+            <Route path="/tabela" element={<TabelaCompleta />} />
+            <Route path="/jogo/:jogoId" element={<DetalheJogo />} />
+            
+            {/* Rota para a página de administração de campeonatos */}
+            <Route path="/admin/campeonatos" element={<AdminCampeonatos />} />
           </Routes>
         </main>
         <Footer /> 
