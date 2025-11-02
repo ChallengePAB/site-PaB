@@ -37,7 +37,6 @@ const Header = () => {
             <NavLink to="/home" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Noticias</NavLink>
             <NavLink to="/copa" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Copa</NavLink>
             <NavLink to="/talentos" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Peneiras e Talentos</NavLink>
-            <NavLink to="/tabela" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Tabela</NavLink>
 
             {isLogged ? (
               <>
@@ -66,15 +65,6 @@ const Header = () => {
                     style={({ isActive }) => isActive ? activeLinkStyle : undefined}
                   >
                     Gerenciar Notícias
-                  </NavLink>
-                )}
-                {role === 'admin' && (
-                  <NavLink 
-                    to="/admin/campeonatos" 
-                    className="text-gray-700 hover:text-purple-600 transition-colors font-semibold"
-                    style={({ isActive }) => isActive ? activeLinkStyle : undefined}
-                  >
-                    Gerenciar Campeonatos
                   </NavLink>
                 )}
                 <button onClick={handleLogout} className="text-gray-700 hover:text-purple-600 transition-colors font-semibold">Logout</button>

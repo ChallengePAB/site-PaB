@@ -83,9 +83,6 @@ const adminMiddleware = (req, res, next) => {
   next();
 };
 
-// ---------------- ROTAS DE CAMPEONATOS ----------------
-app.use('/api/campeonatos', campeonatoRoutes);
-
 // ---------------- ROTAS DE NOTÍCIAS ----------------
 // Rota para LISTAR todas as notícias
 app.get('/api/news', async (req, res) => {
