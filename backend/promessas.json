@@ -734,6 +734,23 @@
       "youtube": "",
       "instagram": "",
       "tiktok": ""
+    },
+    {
+      "id": 706,
+      "userId": 1762026236483,
+      "nome": "teste",
+      "idade": 20,
+      "altura": "1.70",
+      "pe_dominante": "Direito",
+      "clube_atual": "cor",
+      "posicao": "Goleira",
+      "foto": null,
+      "biografia": "",
+      "youtube": "",
+      "instagram": "",
+      "tiktok": "",
+      "conteudos": [],
+      "oculta": false
     }
   ]
 }

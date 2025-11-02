@@ -278,5 +278,19 @@
     "email": "ingrid.melo@peneiras.com",
     "password": "$2b$10$jMIf0wO.IXJOj/Y3TC2veu4FWhX5d8TuDjATlH9HjL89100UktDFW",
     "role": "jogadora"
+  },
+  {
+    "id": 1761942572382,
+    "nome": "Admin",
+    "email": "Admin@gmail.com",
+    "password": "$2b$10$CSPymvQECy0iC8fEWbjH8.FYOoGUoE2qOlgDoqvPAvAv.1JtItxsu",
+    "role": "admin"
+  },
+  {
+    "id": 1762026236483,
+    "nome": "teste",
+    "email": "123@gmail.com",
+    "password": "$2b$10$lqh/RuRU9UcH.c08d1yqKeE9EXw60QIxy0UiwP2.avQubZJLODUG.",
+    "role": "jogadora"
   }
 ]

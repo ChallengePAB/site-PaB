@@ -10,20 +10,30 @@
       "posicao": "Goleiro",
       "cpf": "406.748.010-59",
       "dataInscricao": "2025-10-05T03:43:15.702Z"
+    },
+    {
+      "tipoInscricao": "individual",
+      "nome": "teste",
+      "email": "seu@email.com",
+      "telefone": "119999999",
+      "idade": "18",
+      "posicao": "Meio-campista",
+      "cpf": "753.945.660-46",
+      "dataInscricao": "2025-11-01T20:22:40.114Z"
     }
   ],
   "estatisticas": [
     {
       "id": 1,
       "totalTimes": 0,
-      "totalJogadoresIndividuais": 1,
+      "totalJogadoresIndividuais": 2,
       "posicoesOcupadas": {
         "Goleiro": 1,
         "Zagueiro": 0,
         "Lateral Esquerdo": 0,
         "Lateral Direito": 0,
         "Volante": 0,
-        "Meio-campista": 0,
+        "Meio-campista": 1,
         "Atacante": 0
       }
     }

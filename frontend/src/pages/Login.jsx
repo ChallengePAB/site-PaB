@@ -162,21 +162,6 @@ const Login = () => {
                         <input type="text" id="nome" name="nome" value={formData.nome} onChange={handleInputChange} required={!isLogin} className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" placeholder="Digite seu nome completo"/>
                       </div>
                     </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Conta</label>
-                      <select
-                        name="role"
-                        value={formData.role}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full pl-3 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400"
-                      >
-                        <option value="jogadora">Jogadora</option>
-                        <option value="admin">Admin</option>
-                      </select>
-                    </div>
-
                     {formData.role === 'jogadora' && (
                       <>
                         <div className="grid grid-cols-2 gap-4">
