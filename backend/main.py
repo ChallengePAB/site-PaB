@@ -37,6 +37,8 @@ class BaseNoticia(BaseModel):
     imagem: str = Field(..., description="Nome do arquivo da imagem principal (ex: 'mainPageNews1.png').")
     titulo: str = Field(..., description="Título da notícia.")
     subtitulo: str = Field(..., description="Subtítulo da notícia.")
+    time: Optional[str] = Field(None, description="Tag de time da notícia.")
+    assunto: Optional[str] = Field(None, description="Tag de assunto/tópico da notícia.")
     conteudo: List[ConteudoNoticia] = Field(..., description="Lista de blocos de conteúdo da notícia.")
 
 class Noticia(BaseNoticia):

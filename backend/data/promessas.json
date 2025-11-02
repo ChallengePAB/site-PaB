@@ -737,7 +737,6 @@
     },
     {
       "id": 706,
-<<<<<<< HEAD:backend/data/promessas.json
       "userId": 1761772823720,
       "nome": "Ana Clara",
       "idade": 16,
@@ -745,32 +744,6 @@
       "pe_dominante": "Direito",
       "clube_atual": "Corinthians ",
       "posicao": "Volante",
-      "foto": null,
-      "biografia": "",
-      "youtube": "",
-      "instagram": "",
-      "tiktok": "",
-      "conteudos": [],
-      "oculta": false
-    },
-    {
-      "id": 707,
-      "userId": 1761772919172,
-      "nome": "bruna fernandes",
-      "idade": 18,
-      "altura": "1.80",
-      "pe_dominante": "Direito",
-      "clube_atual": "São Paulo",
-      "posicao": "Meia",
-=======
-      "userId": 1762026236483,
-      "nome": "teste",
-      "idade": 20,
-      "altura": "1.70",
-      "pe_dominante": "Direito",
-      "clube_atual": "cor",
-      "posicao": "Goleira",
->>>>>>> grosskleo:backend/promessas.json
       "foto": null,
       "biografia": "",
       "youtube": "",

@@ -4,6 +4,8 @@
     "imagem": "mainPageNews1.png",
     "titulo": "Corinthians é o maior campeão do futebol feminino brasileiro",
     "subtitulo": "Um novo capítulo se inicia no futebol feminino com a chegada de novos talentos.",
+    "time": "Corinthians",
+    "assunto": "Campeonato Brasileiro",
     "conteudo": [
       {
         "type": "paragraph",
@@ -21,6 +23,8 @@
       "imagem": "mainPageNews2.png",
       "titulo": "Com mais de 40 mil ingressos vendidos, Corinthians busca novo recorde no futebol feminino",
       "subtitulo": "Dos cinco maiores públicos da modalidade no Brasil, quatro são na Neo Química Arena; Brabas têm o recorde sul-americano.",
+      "time": "Corinthians",
+      "assunto": "",
       "conteudo": [
         {
           "type": "paragraph",
@@ -37,6 +41,8 @@
       "imagem": "mainPageNews3.png",
       "titulo": "Elenco feminino do Manchester United encara sumiço de chuteiras antes da Champions Feminina",
       "subtitulo": "Clube inglês precisou desembolsar cerca de R$ 29 mil para comprar novos equipamentos a tempo de disputar a partida.",
+      "time": "Manchester United",
+      "assunto": "Champions",
       "conteudo": [
         {
           "type": "paragraph",

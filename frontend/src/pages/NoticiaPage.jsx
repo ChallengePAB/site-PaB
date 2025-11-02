@@ -86,12 +86,24 @@ export default function NoticiaPage() {
           <p className="text-xl text-gray-600 mb-6">
             {artigo.subtitulo}
           </p>
+          <div className="flex flex-wrap gap-2 mb-6">
+            {artigo.time && (
+              <span className=" text-gray-700 text-xs font-medium me-2 px-2.5 py-0.5 ">
+                {artigo.time}
+              </span>
+            )}
+            {artigo.assunto && (
+              <span className=" text-gray-700 text-xs font-medium me-2 px-2.5 py-0.5 ">
+                Assunto: {artigo.assunto}
+              </span>
+            )}
+          </div>
           <div className="flex items-center text-sm text-gray-500 mb-8 border-y py-4">
             <div className="flex items-center mr-6"><User size={16} className="mr-2" /><span>Por Passa a Bola</span></div>
             <div className="flex items-center"><Calendar size={16} className="mr-2" /><span>Publicado em 15 de Setembro de 2025</span></div>
           </div>
           
-          {/* O conteúdo agora é renderizado pela função segura */}
+
           <div className="prose lg:prose-xl max-w-none text-gray-800">
             {renderConteudo()}
           </div>

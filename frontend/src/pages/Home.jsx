@@ -58,6 +58,18 @@ const Home = ()=> {
               style={{ backgroundImage: `url(/images/noticias/${noticiaPrincipal.imagem})` }}
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {noticiaPrincipal.time && (
+                    <span className="bg-purple-600 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      {noticiaPrincipal.time}
+                    </span>
+                  )}
+                  {noticiaPrincipal.assunto && (
+                    <span className="bg-pink-600 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      {noticiaPrincipal.assunto}
+                    </span>
+                  )}
+                </div>
                 <h1 className="text-white text-4xl md:text-5xl font-bold max-w-2xl leading-tight">
                   {noticiaPrincipal.titulo}
                 </h1>
@@ -90,6 +102,18 @@ const Home = ()=> {
                       <p className="text-gray-900">
                         {n.subtitulo}
                       </p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {n.time && (
+                          <span className=" text-gray-700 text-xs font-medium px-2.5 py-0.5 ">
+                            {n.time}
+                          </span>
+                        )}
+                        {n.assunto && (
+                          <span className=" text-gray-700 text-xs font-medium px-2.5 py-0.5 ">
+                            {n.assunto}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </article>
                 </Link>

@@ -5,7 +5,7 @@ const fs = require("fs/promises");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const campeonatoRoutes = require('./routes/campeonatoRoutes');
+
 
 const app = express();
 const PORT = 3001;

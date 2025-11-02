@@ -13,6 +13,8 @@ export default function AdminNoticias() {
     imagem: '',
     titulo: '',
     subtitulo: '',
+    time: '', // Novo campo
+    assunto: '', // Novo campo
     conteudo: [{ type: 'paragraph', value: '' }],
   });
 
@@ -48,6 +50,8 @@ const handleEdit = (noticia) => {
 
     setFormData({
       ...noticia,
+      time: noticia.time || '', // Garante que o campo exista
+      assunto: noticia.assunto || '', // Garante que o campo exista
       conteudo: conteudoArray, // Garante que o conteúdo seja sempre um array
     });
     setEditingId(noticia.id);
@@ -93,6 +97,8 @@ const handleEdit = (noticia) => {
       imagem: '',
       titulo: '',
       subtitulo: '',
+      time: '', // Resetar novo campo
+      assunto: '', // Resetar novo campo
       conteudo: [{ type: 'paragraph', value: '' }],
     });
     setEditingId(null);
@@ -140,7 +146,7 @@ const handleEdit = (noticia) => {
           <h2 className="text-2xl font-bold mb-4">{editingId ? 'Editar' : 'Criar'} Notícia</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block font-semibold mb-2">Imagem (nome do arquivo)</label>
+              <label className="block font-semibold mb-2">Imagem </label>
               <input
                 type="text"
                 value={formData.imagem}
@@ -172,6 +178,30 @@ const handleEdit = (noticia) => {
                 placeholder="Subtítulo da notícia"
                 className="w-full px-4 py-2 border rounded-lg"
                 required
+              />
+            </div>
+
+            {/* Campo para Tag de Time */}
+            <div>
+              <label className="block font-semibold mb-2">Tag de Time</label>
+              <input
+                type="text"
+                value={formData.time}
+                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                placeholder=""
+                className="w-full px-4 py-2 border rounded-lg"
+              />
+            </div>
+
+            {/*Campo para Tag de Assunto */}
+            <div>
+              <label className="block font-semibold mb-2">Tag de Assunto</label>
+              <input
+                type="text"
+                value={formData.assunto}
+                onChange={(e) => setFormData({ ...formData, assunto: e.target.value })}
+                placeholder=""
+                className="w-full px-4 py-2 border rounded-lg"
               />
             </div>
 
@@ -281,11 +311,17 @@ const handleEdit = (noticia) => {
               {/* Conteúdo Expandido */}
               {expandedId === noticia.id && (
                 <div className="p-4 bg-gray-50 border-t">
-                  <div className="mb-4">
-                    <p className="text-sm text-gray-600 mb-2">
-                      <strong>Imagem:</strong> {noticia.imagem}
-                    </p>
-                  </div>
+	                  <div className="mb-4">
+	                    <p className="text-sm text-gray-600 mb-2">
+	                      <strong>Imagem:</strong> {noticia.imagem}
+	                    </p>
+	                    <p className="text-sm text-gray-600 mb-2">
+	                      <strong>Time:</strong> {noticia.time || 'N/A'}
+	                    </p>
+	                    <p className="text-sm text-gray-600 mb-2">
+	                      <strong>Assunto:</strong> {noticia.assunto || 'N/A'}
+	                    </p>
+	                  </div>
                   <div>
                     <strong className="block mb-2">Conteúdo:</strong>
                     <div className="space-y-3 bg-white p-3 rounded">

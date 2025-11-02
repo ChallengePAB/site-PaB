@@ -266,7 +266,6 @@
     "role": "jogadora"
   },
   {
-<<<<<<< HEAD:backend/data/users.json
     "id": 1761772823720,
     "nome": "Ana Clara",
     "email": "anaclara@gmail.com",
@@ -300,7 +299,8 @@
     "email": "adminteste@gmail.com",
     "password": "$2b$10$gbBO.HOSI0sNUkWHZ6FDeupKo2wihJ4v/KNyNWwMqzDmft8bVNDUu",
     "role": "admin"
-=======
+  },
+  {
     "id": 1761942572382,
     "nome": "Admin",
     "email": "Admin@gmail.com",
@@ -313,6 +313,5 @@
     "email": "123@gmail.com",
     "password": "$2b$10$lqh/RuRU9UcH.c08d1yqKeE9EXw60QIxy0UiwP2.avQubZJLODUG.",
     "role": "jogadora"
->>>>>>> grosskleo:backend/users.json
   }
 ]
