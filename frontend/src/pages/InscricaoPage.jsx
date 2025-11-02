@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const InscricaoPage = () => {
   const [tipoInscricao, setTipoInscricao] = useState('individual');
   const [formDataIndividual, setFormDataIndividual] = useState({ 
-    nome: '', email: '', telefone: '', idade: '', posicao: '', cpf: '' 
+    nome: '', email: '', telefone: '', idade: '', cpf: '' 
   });
   const [formDataTime, setFormDataTime] = useState({
     nomeTime: '',
@@ -12,32 +12,20 @@ const InscricaoPage = () => {
     jogadores: []
   });
   const [novoJogador, setNovoJogador] = useState({ 
-    nome: '', idade: '', posicao: '', cpf: '' 
+    nome: '', idade: '', cpf: '' 
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
   const [erros, setErros] = useState({});
   const [timesExistentes, setTimesExistentes] = useState([]);
-  const [posicoesDisponiveis, setPosicoesDisponiveis] = useState({});
   const [estatisticas, setEstatisticas] = useState({
     totalTimes: 0,
-    totalJogadoresIndividuais: 0,
-    posicoesOcupadas: {}
+    totalJogadoresIndividuais: 0
   });
 
-  const esquemaTatico = {
-    'Goleiro': { quantidade: 1, categoria: 'defesa' },
-    'Zagueiro': { quantidade: 2, categoria: 'defesa' },
-    'Lateral Esquerdo': { quantidade: 1, categoria: 'defesa' },
-    'Lateral Direito': { quantidade: 1, categoria: 'defesa' },
-    'Volante': { quantidade: 1, categoria: 'meio' },
-    'Meio-campista': { quantidade: 2, categoria: 'meio' },
-    'Atacante': { quantidade: 3, categoria: 'ataque' }
-  };
-
-  const posicoes = Object.keys(esquemaTatico);
   const LIMITE_TIMES = 8;
-  const JOGADORES_POR_TIME = 11;
+  const MIN_JOGADORES_POR_TIME = 11;
+  const MAX_JOGADORES_POR_TIME = 18;
 
   // Validação de CPF
   const validarCPF = (cpf) => {
@@ -78,15 +66,6 @@ const InscricaoPage = () => {
     return cpfNoTime || cpfDoResponsavel;
   };
 
-  // Inicializar posições disponíveis com valores padrão
-  const inicializarPosicoesDisponiveis = () => {
-    const disponibilidade = {};
-    posicoes.forEach(posicao => {
-      disponibilidade[posicao] = esquemaTatico[posicao].quantidade * LIMITE_TIMES;
-    });
-    setPosicoesDisponiveis(disponibilidade);
-  };
-
   useEffect(() => {
     carregarDadosExistentes();
   }, []);
@@ -106,108 +85,36 @@ const InscricaoPage = () => {
       const estatisticasArray = estatisticasResponse.ok ? await estatisticasResponse.json() : [];
       const estatisticasData = estatisticasArray.length > 0 ? estatisticasArray[0] : {
         totalTimes: 0,
-        totalJogadoresIndividuais: 0,
-        posicoesOcupadas: {}
+        totalJogadoresIndividuais: 0
       };
       
       // Atualizar estados
       setTimesExistentes(times);
       setEstatisticas(estatisticasData);
       
-      // Calcular posições disponíveis baseado nos dados reais
-      calcularPosicoesDisponiveisReal(times, jogadoresIndividuais);
-      
     } catch (error) {
       console.error('Erro ao carregar dados existentes:', error);
-      inicializarPosicoesDisponiveis();
     }
-  };
-
-  const calcularPosicoesDisponiveisReal = (times, jogadoresIndividuais) => {
-    const contagemPosicoes = {};
-    posicoes.forEach(posicao => {
-      contagemPosicoes[posicao] = 0;
-    });
-
-    // Contar jogadores de times
-    times.forEach(time => {
-      if (time.jogadores) {
-        time.jogadores.forEach(jogador => {
-          if (contagemPosicoes.hasOwnProperty(jogador.posicao)) {
-            contagemPosicoes[jogador.posicao]++;
-          }
-        });
-      }
-    });
-
-    // Contar jogadores individuais
-    jogadoresIndividuais.forEach(jogador => {
-      if (contagemPosicoes.hasOwnProperty(jogador.posicao)) {
-        contagemPosicoes[jogador.posicao]++;
-      }
-    });
-
-    // Calcular disponibilidade
-    const disponibilidade = {};
-    posicoes.forEach(posicao => {
-      const totalVagas = esquemaTatico[posicao].quantidade * LIMITE_TIMES;
-      const ocupadas = contagemPosicoes[posicao];
-      disponibilidade[posicao] = Math.max(0, totalVagas - ocupadas);
-    });
-
-    setPosicoesDisponiveis(disponibilidade);
   };
 
   const validacaoTime = useMemo(() => {
     const totalJogadores = formDataTime.jogadores.length;
-    const contagemPosicoes = {};
-    posicoes.forEach(posicao => {
-      contagemPosicoes[posicao] = 0;
-    });
-
-    formDataTime.jogadores.forEach(jogador => {
-      if (contagemPosicoes.hasOwnProperty(jogador.posicao)) {
-        contagemPosicoes[jogador.posicao]++;
-      }
-    });
-
-    const posicoesFaltantes = [];
-    const posicoesExcedentes = [];
-
-    posicoes.forEach(posicao => {
-      const necessario = esquemaTatico[posicao].quantidade;
-      const atual = contagemPosicoes[posicao];
-      
-      if (atual < necessario) {
-        posicoesFaltantes.push(`${posicao} (${atual}/${necessario})`);
-      } else if (atual > necessario) {
-        posicoesExcedentes.push(`${posicao} (${atual}/${necessario})`);
-      }
-    });
-
-    const isEsquemaCorreto = posicoesFaltantes.length === 0 && posicoesExcedentes.length === 0;
-    const isQuantidadeCorreta = totalJogadores === JOGADORES_POR_TIME;
+    
+    const isQuantidadeCorreta = totalJogadores >= MIN_JOGADORES_POR_TIME && totalJogadores <= MAX_JOGADORES_POR_TIME;
 
     return {
       totalJogadores,
-      posicoesFaltantes,
-      posicoesExcedentes,
-      isEsquemaCorreto,
       isQuantidadeCorreta,
-      podeEnviar: isEsquemaCorreto && isQuantidadeCorreta
+      podeEnviar: isQuantidadeCorreta
     };
   }, [formDataTime.jogadores]);
 
   const podeAdicionarTime = timesExistentes.length < LIMITE_TIMES;
 
-  const posicaoDisponivelIndividual = (posicao) => {
-    return (posicoesDisponiveis[posicao] || 0) > 0;
-  };
-
   const handleAdicionarJogador = () => {
-    const { nome, idade, posicao, cpf } = novoJogador;
+    const { nome, idade, cpf } = novoJogador;
     
-    if (!nome || !idade || !posicao || !cpf) {
+    if (!nome || !idade || !cpf) {
       setErros({ jogador: 'Preencha todos os campos do jogador.' });
       return;
     }
@@ -222,16 +129,8 @@ const InscricaoPage = () => {
       return;
     }
 
-    const contagemAtual = formDataTime.jogadores.filter(j => j.posicao === posicao).length;
-    const limiteposicao = esquemaTatico[posicao].quantidade;
-    
-    if (contagemAtual >= limiteposicao) {
-      setErros({ jogador: `A posição ${posicao} já está completa neste time (${limiteposicao} jogador${limiteposicao > 1 ? 'es' : ''}).` });
-      return;
-    }
-
-    if (formDataTime.jogadores.length >= JOGADORES_POR_TIME) {
-      setErros({ jogador: `O limite de ${JOGADORES_POR_TIME} jogadores por time foi atingido.` });
+    if (formDataTime.jogadores.length >= MAX_JOGADORES_POR_TIME) {
+      setErros({ jogador: `O limite de ${MAX_JOGADORES_POR_TIME} jogadoras por time foi atingido.` });
       return;
     }
     
@@ -245,7 +144,7 @@ const InscricaoPage = () => {
       jogadores: [...prev.jogadores, jogadorFormatado]
     }));
     
-    setNovoJogador({ nome: '', idade: '', posicao: '', cpf: '' });
+    setNovoJogador({ nome: '', idade: '', cpf: '' });
     setErros({});
   };
 
@@ -299,27 +198,15 @@ const InscricaoPage = () => {
         estatisticasAtuais = {
           id: 1,
           totalTimes: 0,
-          totalJogadoresIndividuais: 0,
-          posicoesOcupadas: {}
+          totalJogadoresIndividuais: 0
         };
       }
-
-      // Inicializar posições se não existirem
-      posicoes.forEach(posicao => {
-        if (!estatisticasAtuais.posicoesOcupadas[posicao]) {
-          estatisticasAtuais.posicoesOcupadas[posicao] = 0;
-        }
-      });
 
       if (tipoOperacao === 'adicionar') {
         if (novaInscricao.tipoInscricao === 'individual') {
           estatisticasAtuais.totalJogadoresIndividuais++;
-          estatisticasAtuais.posicoesOcupadas[novaInscricao.posicao]++;
         } else if (novaInscricao.tipoInscricao === 'time') {
           estatisticasAtuais.totalTimes++;
-          novaInscricao.jogadores.forEach(jogador => {
-            estatisticasAtuais.posicoesOcupadas[jogador.posicao]++;
-          });
         }
       }
 
@@ -357,12 +244,6 @@ const InscricaoPage = () => {
         setIsSubmitting(false);
         return;
       }
-      
-      if (!posicaoDisponivelIndividual(formDataIndividual.posicao)) {
-        setSubmitMessage(`A posição ${formDataIndividual.posicao} não está mais disponível. Todas as vagas foram preenchidas.`);
-        setIsSubmitting(false);
-        return;
-      }
     } else {
       if (!validarCPF(formDataTime.responsavel.cpf)) {
         setSubmitMessage('CPF do responsável inválido. Verifique os dígitos.');
@@ -377,7 +258,7 @@ const InscricaoPage = () => {
       }
       
       if (!validacaoTime.podeEnviar) {
-        setSubmitMessage('O time deve ter exatamente 11 jogadores com as posições corretas do esquema tático.');
+        setSubmitMessage(`O time deve ter entre ${MIN_JOGADORES_POR_TIME} e ${MAX_JOGADORES_POR_TIME} jogadoras.`);
         setIsSubmitting(false);
         return;
       }
@@ -416,7 +297,7 @@ const InscricaoPage = () => {
       await atualizarEstatisticas(novaInscricao, 'adicionar');
       
       setSubmitMessage('Inscrição realizada com sucesso!');
-      setFormDataIndividual({ nome: '', email: '', telefone: '', idade: '', posicao: '', cpf: '' });
+      setFormDataIndividual({ nome: '', email: '', telefone: '', idade: '', cpf: '' });
       setFormDataTime({ nomeTime: '', responsavel: { nome: '', email: '', telefone: '', cpf: '' }, jogadores: [] });
       
       // Recarregar dados para atualizar disponibilidade
@@ -443,7 +324,7 @@ const InscricaoPage = () => {
             <h3 className="font-semibold text-gray-900 mb-3">
               🏆 Status do Campeonato
             </h3>
-            <div className="grid md:grid-cols-4 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-600">{timesExistentes.length}</div>
                 <div className="text-sm text-gray-600">Times Inscritos</div>
@@ -454,11 +335,7 @@ const InscricaoPage = () => {
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-orange-600">{estatisticas.totalJogadoresIndividuais}</div>
-                <div className="text-sm text-gray-600">Jogadores Individuais</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">4-3-3</div>
-                <div className="text-sm text-gray-600">Esquema Tático</div>
+                <div className="text-sm text-gray-600">Jogadoras Individuais</div>
               </div>
             </div>
           </div>
@@ -491,29 +368,8 @@ const InscricaoPage = () => {
 
           <form onSubmit={handleSubmit}>
             {tipoInscricao === 'individual' ? (
-              <div className="space-y-6">
-                {/* Disponibilidade de posições */}
-                <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-3">📊 Disponibilidade de Posições</h4>
-                  <div className="grid md:grid-cols-3 gap-3 text-sm">
-                    {posicoes.map(posicao => {
-                      const vagas = posicoesDisponiveis[posicao] || 0;
-                      const disponivel = vagas > 0;
-                      return (
-                        <div key={posicao} className={`p-3 rounded-lg ${disponivel ? 'border-2 border-green-500 bg-green-50' : 'border-2 border-red-500 bg-red-50'}`}>
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium text-gray-800">{posicao}</span>
-                            <span className={`px-2 py-1 rounded-full text-xs font-bold ${disponivel ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}>
-                              {vagas} vagas
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Campos do formulário individual */}
+              // Formulário individual
+              <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Nome Completo *</label>
                   <input 
@@ -523,7 +379,7 @@ const InscricaoPage = () => {
                     onChange={(e) => handleInputChange(e, 'individual')} 
                     required 
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent"
-                    placeholder="Digite seu nome completo"
+                    placeholder="Seu nome completo"
                   />
                 </div>
 
@@ -583,40 +439,13 @@ const InscricaoPage = () => {
                     placeholder="18"
                   />
                 </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Posição *</label>
-                  <select 
-                    name="posicao" 
-                    value={formDataIndividual.posicao} 
-                    onChange={(e) => handleInputChange(e, 'individual')} 
-                    required 
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent"
-                  >
-                    <option value="">Selecione sua posição</option>
-                    {posicoes.map(p => {
-                      const vagas = posicoesDisponiveis[p] || 0;
-                      const disponivel = vagas > 0;
-                      return (
-                        <option key={p} value={p} disabled={!disponivel}>
-                          {p} {!disponivel ? '(Indisponível)' : `(${vagas} vagas)`}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
               </div>
 
             ) : (
               // Formulário de time
               <div className="space-y-8">
                 <div className="p-4 bg-blue-50 border-l-4 border-blue-400 text-blue-900">
-                  <p><b>Esquema Tático 4-3-3:</b> O time deve ter exatamente <b>11 jogadores</b> nas seguintes posições:</p>
-                  <ul className="mt-2 text-sm grid md:grid-cols-3 gap-1">
-                    {posicoes.map(posicao => (
-                      <li key={posicao}>• {esquemaTatico[posicao].quantidade} {posicao}</li>
-                    ))}
-                  </ul>
+                  <p><b>Requisitos do Time:</b> O time deve ter entre <b>{MIN_JOGADORES_POR_TIME} e {MAX_JOGADORES_POR_TIME} jogadoras</b>.</p>
                 </div>
 
                 {/* Dados do time */}
@@ -686,8 +515,8 @@ const InscricaoPage = () => {
 
                 {/* Adicionar jogadores */}
                 <fieldset className="border p-4 rounded-lg">
-                  <legend className="text-lg font-semibold px-2">Adicionar Jogadores</legend>
-                  <div className="grid md:grid-cols-5 gap-4 items-end">
+                  <legend className="text-lg font-semibold px-2">Adicionar Jogadoras</legend>
+                  <div className="grid md:grid-cols-4 gap-4 items-end">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Nome</label>
                       <input 
@@ -722,32 +551,10 @@ const InscricaoPage = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Posição</label>
-                      <select 
-                        name="posicao" 
-                        value={novoJogador.posicao} 
-                        onChange={(e) => handleInputChange(e, 'novoJogador')} 
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent"
-                      >
-                        <option value="">Selecione</option>
-                        {posicoes.map(p => {
-                          const contagemAtual = formDataTime.jogadores.filter(j => j.posicao === p).length;
-                          const limite = esquemaTatico[p].quantidade;
-                          const disponivel = contagemAtual < limite;
-                          
-                          return (
-                            <option key={p} value={p} disabled={!disponivel}>
-                              {p} {!disponivel ? '(Completa)' : `(${contagemAtual}/${limite})`}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                    <div>
                       <button 
                         type="button" 
                         onClick={handleAdicionarJogador} 
-                        disabled={formDataTime.jogadores.length >= JOGADORES_POR_TIME}
+                        disabled={formDataTime.jogadores.length >= MAX_JOGADORES_POR_TIME}
                         className="w-full bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
                       >
                         Adicionar
@@ -759,13 +566,13 @@ const InscricaoPage = () => {
 
                 {/* Lista de jogadores */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Escalação do Time ({validacaoTime.totalJogadores} / {JOGADORES_POR_TIME})</h3>
+                  <h3 className="text-lg font-semibold mb-2">Escalação do Time ({validacaoTime.totalJogadores} / {MIN_JOGADORES_POR_TIME}-{MAX_JOGADORES_POR_TIME})</h3>
                   {formDataTime.jogadores.length > 0 ? (
                     <div className="space-y-2 border rounded-lg p-4 max-h-60 overflow-y-auto">
                       {formDataTime.jogadores.map((jogador, index) => (
                         <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
                           <span>
-                            <b>{jogador.nome}</b> ({jogador.idade} anos) - {jogador.posicao} - CPF: {jogador.cpf}
+                            <b>{jogador.nome}</b> ({jogador.idade} anos) - CPF: {jogador.cpf}
                           </span>
                           <button 
                             type="button" 
@@ -778,30 +585,15 @@ const InscricaoPage = () => {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-gray-700">Nenhum jogador adicionado ainda.</p>
+                    <p className="text-gray-700">Nenhuma jogadora adicionada ainda.</p>
                   )}
 
                   <div className="mt-4 p-4 rounded-lg bg-gray-50 border">
                     <h4 className="font-semibold mb-2">Status da Escalação</h4>
                     <div className="space-y-1 text-sm">
                       <p className={`${validacaoTime.isQuantidadeCorreta ? 'text-green-600' : 'text-red-600'}`}>
-                        {validacaoTime.isQuantidadeCorreta ? '✓' : '✗'} Quantidade de jogadores: {validacaoTime.totalJogadores}/{JOGADORES_POR_TIME}
+                        {validacaoTime.isQuantidadeCorreta ? '✓' : '✗'} Quantidade de jogadoras: {validacaoTime.totalJogadores} ({MIN_JOGADORES_POR_TIME}-{MAX_JOGADORES_POR_TIME} necessárias)
                       </p>
-                      <p className={`${validacaoTime.isEsquemaCorreto ? 'text-green-600' : 'text-red-600'}`}>
-                        {validacaoTime.isEsquemaCorreto ? '✓' : '✗'} Esquema tático correto
-                      </p>
-                      
-                      {validacaoTime.posicoesFaltantes.length > 0 && (
-                        <p className="text-red-600 text-xs mt-2">
-                          <b>Posições faltando:</b> {validacaoTime.posicoesFaltantes.join(', ')}
-                        </p>
-                      )}
-                      
-                      {validacaoTime.posicoesExcedentes.length > 0 && (
-                        <p className="text-red-600 text-xs mt-2">
-                          <b>Posições excedentes:</b> {validacaoTime.posicoesExcedentes.join(', ')}
-                        </p>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -816,7 +608,6 @@ const InscricaoPage = () => {
                 disabled={
                   isSubmitting || 
                   (tipoInscricao === 'time' && !validacaoTime.podeEnviar) ||
-                  (tipoInscricao === 'individual' && formDataIndividual.posicao && !posicaoDisponivelIndividual(formDataIndividual.posicao)) ||
                   (tipoInscricao === 'time' && !podeAdicionarTime)
                 }
               >
