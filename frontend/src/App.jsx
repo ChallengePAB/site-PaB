@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
+// Importe seus componentes de layout e PÁGINAS
 import Header from './components/Header';
 import Home from './pages/Home'; 
 import NoticiaPage from './pages/NoticiaPage';
@@ -13,53 +14,40 @@ import { AuthProvider } from './components/AuthContext';
 import EditarPerfil from './pages/EditarPerfil';
 import AdminJogadoras from './admin/AdminJogadoras';
 import AdminNoticias from './admin/AdminNoticias';
+import AdminDashboard from './admin/AdminDashboard'; 
 
 function App() {
-  return (
-    <AuthProvider>
-      <div className="flex flex-col min-h-screen">
-        <Header /> 
-        <main className="flex-grow">
-          <Routes>
-            {/* Rota para a página inicial */}
-            <Route path="/" element={<Home />} />
+  return (
+    <AuthProvider>
+      <div className="flex flex-col min-h-screen">
+        <Header /> 
+        <main className="flex-grow">
+          <Routes>
+            {/* Rotas Públicas */}
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} /> 
+            <Route path="/noticia/:id" element={<NoticiaPage />} />
+            <Route path="/copa" element={<CopaInscricao />} />
+            <Route path="/talentos" element={<Peneiras />} />
+            <Route path="/inscricao" element={<InscricaoPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/jogadora/:id" element={<PlayerProfile />} />
 
-            {/* Rota para a página de notícias */}
-            <Route path="/home" element={<Home />} />
 
-            {/* Rota para a página de detalhes da notícia */}
-            <Route path="/noticia/:id" element={<NoticiaPage />} />
+            {/* Rotas Protegidas (Exemplo, idealmente usariam PrivateRoute) */}
+            <Route path="/perfil/editar" element={<EditarPerfil />} />
             
-            {/* Rota para a página da Copa */}
-            <Route path="/copa" element={<CopaInscricao />} />
-
-            {/* Rota para a página de Peneiras e Promessas */}
-            <Route path="/talentos" element={<Peneiras />} />
-            
-            {/* Rota para a pagina do formulario */}
-            <Route path="/inscricao" element={<InscricaoPage />} />
-            
-            {/* Rota para a página de Login */}
-            <Route path="/login" element={<Login />} />
-
-            {/* Rota para a página de edição de perfil */}
-            <Route path="/perfil/editar" element={<EditarPerfil />} />
-
-            {/* Rota para a página de perfil da jogadora */}
-            <Route path="/jogadora/:id" element={<PlayerProfile />} />
-
-            {/* Rota para a página de administração de jogadoras */}
-            <Route path="/admin/jogadoras" element={<AdminJogadoras />} />
-            
-            {/* Rota para a página de administração de notícias */}
-            <Route path="/admin/noticias" element={<AdminNoticias />} />
-            
-          </Routes>
-        </main>
-        <Footer /> 
-      </div>
-    </AuthProvider>
-  );
+            {/* --- 2. ADICIONAR A ROTA QUE FALTAVA --- */}
+            <Route path="/admin/dashboard" element={<AdminDashboard />} /> 
+            <Route path="/admin/jogadoras" element={<AdminJogadoras />} />
+            <Route path="/admin/noticias" element={<AdminNoticias />} />                        
+          </Routes>
+        </main>
+        <Footer /> 
+      </div>
+    </AuthProvider>
+  );
 }
 
 export default App;
+

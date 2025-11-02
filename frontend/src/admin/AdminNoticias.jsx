@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Trash2, Edit2, Plus, ChevronDown, ChevronUp } from 'lucide-react';
+import AdminHeader from '../components/AdminHeader';
 
 export default function AdminNoticias() {
   const [noticias, setNoticias] = useState([]);
@@ -126,6 +127,8 @@ const handleEdit = (noticia) => {
   if (loading) return <div className="text-center py-8">Carregando notícias...</div>;
 
   return (
+    <>
+    <AdminHeader />
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Gerenciar Notícias</h1>
@@ -342,5 +345,6 @@ const handleEdit = (noticia) => {
         )}
       </div>
     </div>
+    </>
   );
 }

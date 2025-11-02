@@ -60,12 +60,12 @@ const Home = ()=> {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
                 <div className="flex flex-wrap gap-2 mb-2">
                   {noticiaPrincipal.time && (
-                    <span className="bg-purple-600 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
+                    <span className=" text-white text-xs font-medium px-2.5 py-0.5 ">
                       {noticiaPrincipal.time}
                     </span>
                   )}
                   {noticiaPrincipal.assunto && (
-                    <span className="bg-pink-600 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
+                    <span className=" text-white text-xs font-medium px-2.5 py-0.5">
                       {noticiaPrincipal.assunto}
                     </span>
                   )}

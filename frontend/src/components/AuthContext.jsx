@@ -1,62 +1,78 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react'; // 1. Importe o useContext
 
 export const AuthContext = createContext();
 
+// 2. CRIE E EXPORTE O HOOK useAuth
+/**
+ * Hook customizado para consumir o AuthContext.
+ * Em vez de importar useContext(AuthContext) em todo componente,
+ * apenas importe e chame useAuth().
+ */
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
+  }
+  return context;
+};
+// --- Fim da adição ---
+
+
 export const AuthProvider = ({ children }) => {
-  const [isLogged, setIsLogged] = useState(false);
-  const [role, setRole] = useState(null);
-  const [token, setToken] = useState(null);
-  const [jogadoraId, setJogadoraId] = useState(null);
+  const [isLogged, setIsLogged] = useState(false);
+  const [role, setRole] = useState(null);
+  const [token, setToken] = useState(null);
+  const [jogadoraId, setJogadoraId] = useState(null);
 
-  // Carregar dados do localStorage quando o componente montar
-  useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    const savedRole = localStorage.getItem('role');
-    const savedJogadoraId = localStorage.getItem('jogadoraId');
-    
-    if (savedToken && savedRole) {
-      setToken(savedToken);
-      setRole(savedRole);
-      setIsLogged(true);
-      if (savedJogadoraId) {
-        setJogadoraId(parseInt(savedJogadoraId));
-      }
-    }
-  }, []);
+  // Carregar dados do localStorage quando o componente montar
+  useEffect(() => {
+    const savedToken = localStorage.getItem('token');
+    const savedRole = localStorage.getItem('role');
+    const savedJogadoraId = localStorage.getItem('jogadoraId');
+    
+    if (savedToken && savedRole) {
+      setToken(savedToken);
+      setRole(savedRole);
+      setIsLogged(true);
+      if (savedJogadoraId) {
+        setJogadoraId(parseInt(savedJogadoraId));
+      }
+    }
+  }, []);
 
-  const login = (newToken, newRole, newJogadoraId = null) => {
-    // Salvar no state
-    setToken(newToken);
-    setRole(newRole);
-    setIsLogged(true);
-    
-    // Salvar no localStorage
-    localStorage.setItem('token', newToken);
-    localStorage.setItem('role', newRole);
-    
-    // Se for jogadora, salvar também o jogadoraId
-    if (newJogadoraId) {
-      setJogadoraId(newJogadoraId);
-      localStorage.setItem('jogadoraId', newJogadoraId.toString());
-    }
-  };
+  const login = (newToken, newRole, newJogadoraId = null) => {
+    // Salvar no state
+    setToken(newToken);
+    setRole(newRole);
+    setIsLogged(true);
+    
+    // Salvar no localStorage
+    localStorage.setItem('token', newToken);
+    localStorage.setItem('role', newRole);
+    
+    // Se for jogadora, salvar também o jogadoraId
+    if (newJogadoraId) {
+      setJogadoraId(newJogadoraId);
+      localStorage.setItem('jogadoraId', newJogadoraId.toString());
+    }
+  };
 
-  const logout = () => {
-    // Limpar state
-    setToken(null);
-    setRole(null);
-    setIsLogged(false);
-    setJogadoraId(null);
-    
-    // Limpar localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    localStorage.removeItem('jogadoraId');
-  };
+  const logout = () => {
+    // Limpar state
+    setToken(null);
+    setRole(null);
+    setIsLogged(false);
+    setJogadoraId(null);
+    
+    // Limpar localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('jogadoraId');
+  };
 
-  return (
-    <AuthContext.Provider value={{ isLogged, role, token, jogadoraId, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return (
+    <AuthContext.Provider value={{ isLogged, role, token, jogadoraId, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

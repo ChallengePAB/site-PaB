@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../components/AuthContext';
 import { Trash2, Eye, EyeOff, Search, User } from 'lucide-react';
+import AdminHeader from '../components/AdminHeader'; 
 
 const AdminJogadoras = () => {
   const { token, role } = useContext(AuthContext);
@@ -108,6 +109,8 @@ const AdminJogadoras = () => {
   }
 
   return (
+    <>
+    <AdminHeader />
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -244,6 +247,7 @@ const AdminJogadoras = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
