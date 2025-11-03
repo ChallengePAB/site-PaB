@@ -5,5 +5,9 @@
   "localNome": "Arena PaB (Exemplo)",
   "endereco": "Av. Paulista, 1578 - Bela Vista, São Paulo - SP",
   "horario": "Todo Sábado, 14:00 - 16:00",
-  "googleMapsQuery": "Avenida+Paulista+1578+Sao+Paulo"
+  "googleMapsQuery": "Avenida+Paulista+1578+Sao+Paulo",
+  "maxTimes": 8,
+  "maxIndividuais": 50,
+  "inscricoesAbertas": true
 }
+
