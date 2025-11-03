@@ -15,6 +15,9 @@ import EditarPerfil from './pages/EditarPerfil';
 import AdminJogadoras from './admin/AdminJogadoras';
 import AdminNoticias from './admin/AdminNoticias';
 import AdminDashboard from './admin/AdminDashboard'; 
+import EncontrosPage from './pages/EncontrosPage';
+import AdminCopa from './admin/AdminCopa';
+import AdminEncontros from './admin/AdminEncontros';
 
 function App() {
   return (
@@ -32,6 +35,7 @@ function App() {
             <Route path="/inscricao" element={<InscricaoPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/jogadora/:id" element={<PlayerProfile />} />
+            <Route path="/encontros" element={<EncontrosPage />} />
 
 
             {/* Rotas Protegidas (Exemplo, idealmente usariam PrivateRoute) */}
@@ -40,7 +44,9 @@ function App() {
             {/* --- 2. ADICIONAR A ROTA QUE FALTAVA --- */}
             <Route path="/admin/dashboard" element={<AdminDashboard />} /> 
             <Route path="/admin/jogadoras" element={<AdminJogadoras />} />
-            <Route path="/admin/noticias" element={<AdminNoticias />} />                        
+            <Route path="/admin/noticias" element={<AdminNoticias />} />  
+            <Route path="/admin/copa" element={<AdminCopa />} />
+            <Route path="/admin/encontros" element={<AdminEncontros />} />                      
           </Routes>
         </main>
         <Footer /> 

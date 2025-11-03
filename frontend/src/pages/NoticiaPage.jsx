@@ -94,7 +94,7 @@ export default function NoticiaPage() {
             )}
             {artigo.assunto && (
               <span className=" text-gray-700 text-xs font-medium me-2 px-2.5 py-0.5 ">
-                Assunto: {artigo.assunto}
+                {artigo.assunto}
               </span>
             )}
           </div>

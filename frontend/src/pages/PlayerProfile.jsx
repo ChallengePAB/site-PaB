@@ -4,7 +4,7 @@ import { Youtube, Instagram } from "lucide-react";
 import { FaTiktok } from "react-icons/fa"; 
 
 const PlayerProfile = () => {
-  const { id } = useParams(); // pega o ID da URL
+  const { id } = useParams();
   const [player, setPlayer] = useState(null);
 
   useEffect(() => {

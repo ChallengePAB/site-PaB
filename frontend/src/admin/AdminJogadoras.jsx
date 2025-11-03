@@ -63,7 +63,7 @@ const AdminJogadoras = () => {
       alert('Jogadora excluída com sucesso!');
       setShowDeleteModal(false);
       setJogadoraToDelete(null);
-      carregarJogadoras(); // Recarregar lista
+      carregarJogadoras();
     } catch (error) {
       alert('Erro ao excluir jogadora: ' + error.message);
     }
@@ -83,7 +83,7 @@ const AdminJogadoras = () => {
         throw new Error('Erro ao alterar visibilidade');
       }
 
-      carregarJogadoras(); // Recarregar lista
+      carregarJogadoras(); 
     } catch (error) {
       alert('Erro ao alterar visibilidade: ' + error.message);
     }

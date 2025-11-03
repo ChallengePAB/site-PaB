@@ -14,8 +14,8 @@ export default function AdminNoticias() {
     imagem: '',
     titulo: '',
     subtitulo: '',
-    time: '', // Novo campo
-    assunto: '', // Novo campo
+    time: '', 
+    assunto: '', 
     conteudo: [{ type: 'paragraph', value: '' }],
   });
 
@@ -51,9 +51,9 @@ const handleEdit = (noticia) => {
 
     setFormData({
       ...noticia,
-      time: noticia.time || '', // Garante que o campo exista
-      assunto: noticia.assunto || '', // Garante que o campo exista
-      conteudo: conteudoArray, // Garante que o conteúdo seja sempre um array
+      time: noticia.time || '', 
+      assunto: noticia.assunto || '', 
+      conteudo: conteudoArray, 
     });
     setEditingId(noticia.id);
     setShowForm(true);
@@ -98,8 +98,8 @@ const handleEdit = (noticia) => {
       imagem: '',
       titulo: '',
       subtitulo: '',
-      time: '', // Resetar novo campo
-      assunto: '', // Resetar novo campo
+      time: '', 
+      assunto: '', 
       conteudo: [{ type: 'paragraph', value: '' }],
     });
     setEditingId(null);
