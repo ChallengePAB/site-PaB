@@ -12,6 +12,7 @@ const authRoutes = require('./routes/authRoutes');
 const kpiRoutes = require('./routes/kpiRoutes'); 
 const encontroRoutes = require('./routes/encontroRoutes'); 
 const copaRoutes = require('./routes/copaRoutes'); 
+const climaRoutes = require('./routes/climaRoutes')
 
 const app = express();
 const PORT = 3001;
@@ -30,18 +31,8 @@ app.use('/', inscricaoRoutes);
 app.use('/auth', authRoutes); 
 app.use('/api/eventos/encontro', encontroRoutes); 
 app.use('/api/eventos/copa', copaRoutes);
+app.use('/api', climaRoutes);
 
-
-//  ROTA DE CLIMA 
-// Substituir pela API do postman
-app.get("/api/clima", async (req, res) => {
-  try {
-
-    res.status(200).json({});
-  } catch (error) {
-    res.status(500).json({ message: "Erro ao simular dados do clima." });
-  }
-});
 
 //  INICIAR SERVIDOR 
 app.listen(PORT, () => {
