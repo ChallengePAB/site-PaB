@@ -64,7 +64,7 @@ const Header = () => {
                               Painel Admin
                             </button>
                         )}
-                        <button onClick={handleLogout} className="text-gray-700 hover:text-purple-600 transition-colors font-semibold">Logout</button>
+
                       </>
                   ) : (
                       <NavLink to="/login" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Login</NavLink>
@@ -108,7 +108,6 @@ s                               Meu Perfil
                                   Painel Admin
                               </button>
                             )}
-                            <button onClick={handleLogout} className="text-gray-700 hover:text-purple-600 text-left">Logout</button>
                         </>
                       ) : (
                         <Link to="/login" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Login</Link>
@@ -122,3 +121,4 @@ s                               Meu Perfil
 };
 
 export default Header;
+

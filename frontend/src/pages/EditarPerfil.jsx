@@ -28,65 +28,58 @@ const EditarPerfil = () => {
     oculta: false
   });
 
-  useEffect(() => {
-    if (role !== 'jogadora' && role !== 'comum') {
-      navigate('/home');
-      return;
-    }
-    carregarPerfil();
-  }, [role, navigate, userId]);
+	  useEffect(() => {
+	    if (role !== 'jogadora' && role !== 'comum') {
+	      navigate('/home');
+	      return;
+	    }
+	    carregarPerfil();
+	  }, [role, navigate, userId]);
 
-  const carregarPerfil = async () => {
-    try {
-      let data;
-      if (role === 'jogadora') {
-        const response = await fetch('http://localhost:3001/perfil/meu', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Erro ao carregar perfil de jogadora');
-        }
-        data = await response.json();
-      } else if (role === 'comum') {
-        const response = await fetch('http://localhost:3001/auth/me', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error('Erro ao carregar dados do usuário');
-        }
-        data = await response.json();
-        
-        // Se for comum, o perfil é simplificado
-        if (role === 'comum') {
-          setPerfil({ nome: data.nome });
-          setIsLoading(false);
-          return;
-        }
-      }
-      
-      setPerfil(data);
-    } catch (error) {
-      setMessage('Erro ao carregar perfil: ' + error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setPerfil(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
+		  const carregarPerfil = async () => {
+		    try {
+		      if (role === 'jogadora') {
+		        const response = await fetch('http://localhost:3001/perfil/meu', {
+		          headers: {
+		            'Authorization': `Bearer ${token}`
+		          }
+		        });
+		
+		        if (!response.ok) {
+		          throw new Error('Erro ao carregar perfil de jogadora');
+		        }
+		        const jogadoraData = await response.json();
+		        setPerfil(jogadoraData);
+		
+		      } else if (role === 'comum') {
+		        const response = await fetch('http://localhost:3001/auth/me', {
+		          headers: {
+		            'Authorization': `Bearer ${token}`
+		          }
+		        });
+		        
+		        if (!response.ok) {
+		          throw new Error('Erro ao carregar dados do usuário');
+		        }
+		        const comumData = await response.json();
+		        setPerfil({ nome: comumData.nome });
+		      }
+		    } catch (error) {
+		      setMessage('Erro ao carregar perfil: ' + error.message);
+		    } finally {
+		      setIsLoading(false);
+		    }
+		  };
+		
+		  const handleInputChange = (e) => {
+		    const { name, value, type, checked } = e.target;
+		    setPerfil(prev => ({
+		      ...prev,
+		      [name]: type === 'checkbox' ? checked : value
+		    }));
+		  };
+		
+		  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
     setMessage('');
@@ -214,300 +207,289 @@ const EditarPerfil = () => {
                 <User className="w-6 h-6 text-purple-600" />
                 Informações Básicas
               </h2>
-	              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-	                <div>
-	                  <label className="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
-	                  <input
-	                    type="text"
-	                    name="nome"
-	                    value={perfil.nome}
-	                    onChange={handleInputChange}
-	                    required
-	                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                  />
-	                </div>
-	                
-	                {role === 'jogadora' && (
-	                  <>
-	                    <div>
-	                      <label className="block text-sm font-medium text-gray-700 mb-2">Idade</label>
-	                      <input
-	                        type="number"
-	                        name="idade"
-	                        value={perfil.idade}
-	                        onChange={handleInputChange}
-	                        required
-	                        min="14"
-	                        max="40"
-	                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                      />
-	                    </div>
-	
-	                    <div>
-	                      <label className="block text-sm font-medium text-gray-700 mb-2">Altura</label>
-	                      <input
-	                        type="text"
-	                        name="altura"
-	                        value={perfil.altura}
-	                        onChange={handleInputChange}
-	                        required
-	                        placeholder="Ex: 1.70m"
-	                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                      />
-	                    </div>
-	
-	                    <div>
-	                      <label className="block text-sm font-medium text-gray-700 mb-2">Pé Dominante</label>
-	                      <select
-	                        name="pe_dominante"
-	                        value={perfil.pe_dominante}
-	                        onChange={handleInputChange}
-	                        required
-	                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                      >
-	                        <option value="Direito">Direito</option>
-	                        <option value="Esquerdo">Esquerdo</option>
-	                        <option value="Ambos">Ambos</option>
-	                      </select>
-	                    </div>
-	
-	                    <div>
-	                      <label className="block text-sm font-medium text-gray-700 mb-2">Clube Atual</label>
-	                      <input
-	                        type="text"
-	                        name="clube_atual"
-	                        value={perfil.clube_atual}
-	                        onChange={handleInputChange}
-	                        required
-	                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                      />
-	                    </div>
-	
-	                    <div>
-	                      <label className="block text-sm font-medium text-gray-700 mb-2">Posição</label>
-	                      <select
-	                        name="posicao"
-	                        value={perfil.posicao}
-	                        onChange={handleInputChange}
-	                        required
-	                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                      >
-	                        {posicoes.map(pos => (
-	                          <option key={pos} value={pos}>{pos}</option>
-	                        ))}
-	                      </select>
-	                    </div>
-	                  </>
-	                )}
-	              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                  <input
+                    type="text"
+                    name="nome"
+                    value={perfil.nome}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  />
+                </div>
+                
+                {role === 'jogadora' && (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Idade</label>
+                      <input
+                        type="number"
+                        name="idade"
+                        value={perfil.idade}
+                        onChange={handleInputChange}
+                        required
+                        min="14"
+                        max="40"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Altura</label>
+                      <input
+                        type="text"
+                        name="altura"
+                        value={perfil.altura}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="Ex: 1.70m"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Pé Dominante</label>
+                      <select
+                        name="pe_dominante"
+                        value={perfil.pe_dominante}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      >
+                        <option value="Direito">Direito</option>
+                        <option value="Esquerdo">Esquerdo</option>
+                        <option value="Ambos">Ambos</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Clube Atual</label>
+                      <input
+                        type="text"
+                        name="clube_atual"
+                        value={perfil.clube_atual}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Posição</label>
+                      <select
+                        name="posicao"
+                        value={perfil.posicao}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      >
+                        {posicoes.map(pos => (
+                          <option key={pos} value={pos}>{pos}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </>
+                )}
+              </div>
             </section>
 
-	            {role === 'jogadora' && (
-	              <>
-	            {role === 'jogadora' && (
-	              <>
-	                {/* Foto de Perfil */}
-	                <section>
-	                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-	                    <Image className="w-6 h-6 text-purple-600" />
-	                    Foto de Perfil
-	                  </h2>
-	                  <div>
-	                    <label className="block text-sm font-medium text-gray-700 mb-2">URL da Foto</label>
-	                    <input
-	                      type="url"
-	                      name="foto"
-	                      value={perfil.foto || ''}
-	                      onChange={handleInputChange}
-	                      placeholder="https://exemplo.com/minha-foto.jpg"
-	                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                    />
-	                    {perfil.foto && (
-	                      <div className="mt-4">
-	                        <img src={perfil.foto} alt="Preview" className="w-32 h-32 rounded-full object-cover border-4 border-purple-200" />
-	                      </div>
-	                    )}
-	                  </div>
-	                </section>
-	
-	                {/* Biografia */}
-	                <section>
-	                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-	                    <Activity className="w-6 h-6 text-purple-600" />
-	                    Sobre Você
-	                  </h2>
-	                    <div>
-	                      <label className="block text-sm font-medium text-gray-700 mb-2">Biografia</label>
-	                      <textarea
-	                        name="biografia"
-	                        value={perfil.biografia}
-	                        onChange={handleInputChange}
-	                        rows="4"
-	                        placeholder="Conte um pouco sobre sua trajetória no futebol..."
-	                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                      />
-	                    </div>
-	                </section>
-	
-	                {/* Redes Sociais */}
-	                <section>
-	                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-	                    <Award className="w-6 h-6 text-purple-600" />
-	                    Redes Sociais
-	                  </h2>
-	                  <div className="space-y-4">
-	                    <div>
-	                      <label className="block text-sm font-medium text-gray-700 mb-2">YouTube</label>
-	                      <input
-	                        type="url"
-	                        name="youtube"
-	                        value={perfil.youtube}
-	                        onChange={handleInputChange}
-	                        placeholder="https://youtube.com/@seuperfil"
-	                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                      />
-	                    </div>
-	
-	                    <div>
-	                      <label className="block text-sm font-medium text-gray-700 mb-2">Instagram</label>
-	                      <input
-	                        type="url"
-	                        name="instagram"
-	                        value={perfil.instagram}
-	                        onChange={handleInputChange}
-	                        placeholder="https://instagram.com/seuperfil"
-	                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                      />
-	                    </div>
-	
-	                    <div>
-	                      <label className="block text-sm font-medium text-gray-700 mb-2">TikTok</label>
-	                      <input
-	                        type="url"
-	                        name="tiktok"
-	                        value={perfil.tiktok}
-	                        onChange={handleInputChange}
-	                        placeholder="https://tiktok.com/@seuperfil"
-	                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                      />
-	                    </div>
-	                  </div>
-	                </section>
-	
-	                {/* Conteúdos */}
-	                <section>
-	                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-	                    <Image className="w-6 h-6 text-purple-600" />
-	                    Galeria de Conteúdos
-	                  </h2>
-	                  
-	                  {/* Adicionar novo conteúdo */}
-	                  <div className="mb-4 flex gap-2">
-	                    <input
-	                      type="url"
-	                      value={novoConteudo}
-	                      onChange={(e) => setNovoConteudo(e.target.value)}
-	                      placeholder="URL da imagem ou vídeo"
-	                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-	                    />
-	                    <button
-	                      type="button"
-	                      onClick={adicionarConteudo}
-	                      className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
-	                    >
-	                      <Plus className="w-5 h-5" />
-	                      Adicionar
-	                    </button>
-	                  </div>
-	
-	                  {/* Lista de conteúdos */}
-	                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-	                    {perfil.conteudos.map((conteudo, index) => (
-	                      <div key={index} className="relative group">
-	                        <img
-	                          src={conteudo}
-	                          alt={`Conteúdo ${index + 1}`}
-	                          className="w-full h-40 object-cover rounded-lg"
-	                        />
-	                        <button
-	                          type="button"
-	                          onClick={() => removerConteudo(index)}
-	                          className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
-	                        >
-	                          <X className="w-4 h-4" />
-	                        </button>
-	                      </div>
-	                    ))}
-	                  </div>
-	                </section>
-	
-	                {/* Visibilidade */}
-	                <section>
-	                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-	                    {perfil.oculta ? <EyeOff className="w-6 h-6 text-purple-600" /> : <Eye className="w-6 h-6 text-purple-600" />}
-	                    Visibilidade do Perfil
-	                  </h2>
-	                  <div className="flex items-center gap-3">
-	                    <input
-	                      type="checkbox"
-	                      id="oculta"
-	                      name="oculta"
-	                      checked={perfil.oculta}
-	                      onChange={handleInputChange}
-	                      className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-400"
-	                    />
-	                    <label htmlFor="oculta" className="text-gray-700">
-	                      Ocultar meu perfil da seção de promessas (apenas eu e admins poderão ver)
-	                    </label>
-	                  </div>
-	                </section>
-	              </>
-	            )}
-	              </>
-	            )}
+            {role === 'jogadora' && (
+              <>
+                {/* Mídias Sociais */}
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <Activity className="w-6 h-6 text-purple-600" />
+                    Mídias Sociais
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">YouTube (Link)</label>
+                      <input
+                        type="url"
+                        name="youtube"
+                        value={perfil.youtube}
+                        onChange={handleInputChange}
+                        placeholder="Ex: https://youtube.com/..."
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Instagram (@)</label>
+                      <input
+                        type="text"
+                        name="instagram"
+                        value={perfil.instagram}
+                        onChange={handleInputChange}
+                        placeholder="Ex: @seunome"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">TikTok (@)</label>
+                      <input
+                        type="text"
+                        name="tiktok"
+                        value={perfil.tiktok}
+                        onChange={handleInputChange}
+                        placeholder="Ex: @seunome"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      />
+                    </div>
+                  </div>
+                </section>
 
-            {/* Botões de ação */}
-            <div className="flex gap-4 pt-6 border-t">
+                {/* Biografia e Foto */}
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <Image className="w-6 h-6 text-purple-600" />
+                    Biografia e Foto
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Biografia</label>
+                      <textarea
+                        name="biografia"
+                        value={perfil.biografia}
+                        onChange={handleInputChange}
+                        rows="5"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      ></textarea>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">URL da Foto de Perfil</label>
+                      <input
+                        type="url"
+                        name="foto"
+                        value={perfil.foto}
+                        onChange={handleInputChange}
+                        placeholder="Link direto para a imagem"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      />
+                      {perfil.foto && (
+                        <div className="mt-4">
+                          <p className="text-sm font-medium text-gray-700 mb-2">Pré-visualização:</p>
+                          <img src={perfil.foto} alt="Pré-visualização da foto" className="w-32 h-32 object-cover rounded-full border-2 border-purple-400" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </section>
+
+                {/* Conteúdos de Destaque */}
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <Award className="w-6 h-6 text-purple-600" />
+                    Conteúdos de Destaque (Links)
+                  </h2>
+                  <div className="space-y-4">
+                    {perfil.conteudos.map((link, index) => (
+                      <div key={index} className="flex items-center gap-3 p-3 bg-gray-100 rounded-lg">
+                        <a href={link} target="_blank" rel="noopener noreferrer" className="flex-1 text-purple-600 hover:underline truncate">{link}</a>
+                        <button
+                          type="button"
+                          onClick={() => removerConteudo(index)}
+                          className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition-colors"
+                        >
+                          <X className="w-5 h-5" />
+                        </button>
+                      </div>
+                    ))}
+                    <div className="flex gap-3">
+                      <input
+                        type="url"
+                        value={novoConteudo}
+                        onChange={(e) => setNovoConteudo(e.target.value)}
+                        placeholder="Adicionar novo link de conteúdo"
+                        className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      />
+                      <button
+                        type="button"
+                        onClick={adicionarConteudo}
+                        className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2"
+                      >
+                        <Plus className="w-5 h-5" />
+                        Adicionar
+                      </button>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Configurações de Privacidade */}
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <EyeOff className="w-6 h-6 text-purple-600" />
+                    Configurações
+                  </h2>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="oculta"
+                      name="oculta"
+                      checked={perfil.oculta}
+                      onChange={handleInputChange}
+                      className="h-5 w-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                    />
+                    <label htmlFor="oculta" className="ml-3 text-sm font-medium text-gray-700">
+                      Ocultar meu perfil de buscas e listagens (Apenas acessível por link direto)
+                    </label>
+                  </div>
+                </section>
+              </>
+            )}
+
+            {/* Botões de Ação */}
+            <div className="flex justify-between items-center pt-8 border-t border-gray-200">
               <button
-                type="submit"
-                disabled={isSaving}
-                className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:bg-purple-400 disabled:cursor-not-allowed"
+                type="button"
+                onClick={() => { logout(); navigate('/login'); }}
+                className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors"
               >
-                {isSaving ? 'Salvando...' : 'Salvar Alterações'}
+                Sair (Logout)
               </button>
-	              {role === 'jogadora' && (
-	                <button
-	                  type="button"
-	                  onClick={() => navigate(`/jogadora/${perfil.id}`)}
-	                  className="px-8 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-lg transition-colors"
-	                >
-	                  Visualizar Perfil
-	                </button>
-	              )}
+              <div className="flex gap-4">
+                {role === 'jogadora' && perfil.id && (
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/jogadora/${perfil.id}`)}
+                    className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-colors"
+                  >
+                    Visualizar Perfil
+                  </button>
+                )}
+                <button
+                  type="submit"
+                  disabled={isSaving}
+                  className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
+                >
+                  {isSaving ? 'Salvando...' : 'Salvar Alterações'}
+                </button>
+              </div>
             </div>
 
-	            {role === 'jogadora' && (
-	              /* Zona de Perigo - Excluir Perfil */
-	              <section className="mt-8 pt-8 border-t border-red-200">
-	                <h2 className="text-2xl font-bold text-red-600 mb-4 flex items-center gap-2">
-	                  <Trash2 className="w-6 h-6" />
-	                  Zona de Perigo
-	                </h2>
-	                <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-	                  <p className="text-gray-700 mb-4">
-	                    <strong>Atenção:</strong> Esta ação é irreversível. Ao excluir seu perfil, todos os seus dados serão permanentemente removidos do sistema.
-	                  </p>
-	                  <button
-	                    type="button"
-	                    onClick={() => setShowDeleteModal(true)}
-	                    className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2"
-	                  >
-	                    <Trash2 className="w-5 h-5" />
-	                    Excluir Meu Perfil
-	                  </button>
-	                </div>
-	              </section>
-	            )}
+            {role === 'jogadora' && (
+              /* Zona de Perigo - Excluir Perfil */
+              <section className="mt-8 pt-8 border-t border-red-200">
+                <h2 className="text-2xl font-bold text-red-600 mb-4 flex items-center gap-2">
+                  <Trash2 className="w-6 h-6" />
+                  Zona de Perigo
+                </h2>
+                <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                  <p className="text-gray-700 mb-4">
+                    <strong>Atenção:</strong> Esta ação é irreversível. Ao excluir seu perfil, todos os seus dados serão permanentemente removidos do sistema.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setShowDeleteModal(true)}
+                    className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center gap-2"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                    Excluir Meu Perfil
+                  </button>
+                </div>
+              </section>
+            )}
           </form>
         </div>
 
