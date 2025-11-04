@@ -4,7 +4,6 @@ const cors = require("cors");
 const path = require("path");
 
 // --- IMPORTAÇÃO DOS ROTEADORES ---
-
 const newsRoutes = require('./routes/newsRoutes');
 const peneirasRoutes = require('./routes/peneirasRoutes');
 const jogadorasRoutes = require('./routes/jogadorasRoutes');
@@ -32,6 +31,7 @@ app.use('/auth', authRoutes);
 app.use('/api/eventos/encontro', encontroRoutes); 
 app.use('/api/eventos/copa', copaRoutes);
 
+
 //  ROTA DE CLIMA 
 // Substituir pela API do postman
 app.get("/api/clima", async (req, res) => {
@@ -42,7 +42,6 @@ app.get("/api/clima", async (req, res) => {
     res.status(500).json({ message: "Erro ao simular dados do clima." });
   }
 });
-
 
 //  INICIAR SERVIDOR 
 app.listen(PORT, () => {
