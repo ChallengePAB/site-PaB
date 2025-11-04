@@ -1,12 +1,12 @@
 {
   "id": 1,
-  "titulo": "Copa Passa a Bola 2025",
-  "subtitulo": "A maior competição de futebol feminino do país está chegando! Inscreva-se agora e faça parte desta história.",
-  "periodo": "01/10/2024 a 30/11/2024",
+  "titulo": "Copa Passa a Bola ",
+  "subtitulo": "A Copa PaB maior competição de futebol feminino do país está chegando! Inscreva-se agora e faça parte desta história.",
+  "periodo": "01/10/2025 a 30/11/2025",
   "local": "Estádios em todo o Brasil",
-  "categorias": "Sub-16, Sub-18, Sub-20, Profissional",
-  "maxTimes": 16,
-  "maxIndividuais": 100,
-  "inscricoesAbertas": true
+  "maxTimes": 12,
+  "maxIndividuais": 10,
+  "inscricoesAbertas": true,
+  "totalTimes": 0,
+  "totalJogadoresIndividuais": 2
 }
-

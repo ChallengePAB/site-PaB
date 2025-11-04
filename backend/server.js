@@ -29,8 +29,8 @@ app.use('/peneiras', peneirasRoutes);
 app.use('/jogadoras', jogadorasRoutes); 
 app.use('/', inscricaoRoutes); 
 app.use('/auth', authRoutes); 
-app.use('/api/encontro', encontroRoutes); 
-app.use('/api/copa', copaRoutes); 
+app.use('/api/eventos/encontro', encontroRoutes); 
+app.use('/api/eventos/copa', copaRoutes);
 
 //  ROTA DE CLIMA 
 // Substituir pela API do postman
