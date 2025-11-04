@@ -46,7 +46,7 @@ const Header = () => {
 
                   {isLogged ? (
                       <>
-                        {role === 'jogadora' && (
+                        {(role === 'jogadora' || role === 'comum') && (
                             <button 
                               onClick={handlePerfilClick} 
                               className="flex items-center gap-2 text-gray-700 hover:text-purple-600 transition-colors font-semibold"
@@ -90,7 +90,7 @@ const Header = () => {
 
                       {isLogged ? (
                         <>
-                            {role === 'jogadora' && (
+                            {(role === 'jogadora' || role === 'comum') && (
                               <button 
                                   onClick={handlePerfilClick} 
                                   className="flex items-center gap-2 text-gray-700 hover:text-purple-600 text-left"
@@ -122,4 +122,3 @@ s                               Meu Perfil
 };
 
 export default Header;
-

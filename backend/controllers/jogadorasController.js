@@ -87,9 +87,9 @@ exports.getJogadoraById = async (req, res) => {
 
 exports.getMyProfile = async (req, res) => {
     try {
-      if (req.user.role !== "jogadora") {
-          return res.status(403).json({ message: "Apenas jogadoras podem acessar esta rota." });
-      }
+	      if (req.user.role !== "jogadora") {
+	          return res.status(403).json({ message: "Apenas jogadoras podem acessar esta rota." });
+	      }
       const data = await readJsonFile(dbPromessasPath);
       const jogadora = (data.jogadoras || []).find((j) => j.userId == req.user.id);
       if (!jogadora) {
@@ -103,9 +103,9 @@ exports.getMyProfile = async (req, res) => {
 
 exports.updateMyProfile = async (req, res) => {
     try {
-      if (req.user.role !== "jogadora") {
-          return res.status(403).json({ message: "Apenas jogadoras podem atualizar perfis." });
-      }
+	      if (req.user.role !== "jogadora") {
+	          return res.status(403).json({ message: "Apenas jogadoras podem atualizar perfis." });
+	      }
       const data = await readJsonFile(dbPromessasPath);
       const jogadoras = data.jogadoras || [];
       const index = jogadoras.findIndex((j) => j.userId == req.user.id);
@@ -122,9 +122,9 @@ exports.updateMyProfile = async (req, res) => {
 
 exports.deleteMyProfile = async (req, res) => {
     try {
-      if (req.user.role !== "jogadora") {
-          return res.status(403).json({ message: "Apenas jogadoras podem excluir seus próprios perfis." });
-      }
+	      if (req.user.role !== "jogadora") {
+	          return res.status(403).json({ message: "Apenas jogadoras podem excluir seus próprios perfis." });
+	      }
       const users = await readJsonFile(dbUsersPath);
       const promessasData = await readJsonFile(dbPromessasPath);
       const userIndex = users.findIndex((u) => u.id === req.user.id);

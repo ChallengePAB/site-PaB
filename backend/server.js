@@ -35,17 +35,16 @@ app.use('/api/copa', copaRoutes);
 //  ROTA DE CLIMA 
 // Substituir pela API do postman
 app.get("/api/clima", async (req, res) => {
-  try {
+  try {
 
-    res.status(200).json({});
-  } catch (error) {
-    res.status(500).json({ message: "Erro ao simular dados do clima." });
-  }
+    res.status(200).json({});
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao simular dados do clima." });
+  }
 });
 
 
 //  INICIAR SERVIDOR 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor backend rodando na porta ${PORT}`);
+  console.log(`🚀 Servidor backend rodando na porta ${PORT}`);
 });
-
