@@ -50,7 +50,7 @@ const FormCheckbox = ({ label, name, checked, onChange }) => (
 // Formulário de Edição de Encontros
 const EncontroForm = ({ token }) => {
   const [formData, setFormData] = useState({
-    titulo: '', descricao: '', localNome: '', endereco: '', horario: '', googleMapsQuery: '',
+    titulo: '', descricao: '', localNome: '', endereco: '', data: '', horario: '', googleMapsQuery: '',
     maxTimes: 0, maxIndividuais: 0, inscricoesAbertas: true
   });
   const [loading, setLoading] = useState(true);
@@ -119,6 +119,7 @@ const EncontroForm = ({ token }) => {
         <FormInput label="Descrição Curta" name="descricao" value={formData.descricao} onChange={handleChange} type="textarea" />
         <FormInput label="Nome do Local" name="localNome" value={formData.localNome} onChange={handleChange} />
         <FormInput label="Endereço Completo" name="endereco" value={formData.endereco} onChange={handleChange} />
+        <FormInput label="Data" name="data" value={formData.data} onChange={handleChange} />
         <FormInput label="Horário" name="horario" value={formData.horario} onChange={handleChange} />
         <FormInput label="Query do Google Maps" name="googleMapsQuery" value={formData.googleMapsQuery} onChange={handleChange} />
         <hr className="my-4" />

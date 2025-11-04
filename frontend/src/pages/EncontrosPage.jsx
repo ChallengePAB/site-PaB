@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Sun, Droplet, Wind, Zap, Clock } from 'lucide-react';
-import InscricaoModal from './InscricaoModal'; // Importa o NOVO modal
+import { MapPin, Sun, Droplet, Wind, Zap, Clock, Calendar } from 'lucide-react';
+import InscricaoModal from './InscricaoModal';
 
 //Informações do Local
 
@@ -126,6 +126,10 @@ export default function EncontrosPage() {
                 <p className="text-gray-600 flex items-center mt-1">
                   <MapPin size={16} className="mr-2 flex-shrink-0" />
                   {encontroData.endereco}
+                </p>
+                <p className="text-gray-600 flex items-center mt-1">
+                  <Calendar size={16} className="mr-2 flex-shrink-0" />
+                  {encontroData.data}
                 </p>
                 <p className="text-gray-600 flex items-center mt-1">
                   <Clock size={16} className="mr-2 flex-shrink-0" />
