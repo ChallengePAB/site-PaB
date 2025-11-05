@@ -86,7 +86,8 @@ export default function EncontrosPage() {
     return <div className="min-h-screen bg-gray-50 flex items-center justify-center text-lg text-red-600">Falha ao carregar dados. Tente novamente.</div>;
   }
 
-  const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(encontroData.googleMapsQuery)}`;
+  const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  const mapEmbedUrl = `https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_KEY}&q=${encodeURIComponent(encontroData.googleMapsQuery)}`;
 
   return (
     <>
@@ -124,14 +125,18 @@ export default function EncontrosPage() {
 
               {/* Colocar aqui o mapa com link */}
               <div className="w-full h-64 rounded-lg overflow-hidden border-2 border-gray-200">
-                <a href={googleMapsLink} target="_blank" rel="noopener noreferrer" title="Clique para ver no Google Maps">
-                  
-                  <img 
-                    src="https://placehold.co/600x400/e2e8f0/64748b?text=Clique+para+ver+o+mapa"
-                    alt="Mapa para o local"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all"
-                  />
-                </a>
+                {/* Substituímos a <a> e <img> por este <iframe> */}
+                <iframe
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={mapEmbedUrl}
+                  title={`Mapa para ${encontroData.localNome}`}
+                >
+                </iframe>
               </div>
             </div>
 

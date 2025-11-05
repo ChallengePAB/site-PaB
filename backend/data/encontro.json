@@ -9,7 +9,7 @@
   "googleMapsQuery": "Avenida+Paulista+1578+Sao+Paulo",
   "maxTimes": 8,
   "maxIndividuais": 5,
-  "inscricoesAbertas": false,
+  "inscricoesAbertas": true,
   "encontroAtual": {
     "titulo": "",
     "descricao": "",
