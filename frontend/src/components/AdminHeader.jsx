@@ -15,12 +15,12 @@ const AdminHeader = () => {
   const linkClass = "flex items-center gap-2 px-3 py-2 text-gray-500 transition-colors hover:text-purple-600";
   const activeLinkClass = "flex items-center gap-2 px-3 py-2 text-purple-600 font-semibold border-b-2 border-purple-600";
 
-  return (
-    <header className="bg-white shadow-sm border-b sticky top-16 z-30">
-      <div className="container mx-auto px-4">
-        <div className="flex h-14 items-center justify-between">
-          {/* Links de Navegação Horizontais */}
-          <nav className="flex items-center h-full text-sm font-medium">
+	  return (
+	    <header className="bg-white shadow-sm border-b sticky top-16 z-30">
+	      <div className="container mx-auto px-4">
+	        <div className="flex h-14 items-center justify-between">
+	          {/* Links de Navegação Horizontais */}
+	          <nav className="flex items-center h-full text-sm font-medium">
             <NavLink
               to="/admin/dashboard"
               className={({ isActive }) => isActive ? activeLinkClass : linkClass}
@@ -56,8 +56,16 @@ const AdminHeader = () => {
             <CalendarHeart className="h-4 w-4" />
               Gerenciar Encontros
             </NavLink>
-          </nav>
-        </div>
+	          </nav>
+	          {/* Botão de Logout */}
+	          <button
+	            onClick={handleLogout}
+	            className="flex items-center gap-2 px-3 py-2 text-red-600 transition-colors hover:text-red-800 font-semibold text-sm"
+	          >
+	            <LogOut className="h-4 w-4" />
+	            Sair (Logout)
+	          </button>
+	        </div>
       </div>
     </header>
     );

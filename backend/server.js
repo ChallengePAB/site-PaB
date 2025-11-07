@@ -36,6 +36,5 @@ app.use('/api', climaRoutes);
 
 //  INICIAR SERVIDOR 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor backend rodando na porta ${PORT}`);
+  console.log(`🚀 Servidor backend rodando na porta ${PORT}`);
 });
-

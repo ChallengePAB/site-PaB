@@ -313,5 +313,12 @@
     "email": "123@gmail.com",
     "password": "$2b$10$lqh/RuRU9UcH.c08d1yqKeE9EXw60QIxy0UiwP2.avQubZJLODUG.",
     "role": "jogadora"
+  },
+  {
+    "id": 1762195479140,
+    "nome": "Leo",
+    "email": "1234@gmail.com",
+    "password": "$2b$10$GJNsuk.M8aqXgRMEAskC4.j/xfQUAXVKS2TAyjcXszOOf7gwbeZFO",
+    "role": "comum"
   }
 ]

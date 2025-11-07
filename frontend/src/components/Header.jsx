@@ -32,37 +32,39 @@ const Header = () => {
             <h1 className="text-2xl font-bold text-violet-700">Passa a Bola</h1>
           </Link>
 
-          {/* Desktop */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <NavLink to="/home" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Noticias</NavLink>
-            <NavLink to="/talentos" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Peneiras e Talentos</NavLink>
-            <NavLink to="/copa" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Copa</NavLink>
-            <NavLink to="/encontros" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Encontros PaB</NavLink>
-            {isLogged ? (
-            <>
-              {role === 'jogadora' && (
-                <button 
-                  onClick={handlePerfilClick} 
-                  className="flex items-center gap-2 text-gray-700 hover:text-purple-600 transition-colors font-semibold">
-                  <User className="w-5 h-5" />
-                    Meu Perfil
-                </button>
-              )}
-              {role === 'admin' && (
-                <button 
-                  onClick={handleAdminClick} 
-                  className="flex items-center gap-2 text-purple-600 hover:text-purple-800 transition-colors font-semibold"
-                >
-                  <ShieldCheck className="w-5 h-5" />
-                    Painel Admin
-                </button>
-              )}
-                <button onClick={handleLogout} className="text-gray-700 hover:text-purple-600 transition-colors font-semibold">Logout</button>
-                  </>
-              ) : (
-                <NavLink to="/login" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Login</NavLink>
-              )}
-              </nav>
+                {/* Desktop */}
+                <nav className="hidden md:flex items-center space-x-8">
+                  <NavLink to="/home" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Noticias</NavLink>
+                  <NavLink to="/copa" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Copa</NavLink>
+                  <NavLink to="/talentos" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Peneiras e Talentos</NavLink>
+                  <NavLink to="/encontros" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Encontros</NavLink>
+
+                  {isLogged ? (
+                      <>
+                        {(role === 'jogadora' || role === 'comum') && (
+                            <button 
+                              onClick={handlePerfilClick} 
+                              className="flex items-center gap-2 text-gray-700 hover:text-purple-600 transition-colors font-semibold"
+                            >
+                              <User className="w-5 h-5" />
+                              Meu Perfil
+                            </button>
+                        )}
+                        {role === 'admin' && (
+                            <button 
+                              onClick={handleAdminClick} 
+                              className="flex items-center gap-2 text-purple-600 hover:text-purple-800 transition-colors font-semibold"
+                            >
+                              <ShieldCheck className="w-5 h-5" />
+                              Painel Admin
+                            </button>
+                        )}
+
+                      </>
+                  ) : (
+                      <NavLink to="/login" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Login</NavLink>
+                  )}
+                </nav>
 
                 <div className="md:hidden">
                   <button onClick={toggleMenu} className="p-2 rounded-md text-gray-700 hover:bg-gray-100">
@@ -80,34 +82,35 @@ const Header = () => {
                     <Link to="/talentos" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Peneiras e Talentos</Link>
                     <Link to="/tabela" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Tabela</Link>
 
-            {isLogged ? (
-              <>
-              {role === 'jogadora' && (
-                <button 
-                  onClick={handlePerfilClick} 
-                  className="flex items-center gap-2 text-gray-700 hover:text-purple-600 text-left">
-                  <User className="w-5 h-5" />
-                    Meu Perfil
-                </button>
-              )}
-              {role === 'admin' && (
-                <button 
-                  onClick={handleAdminClick} 
-                  className="flex items-center gap-2 text-purple-600 hover:text-purple-800 text-left">
-                  <ShieldCheck className="w-5 h-5" />
-                    Painel Admin
-                </button>
-              )}
-                <button onClick={handleLogout} className="text-gray-700 hover:text-purple-600 text-left">Logout</button>
-              </>
-            ) : (
-              <Link to="/login" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Login</Link>
+                      {isLogged ? (
+                        <>
+                            {(role === 'jogadora' || role === 'comum') && (
+                              <button 
+                                  onClick={handlePerfilClick} 
+                                  className="flex items-center gap-2 text-gray-700 hover:text-purple-600 text-left"
+                              >
+                                  <User className="w-5 h-5" />
+s                               Meu Perfil
+                              </button>
+                            )}
+                            {role === 'admin' && (
+                              <button 
+                              D onClick={handleAdminClick} 
+                                  className="flex items-center gap-2 text-purple-600 hover:text-purple-800 text-left"
+                              >
+                        D       <ShieldCheck className="w-5 h-5" />
+                                  Painel Admin
+                              </button>
+                            )}
+                        </>
+                      ) : (
+                        <Link to="/login" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Login</Link>
+                      )}
+                  </div>
+                </nav>
             )}
-                </div>
-              </nav>
-          )}
-      </div>
-    </header>
+          </div>
+      </header>
     );
 };
 
