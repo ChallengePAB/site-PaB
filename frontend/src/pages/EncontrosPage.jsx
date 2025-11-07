@@ -80,8 +80,8 @@ export default function EncontrosPage() {
     return <div className="min-h-screen bg-gray-50 flex items-center justify-center text-lg text-red-600">Falha ao carregar dados. Tente novamente.</div>;
   }
 
-  const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-  const mapEmbedUrl = `https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_KEY}&q=${encodeURIComponent(encontroData.googleMapsQuery)}`;
+const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const mapEmbedUrl = `https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_KEY}&q=${encodeURIComponent(encontroData.googleMapsQuery)}`;
 
   return (
     <>
