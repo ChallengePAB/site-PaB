@@ -107,8 +107,7 @@ exports.login = async (req, res) => {
 	            jogadoraId = jogadora.id;
 	          }
 	      } else if (user.role === "comum") {
-	          // Usuários comuns não têm perfil de jogadora, então jogadoraId permanece null
-	          // e não há necessidade de buscar em dbPromessasPath
+	          // Nada acontece 
 	      }
 
 	      res.json({ token, role: user.role, userId: user.id, jogadoraId });
@@ -167,3 +166,36 @@ exports.login = async (req, res) => {
 	      res.status(500).json({ message: "Erro ao buscar dados do usuário." });
 	    }
 	};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "Envie a senha atual e a nova senha." });
+    }
+
+    const users = await readJsonFile(dbUsersPath);
+    const userId = req.user.id;
+    const userIndex = users.findIndex((u) => u.id === userId);
+
+    if (userIndex === -1) {
+      return res.status(404).json({ message: "Usuário não encontrado." });
+    }
+
+    const user = users[userIndex];
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(403).json({ message: "Senha atual incorreta." });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    users[userIndex].password = hashedPassword;
+
+    await writeJsonFile(dbUsersPath, users);
+    res.json({ message: "Senha atualizada com sucesso!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao alterar a senha." });
+  }
+};

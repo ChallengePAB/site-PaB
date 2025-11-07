@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../components/AuthContext';
-import { User, Mail, MapPin, Activity, Award, Image, Plus, X, Eye, EyeOff, Trash2 } from 'lucide-react';
+import { User, Mail, MapPin, Activity, Award, Image, Plus, X, Eye, EyeOff, Trash2, Lock } from 'lucide-react';
 
 const EditarPerfil = () => {
   const { token, role, logout, userId } = useContext(AuthContext);
@@ -39,7 +39,7 @@ const EditarPerfil = () => {
 		  const carregarPerfil = async () => {
 		    try {
 		      if (role === 'jogadora') {
-		        const response = await fetch('http://localhost:3001/perfil/meu', {
+		        const response = await fetch("http://localhost:3001/jogadoras/perfil/meu", {
 		          headers: {
 		            'Authorization': `Bearer ${token}`
 		          }
@@ -89,7 +89,7 @@ const EditarPerfil = () => {
       let body = {};
       
       if (role === 'jogadora') {
-        url = 'http://localhost:3001/perfil/atualizar';
+        url = 'http://localhost:3001/jogadoras/perfil/atualizar';
         body = perfil;
       } else if (role === 'comum') {
         url = 'http://localhost:3001/auth/update-profile';
@@ -139,7 +139,7 @@ const EditarPerfil = () => {
 
   const handleExcluirPerfil = async () => {
     try {
-      const response = await fetch('http://localhost:3001/perfil/excluir', {
+      const response = await fetch('http://localhost:3001/jogadoras/perfil/excluir', {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -293,6 +293,67 @@ const EditarPerfil = () => {
                   </>
                 )}
               </div>
+            </section>
+
+            {/* Alterar Senha */}
+            <section className="border-t border-gray-200 pt-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Lock className="w-6 h-6 text-purple-600" />
+                Alterar Senha
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Senha Atual</label>
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    value={perfil.currentPassword || ""}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Nova Senha</label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    value={perfil.newPassword || ""}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    const response = await fetch("http://localhost:3001/auth/change-password", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                      },
+                      body: JSON.stringify({
+                        currentPassword: perfil.currentPassword,
+                        newPassword: perfil.newPassword
+                      })
+                    });
+
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.message || "Erro ao alterar senha");
+
+                    setMessage("Senha atualizada com sucesso!");
+                    setPerfil((prev) => ({ ...prev, currentPassword: "", newPassword: "" }));
+                  } catch (error) {
+                    setMessage("Erro: " + error.message);
+                  }
+                }}
+                className="mt-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+              >
+                Alterar Senha
+              </button>
             </section>
 
             {role === 'jogadora' && (

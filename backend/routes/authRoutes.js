@@ -15,4 +15,7 @@ router.post('/login', authController.login);
 // Rota: PUT /auth/update-profile
 router.put('/update-profile', authMiddleware, authController.updateProfile);
 
+// Rota: POST /auth/change-password
+router.post("/change-password", authMiddleware, authController.changePassword);
+
 module.exports = router;

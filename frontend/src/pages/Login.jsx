@@ -11,7 +11,7 @@ const Login = () => {
     password: '',
     confirmPassword: '',
 	    nome: '',
-	    role: 'jogadora', // Padrão inicial
+	    role: 'jogadora', 
 	    idade: '',
     altura: '',
     pe_dominante: 'Direito',
@@ -79,8 +79,8 @@ const Login = () => {
       }
 
       if (isLogin) {
-        login(data.token, data.role, data.jogadoraId);   // atualiza contexto
-        navigate('/home');              // redireciona
+        login(data.token, data.role, data.userId, data.jogadoraId);   // atualiza contexto
+        navigate('/home');              // redireciona pra home ao invés de ficar na página de login
       } else {
         setMessage('Conta criada com sucesso! Faça login para continuar.');
         setIsLogin(true); 
@@ -162,15 +162,44 @@ const Login = () => {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {!isLogin && (
-                  <>
-                    <div>
-                      <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                        <input type="text" id="nome" name="nome" value={formData.nome} onChange={handleInputChange} required={!isLogin} className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" placeholder="Digite seu nome completo"/>
-                      </div>
-                    </div>
+{!isLogin && (
+	                  <>
+	                    {/* Seleção de Tipo de Conta (Movido para o início) */}
+	                    <div className="mb-6">
+	                      <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Conta</label>
+	                      <div className="flex space-x-4">
+	                        <label className="inline-flex items-center">
+	                          <input
+	                            type="radio"
+	                            name="role"
+	                            value="jogadora"
+	                            checked={formData.role === 'jogadora'}
+	                            onChange={handleInputChange}
+	                            className="form-radio text-purple-600"
+	                          />
+	                          <span className="ml-2 text-gray-700">Jogadora</span>
+	                        </label>
+	                        <label className="inline-flex items-center">
+	                          <input
+	                            type="radio"
+	                            name="role"
+	                            value="comum"
+	                            checked={formData.role === 'comum'}
+	                            onChange={handleInputChange}
+	                            className="form-radio text-purple-600"
+	                          />
+	                          <span className="ml-2 text-gray-700">Comum</span>
+	                        </label>
+	                      </div>
+	                    </div>
+	                    
+	                    <div>
+	                      <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+	                      <div className="relative">
+	                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+	                        <input type="text" id="nome" name="nome" value={formData.nome} onChange={handleInputChange} required={!isLogin} className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" placeholder="Digite seu nome completo"/>
+	                      </div>
+	                    </div>
                     {formData.role === 'jogadora' && (
                       <>
                         <div className="grid grid-cols-2 gap-4">
@@ -250,40 +279,12 @@ const Login = () => {
                           </select>
                         </div>
                       </>
-                    )}	                  </>
-	                )}
-	                
-	                {/* Seleção de Tipo de Conta */}
-	                {!isLogin && (
-                    <div className="mb-6">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Conta</label>
-                      <div className="flex space-x-4">
-                        <label className="inline-flex items-center">
-                          <input
-                            type="radio"
-                            name="role"
-                            value="jogadora"
-                            checked={formData.role === 'jogadora'}
-                            onChange={handleInputChange}
-                            className="form-radio text-purple-600"
-                          />
-                          <span className="ml-2 text-gray-700">Jogadora</span>
-                        </label>
-                        <label className="inline-flex items-center">
-                          <input
-                            type="radio"
-                            name="role"
-                            value="comum"
-                            checked={formData.role === 'comum'}
-                            onChange={handleInputChange}
-                            className="form-radio text-purple-600"
-                          />
-                          <span className="ml-2 text-gray-700">Comum (Apenas nome, email e senha)</span>
-                        </label>
-                      </div>
-                    </div>
-                  )}
-	               	                <div>
+	                    )}
+	                  </>   	               
+		                )}  
+		              
+
+		               	                <div>
 	                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
