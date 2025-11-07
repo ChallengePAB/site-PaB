@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, User } from 'lucide-react';
+import { apiNodeClient } from '../api/api';
 
 export default function NoticiaPage() {
   const { id } = useParams();
@@ -16,42 +17,33 @@ export default function NoticiaPage() {
     const fetchNoticia = async () => {
       setLoading(true);
       try {
-        
-        const response = await fetch(`http://localhost:3001/api/news/${id}`);
-        if (!response.ok) {
-          throw new Error('Notícia não encontrada.');
-        }
-        const data = await response.json();
-        setArtigo(data);
-        
-       
-        const allNewsResponse = await fetch('http://localhost:3001/api/news');
-        const allNews = await allNewsResponse.json();
-        // Garante que o ID da notícia atual seja comparado corretamente 
+        const response = await apiNodeClient.get(`/api/news/${id}`);
+        setArtigo(response.data);
+
+        const allNewsResponse = await apiNodeClient.get('/api/news');
+        const allNews = allNewsResponse.data;
         const outros = allNews.filter(n => n.id != id).slice(0, 4);
         setOutrosArtigos(outros);
 
       } catch (err) {
+        console.error("Erro ao buscar notícia:", err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
     fetchNoticia();
-  }, [id]); 
+  }, [id]);
 
   if (loading) {
     return <div className="text-center py-24">Carregando notícia...</div>;
   }
-  
+
   if (error || !artigo) {
     return <div className="text-center py-24 text-red-500">{error || 'Artigo não encontrado.'}</div>;
   }
 
-  // --- FUNÇÃO AUXILIAR PARA RENDERIZAR O CONTEÚDO ---
-  
   const renderConteudo = () => {
-    // Se 'artigo.conteudo' for um array (formato novo), mapeia
     if (Array.isArray(artigo.conteudo)) {
       return artigo.conteudo.map((bloco, index) => {
         if (bloco.type === 'paragraph') {
@@ -63,11 +55,9 @@ export default function NoticiaPage() {
         return null;
       });
     }
-    // Se 'artigo.conteudo' for uma string exibe
     if (typeof artigo.conteudo === 'string') {
       return <p>{artigo.conteudo}</p>;
     }
-    // Se for qualquer outra coisa, não renderiza nada
     return null;
   };
 
@@ -75,8 +65,8 @@ export default function NoticiaPage() {
     <div className="bg-white">
       <div className="container mx-auto px-4 py-8">
         <article className="max-w-4xl mx-auto">
-          <img 
-            src={`/images/noticias/${artigo.imagem}`} 
+          <img
+            src={`/images/noticias/${artigo.imagem}`}
             alt={artigo.titulo}
             className="w-full h-96 object-cover rounded-2xl shadow-lg mb-8"
           />
@@ -102,13 +92,13 @@ export default function NoticiaPage() {
             <div className="flex items-center mr-6"><User size={16} className="mr-2" /><span>Por Passa a Bola</span></div>
             <div className="flex items-center"><Calendar size={16} className="mr-2" /><span>Publicado em 15 de Setembro de 2025</span></div>
           </div>
-          
+
 
           <div className="prose lg:prose-xl max-w-none text-gray-800">
             {renderConteudo()}
           </div>
         </article>
-        
+
         {/* --- SEÇÃO "CONTINUE LENDO" --- */}
         {outrosArtigos.length > 0 && (
           <section className="max-w-4xl mx-auto mt-16 pt-8 border-t">
@@ -117,8 +107,8 @@ export default function NoticiaPage() {
               {outrosArtigos.map(outroArtigo => (
                 <Link to={`/noticia/${outroArtigo.id}`} key={outroArtigo.id} className="group block">
                   <div className="overflow-hidden rounded-lg shadow-md">
-                    <img 
-                      src={`/images/noticias/${outroArtigo.imagem}`} 
+                    <img
+                      src={`/images/noticias/${outroArtigo.imagem}`}
                       alt={outroArtigo.titulo}
                       className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                     />
