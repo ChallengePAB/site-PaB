@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-const NODE_URL = import.meta.env.VITE_API_NODE_URL || 'http://localhost:3001';
-const PYTHON_URL = import.meta.env.VITE_API_PYTHON_URL || 'http://localhost:8000';
-
+const NODE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 const apiNodeClient = axios.create({
   baseURL: NODE_URL, 
@@ -10,6 +8,7 @@ const apiNodeClient = axios.create({
     'Content-Type': 'application/json',
   }
 });
+
 
 apiNodeClient.interceptors.request.use(
   (config) => {
@@ -25,11 +24,4 @@ apiNodeClient.interceptors.request.use(
 );
 
 
-const apiPythonClient = axios.create({
-  baseURL: PYTHON_URL, 
-  headers: {
-    'Content-Type': 'application/json',
-  }
-});
-
-export { apiNodeClient, apiPythonClient };
+export { apiNodeClient };
