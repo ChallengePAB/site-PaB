@@ -1,32 +1,3 @@
-# Dependências
-# Ignora a pasta gigante que guarda todos os pacotes baixados
-node_modules/
-
-# Build
-# Ignora a pasta que o Vite/React cria para o site final
-dist/
-build/
-.output/
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Arquivos de sistema
-.DS_Store
-Thumbs.db
-
-# Arquivos de Editor (VS Code)
-.vscode/
-
-# Arquivos de Ambiente (O MAIS IMPORTANTE!)
-# Ignora suas chaves de API e segredos
+node_modules
 .env
-.env.local
-.env.*
 
-# Cache de testes e outros
-.eslintcache
-.vite-inspect/
