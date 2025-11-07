@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const NODE_URL = import.meta.env.VITE_API_URL;
+// rota para pegar a chave do backend e || para rodar no ambiente de desenvolvimento também 
+const NODE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 const apiNodeClient = axios.create({
   baseURL: NODE_URL, 

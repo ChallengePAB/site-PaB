@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Calendar, Users } from 'lucide-react';
 import { Link } from "react-router-dom";
+import { apiNodeClient } from '../api/api';
 
 // Imagem padrão para jogadoras sem foto
 const DEFAULT_PLAYER_IMAGE = '/jogadora-padrao.png';
@@ -16,17 +17,15 @@ const Peneiras = () => {
   const [errorPromessas, setErrorPromessas] = useState(null);
 
   const role = localStorage.getItem("role");
-  const token = localStorage.getItem("token");
 
   // Carregar peneiras do backend
   useEffect(() => {
     const fetchPeneiras = async () => {
       try {
-        const response = await fetch('http://localhost:3001/peneiras');
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-        setPeneiras(data);
+        const response = await apiNodeClient.get('/peneiras');
+        setPeneiras(response.data);
       } catch (error) {
+        console.error("Erro ao buscar peneiras:", error); 
         setErrorPeneiras("Não foi possível carregar as peneiras. Verifique o backend.");
       } finally {
         setLoadingPeneiras(false);
@@ -38,79 +37,50 @@ const Peneiras = () => {
 
   // Carregar promessas do backend
   useEffect(() => {
-  const fetchPromessas = async () => {
-    try {
-      // Lê o token do localStorage sempre que for buscar as jogadoras
-      const token = localStorage.getItem("token");
+    const fetchPromessas = async () => {
+      try {
+        const response = await apiNodeClient.get('/jogadoras/promessas');
+        setPromessas(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar promessas:", error); 
+        setErrorPromessas("Não foi possível carregar as promessas. Verifique o backend.");
+      } finally {
+        setLoadingPromessas(false);
+      }
+    };
 
-      // Monta o header apenas se houver token
-      const headers = token ? { "Authorization": `Bearer ${token}` } : {};
-
-      const response = await fetch('http://localhost:3001/jogadoras/promessas', { headers });
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-      const data = await response.json();
-      setPromessas(data);
-    } catch (error) {
-      setErrorPromessas("Não foi possível carregar as promessas. Verifique o backend.");
-    } finally {
-      setLoadingPromessas(false);
-    }
-  };
-
-  fetchPromessas();
-}, []);
+    fetchPromessas();
+  }, []);
 
   // Ocultar jogadora (só admins)
   const handleOcultarJogadora = async (id) => {
-    if (!token) return alert("Você precisa estar logado como admin.");
     try {
-      const response = await fetch(`http://localhost:3001/jogadoras/${id}/ocultar`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      });
-      const data = await response.json();
-      if (response.ok) {
+      const response = await apiNodeClient.post(`/jogadoras/${id}/ocultar`);
+      
+      if (response.data) { 
         setPromessas(prev => prev.map(p => p.id === id ? { ...p, oculta: true } : p));
-        alert("Jogadora ocultada com sucesso!");
-      } else {
-        alert(data.message || "Erro ao ocultar jogadora.");
+        console.log("Jogadora ocultada com sucesso!");
       }
     } catch (error) {
-      alert("Erro de conexão ao ocultar jogadora.");
+      console.error("Erro de conexão ao ocultar jogadora:", error);
     }
   };
 
   // Desocultar jogadora (só admins)
   const handleDesocultarJogadora = async (id) => {
-    if (!token) return alert("Você precisa estar logado como admin.");
     try {
-      const response = await fetch(`http://localhost:3001/jogadoras/${id}/desocultar`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      });
-      const data = await response.json();
-      if (response.ok) {
+      const response = await apiNodeClient.post(`/jogadoras/${id}/desocultar`);
+      
+      if (response.data) { 
         setPromessas(prev => prev.map(p => p.id === id ? { ...p, oculta: false } : p));
-        alert("Jogadora desocultada com sucesso!");
-      } else {
-        alert(data.message || "Erro ao desocultar jogadora.");
+        console.log("Jogadora desocultada com sucesso!");
       }
     } catch (error) {
-      alert("Erro de conexão ao desocultar jogadora.");
+      console.error("Erro de conexão ao desocultar jogadora:", error);
     }
   };
 
-  // Filtra jogadoras visíveis para o usuário
   const promessasVisiveis = promessas.filter(player => role === "admin" || !player.oculta);
-
-  // Agrupa por posição
   const promessasAgrupadas = promessasVisiveis.reduce((acc, player) => {
     if (!acc[player.posicao]) acc[player.posicao] = [];
     acc[player.posicao].push(player);

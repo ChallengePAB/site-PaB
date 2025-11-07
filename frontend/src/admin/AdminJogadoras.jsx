@@ -1,11 +1,13 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../components/AuthContext';
+import { AuthContext } from '../components/AuthContext'; 
 import { Trash2, Eye, EyeOff, Search, User } from 'lucide-react';
 import AdminHeader from '../components/AdminHeader'; 
 
+import { apiNodeClient } from '../api/api'; 
+
 const AdminJogadoras = () => {
-  const { token, role } = useContext(AuthContext);
+  const { token, role } = useContext(AuthContext); 
   const navigate = useNavigate();
   const [jogadoras, setJogadoras] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,21 +25,10 @@ const AdminJogadoras = () => {
 
   const carregarJogadoras = async () => {
     try {
-      const response = await fetch('http://localhost:3001/jogadoras/promessas', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Erro ao carregar jogadoras');
-      }
-
-      const data = await response.json();
-      setJogadoras(data);
+      const response = await apiNodeClient.get('/jogadoras/promessas');
+      setJogadoras(response.data);
     } catch (error) {
       console.error('Erro:', error);
-      alert('Erro ao carregar jogadoras: ' + error.message);
     } finally {
       setIsLoading(false);
     }
@@ -47,45 +38,24 @@ const AdminJogadoras = () => {
     if (!jogadoraToDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:3001/jogadoras/${jogadoraToDelete.id}/excluir`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      await apiNodeClient.delete(`/jogadoras/${jogadoraToDelete.id}/excluir`);
+      console.log('Jogadora excluída com sucesso!');
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Erro ao excluir jogadora');
-      }
-
-      alert('Jogadora excluída com sucesso!');
       setShowDeleteModal(false);
       setJogadoraToDelete(null);
-      carregarJogadoras();
+      carregarJogadoras(); 
     } catch (error) {
-      alert('Erro ao excluir jogadora: ' + error.message);
+      console.error('Erro ao excluir jogadora:', error);
     }
   };
 
   const handleToggleVisibilidade = async (jogadora) => {
     try {
       const endpoint = jogadora.oculta ? 'desocultar' : 'ocultar';
-      const response = await fetch(`http://localhost:3001/jogadoras/${jogadora.id}/${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Erro ao alterar visibilidade');
-      }
-
-      carregarJogadoras(); 
+      await apiNodeClient.post(`/jogadoras/${jogadora.id}/${endpoint}`);
+      carregarJogadoras();
     } catch (error) {
-      alert('Erro ao alterar visibilidade: ' + error.message);
+      console.error('Erro ao alterar visibilidade:', error);
     }
   };
 
@@ -96,8 +66,8 @@ const AdminJogadoras = () => {
 
   const jogadorasFiltradas = jogadoras.filter(j => 
     j.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    j.clube_atual.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    j.posicao.toLowerCase().includes(searchTerm.toLowerCase())
+    (j.clube_atual && j.clube_atual.toLowerCase().includes(searchTerm.toLowerCase())) || // Adicionado check de existência
+    (j.posicao && j.posicao.toLowerCase().includes(searchTerm.toLowerCase())) // Adicionado check de existência
   );
 
   if (isLoading) {

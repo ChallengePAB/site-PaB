@@ -28,7 +28,6 @@ ARQUIVO_NOTICIAS = os.path.join(os.path.dirname(__file__), "data", "noticias.jso
 
 
 class ConteudoNoticia(BaseModel):
-    """Modelo para um parágrafo ou elemento de conteúdo da notícia."""
     type: str = Field(..., description="Tipo de conteúdo (ex: 'paragraph', 'image', 'subtitle').")
     value: str = Field(..., description="O valor do conteúdo (texto do parágrafo, URL da imagem, etc.).")
 
