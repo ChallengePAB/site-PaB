@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Sun, Droplet, Wind, Zap, Clock } from 'lucide-react';
+import { MapPin, Sun, Droplet, Wind, Zap, Clock, Calendar } from 'lucide-react';
 import InscricaoModal from './InscricaoModal'; 
+import { apiNodeClient } from '../api/api'; 
 
-//Informações do Local
-const LOCATION_INFO = {
-  nome: "Encontro PaB - Arena SP",
-  horario: "Todos os Domingos, 10:00 - 12:00",
-  endereco: "Rua Exemplo de Local, 123 - Bairro, São Paulo - SP",
-  googleMapsLink: "https://www.google.com/maps/place/R.+Guaicurus,+1277+-+Lapa,+S%C3%A3o+Paulo+-+SP,+05033-002"
-};
-
-//Widget de Clima 
 const WeatherWidget = () => {
   const [clima, setClima] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,14 +10,8 @@ const WeatherWidget = () => {
   useEffect(() => {
     const fetchClima = async () => {
       try {
-        // Busca da API 
-        const response = await fetch('http://localhost:3001/api/clima');
-        if (response.ok) {
-          const data = await response.json();
-          setClima(data);
-        } else {
-          setClima(null); 
-        }
+        const response = await apiNodeClient.get('/api/clima');
+        setClima(response.data);
       } catch (error) {
         console.error("Erro ao buscar clima:", error);
         setClima(null);
@@ -39,21 +25,17 @@ const WeatherWidget = () => {
   if (loading) {
     return <div className="p-6 bg-gray-100 rounded-lg animate-pulse h-40"></div>;
   }
-
-  // Se a API não retornar dados mostra o placeholder para ver como fica o front
-  if (!clima || !clima.temp) {
-    return (
-      <div className="bg-gradient-to-br from-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-lg">
-        <h3 className="text-2xl font-bold mb-4">Condições Climáticas</h3>
-        <div className="text-center p-4">
-          <p className="text-lg text-blue-100">Aqui vai ficar os dados de Edge</p>
-          <p className="text-sm text-blue-200">(Dados de temperatura e umidade da sua API)</p>
-        </div>
-      </div>
-    );
+  
+  // Adicionado um estado de 'não encontrado' se a API falhar
+  if (!clima) {
+     return (
+       <div className="bg-gradient-to-br from-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-lg opacity-80">
+         <h3 className="text-2xl font-bold mb-4">Condições Climáticas</h3>
+         <p className="text-center text-blue-100">Não foi possível carregar o clima.</p>
+       </div>
+     );
   }
 
-  // Se a API funcionar, mostra os dados
   return (
     <div className="bg-gradient-to-br from-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-lg">
       <h3 className="text-2xl font-bold mb-4">Condições Climáticas</h3>
@@ -75,75 +57,106 @@ const WeatherWidget = () => {
 
 // Componente Principal da Página de Encontros 
 export default function EncontrosPage() {
-  // Estado para controlar o modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [encontroData, setEncontroData] = useState(null);
+  const [pageLoading, setPageLoading] = useState(true);
+
+  // Buscar os dados 
+  useEffect(() => {
+    const fetchEncontroData = async () => {
+      setPageLoading(true);
+      try {
+        const response = await apiNodeClient.get('/api/eventos/encontro');
+        setEncontroData(response.data);
+      } catch (err) {
+        console.error("Erro ao carregar dados do encontro:", err);
+      } finally {
+        setPageLoading(false);
+      }
+    };
+    
+    fetchEncontroData();
+  }, []);
+
+  if (pageLoading) {
+    return <div className="min-h-screen bg-gray-50 flex items-center justify-center text-lg">Carregando dados do encontro...</div>;
+  }
+  
+  if (!encontroData) {
+    return <div className="min-h-screen bg-gray-50 flex items-center justify-center text-lg text-red-600">Falha ao carregar dados. Tente novamente.</div>;
+  }
+
+  const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  const mapEmbedUrl = `https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_KEY}&q=${encodeURIComponent(encontroData.googleMapsQuery)}`;
 
   return (
     <>
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-16">
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-extrabold text-gray-900 mb-4">Encontros PaB</h1>
+            {/* DADOS DINÂMICOS */}
+            <h1 className="text-5xl font-extrabold text-gray-900 mb-4">{encontroData.titulo}</h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Participe dos nossos encontros e mostre seu talento para olheiros e clubes parceiros.
+              {encontroData.descricao}
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
-            {/* Coluna da Esquerda: Sobre, Local, Mapa */}
             <div className="bg-white p-8 rounded-2xl shadow-xl">
               <h2 className="text-3xl font-bold text-gray-800 mb-6">Informações do Evento</h2>
-              
-              {/* Sobre o Encontro */}
-              <div className="mb-6">
-                <h3 className="text-xl font-semibold text-purple-700 mb-2">Sobre o Encontro</h3>
-                <p className="text-gray-600">
-                  Nossos encontros são a oportunidade perfeita para você jogar,
-                  se conectar com outras atletas e ser vista por profissionais do meio.
-                  Trazemos olheiros e treinadores para observar o talento em campo.
-                </p>
-              </div>
 
-              {/* Local e Horário */}
               <div className="mb-4">
-                <p className="text-lg font-semibold text-purple-700">{LOCATION_INFO.nome}</p>
+                {/* DADOS DINÂMICOS */}
+                <p className="text-lg font-semibold text-purple-700">{encontroData.localNome}</p>
                 <p className="text-gray-600 flex items-center mt-1">
                   <MapPin size={16} className="mr-2 flex-shrink-0" />
-                  {LOCATION_INFO.endereco}
+                  {encontroData.endereco}
+                </p>
+                <p className="text-gray-600 flex items-center mt-1">
+                  <Calendar size={16} className="mr-2 flex-shrink-0" />
+                  {encontroData.data} 
                 </p>
                 <p className="text-gray-600 flex items-center mt-1">
                   <Clock size={16} className="mr-2 flex-shrink-0" />
-                  {LOCATION_INFO.horario}
+                  {encontroData.horario}
                 </p>
               </div>
 
-              {/* Mapa */}
+              {/* Colocar aqui o mapa com link */}
               <div className="w-full h-64 rounded-lg overflow-hidden border-2 border-gray-200">
-                <a href={LOCATION_INFO.googleMapsLink} target="_blank" rel="noopener noreferrer" title="Clique para ver no Google Maps">
-                  <img 
-                    src="https://placehold.co/600x400/e2e8f0/64748b?text=Clique+para+ver+o+mapa"
-                    alt="Mapa para o local"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all"
-                  />
-                </a>
+                {/* Substituímos a <a> e <img> por este <iframe> */}
+                <iframe
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={mapEmbedUrl}
+                  title={`Mapa para ${encontroData.localNome}`}
+                >
+                </iframe>
               </div>
             </div>
 
-            {/* Coluna da Direita: Clima e Inscrição */}
             <div className="space-y-8">
               <WeatherWidget />
               <div className="bg-white p-8 rounded-2xl shadow-xl text-center">
                 <Zap size={48} className="text-purple-600 mx-auto mb-4" />
-                <h2 className="text-3xl font-bold text-gray-800 mb-4">Inscrições Abertas!</h2>
+                {/* DADOS DINÂMICOS  */}
+                <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                  {encontroData.inscricoesAbertas ? "Inscrições Abertas!" : "Inscrições Encerradas"}
+                </h2>
                 <p className="text-gray-600 mb-6">
                   Garanta sua vaga no próximo encontro. Inscreva-se como jogadora individual ou monte seu time.
                 </p>
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-purple-600 text-white font-bold py-4 px-8 rounded-lg text-lg hover:bg-purple-700 transition-all transform hover:scale-105"
+                  disabled={!encontroData.inscricoesAbertas} 
+                  className="w-full bg-purple-600 text-white font-bold py-4 px-8 rounded-lg text-lg hover:bg-purple-700 transition-all transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  Inscreva-se Agora
+                  {encontroData.inscricoesAbertas ? "Inscreva-se Agora" : "Inscrições Encerradas"}
                 </button>
               </div>
             </div>
@@ -151,8 +164,10 @@ export default function EncontrosPage() {
         </div>
       </div>
       
-      {/* O Modal de Inscrição */}
-      <InscricaoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <InscricaoModal 
+        isOpen={isModalOpen && encontroData.inscricoesAbertas} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </>
   );
 }

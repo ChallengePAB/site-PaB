@@ -44,5 +44,5 @@ module.exports = {
   dbPromessasPath,
   dbNoticiasPath,
   dbEncontroPath,
-  dbCopaPath
+  dbCopaPath,
 };
