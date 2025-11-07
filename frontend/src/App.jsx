@@ -37,8 +37,6 @@ function App() {
             <Route path="/jogadora/:id" element={<PlayerProfile />} />
             <Route path="/encontros" element={<EncontrosPage />} />
 
-
-            {/* Rotas Protegidas (Exemplo, idealmente usariam PrivateRoute) */}
             <Route path="/perfil/editar" element={<EditarPerfil />} />
             
             {/* --- 2. ADICIONAR A ROTA QUE FALTAVA --- */}

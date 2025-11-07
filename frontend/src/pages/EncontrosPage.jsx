@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Sun, Droplet, Wind, Zap, Clock, Calendar } from 'lucide-react';
 import InscricaoModal from './InscricaoModal';
+import { apiNodeClient } from '../api/api';
 
 const WeatherWidget = () => {
   const [clima, setClima] = useState(null);
@@ -9,13 +10,9 @@ const WeatherWidget = () => {
   useEffect(() => {
     const fetchClima = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/clima');
-        if (response.ok) {
-          const data = await response.json();
-          setClima(data);
-        } else {
-          setClima(null); 
-        }
+        const response = await apiNodeClient.get('/api/clima');
+        const data = response.data;
+        setClima(data);
       } catch (error) {
         console.error("Erro ao buscar clima:", error);
         setClima(null);
@@ -30,7 +27,15 @@ const WeatherWidget = () => {
     return <div className="p-6 bg-gray-100 rounded-lg animate-pulse h-40"></div>;
   }
 
-
+  // Adicionando verificação caso o clima não seja carregado
+  if (!clima) {
+    return (
+      <div className="bg-gradient-to-br from-gray-400 to-gray-600 text-white p-6 rounded-2xl shadow-lg">
+        <h3 className="text-2xl font-bold mb-4">Condições Climáticas</h3>
+        <p>Não foi possível carregar o clima.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gradient-to-br from-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-lg">
@@ -62,9 +67,8 @@ export default function EncontrosPage() {
     const fetchEncontroData = async () => {
       setPageLoading(true);
       try {
-        const res = await fetch('http://localhost:3001/api/eventos/encontro');
-        if (!res.ok) throw new Error('Falha ao buscar dados');
-        const data = await res.json();
+        const res = await apiNodeClient.get('/api/eventos/encontro');
+        const data = res.data;
         setEncontroData(data);
       } catch (err) {
         console.error("Erro ao carregar dados do encontro:", err);
@@ -72,7 +76,7 @@ export default function EncontrosPage() {
         setPageLoading(false);
       }
     };
-    
+
     fetchEncontroData();
   }, []);
 
@@ -80,7 +84,7 @@ export default function EncontrosPage() {
   if (pageLoading) {
     return <div className="min-h-screen bg-gray-50 flex items-center justify-center text-lg">Carregando dados do encontro...</div>;
   }
-  
+
   // Exibir erro
   if (!encontroData) {
     return <div className="min-h-screen bg-gray-50 flex items-center justify-center text-lg text-red-600">Falha ao carregar dados. Tente novamente.</div>;
@@ -102,7 +106,7 @@ export default function EncontrosPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            
+
             <div className="bg-white p-8 rounded-2xl shadow-xl">
               <h2 className="text-3xl font-bold text-gray-800 mb-6">Informações do Evento</h2>
 
@@ -115,7 +119,7 @@ export default function EncontrosPage() {
                 </p>
                 <p className="text-gray-600 flex items-center mt-1">
                   <Calendar size={16} className="mr-2 flex-shrink-0" />
-                  {encontroData.data} 
+                  {encontroData.data}
                 </p>
                 <p className="text-gray-600 flex items-center mt-1">
                   <Clock size={16} className="mr-2 flex-shrink-0" />
@@ -125,7 +129,6 @@ export default function EncontrosPage() {
 
               {/* Colocar aqui o mapa com link */}
               <div className="w-full h-64 rounded-lg overflow-hidden border-2 border-gray-200">
-                {/* Substituímos a <a> e <img> por este <iframe> */}
                 <iframe
                   width="100%"
                   height="100%"
@@ -144,7 +147,7 @@ export default function EncontrosPage() {
               <WeatherWidget />
               <div className="bg-white p-8 rounded-2xl shadow-xl text-center">
                 <Zap size={48} className="text-purple-600 mx-auto mb-4" />
-                {/* DADOS DINÂMICOS  */}
+                {/* DADOS DINÂMICOS  */}
                 <h2 className="text-3xl font-bold text-gray-800 mb-4">
                   {encontroData.inscricoesAbertas ? "Inscrições Abertas!" : "Inscrições Encerradas"}
                 </h2>
@@ -153,7 +156,7 @@ export default function EncontrosPage() {
                 </p>
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  disabled={!encontroData.inscricoesAbertas} 
+                  disabled={!encontroData.inscricoesAbertas}
                   className="w-full bg-purple-600 text-white font-bold py-4 px-8 rounded-lg text-lg hover:bg-purple-700 transition-all transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
                   {encontroData.inscricoesAbertas ? "Inscreva-se Agora" : "Inscrições Encerradas"}
@@ -163,10 +166,10 @@ export default function EncontrosPage() {
           </div>
         </div>
       </div>
-      
-      <InscricaoModal 
-        isOpen={isModalOpen && encontroData.inscricoesAbertas} 
-        onClose={() => setIsModalOpen(false)} 
+
+      <InscricaoModal
+        isOpen={isModalOpen && encontroData.inscricoesAbertas}
+        onClose={() => setIsModalOpen(false)}
       />
     </>
   );
