@@ -27,8 +27,8 @@ const InscricaoPage = () => {
   const MIN_JOGADORES_POR_TIME = 11;
   const MAX_JOGADORES_POR_TIME = 18;
 
-  // Validação de CPF
-  const validarCPF = (cpf) => {
+  // Validação de CPF desligada 
+  {/*const validarCPF = (cpf) => {
     const cpfLimpo = cpf.replace(/\D/g, '');
     if (cpfLimpo.length !== 11) return false;
     if (/^(\d)\1{10}$/.test(cpfLimpo)) return false;
@@ -48,7 +48,7 @@ const InscricaoPage = () => {
     resto = 11 - (soma % 11);
     let digitoVerificador2 = resto < 2 ? 0 : resto;
     return parseInt(cpfLimpo.charAt(10)) === digitoVerificador2;
-  };
+  };*/}
 
   // Formatação de CPF
   const formatarCPF = (cpf) => {
@@ -119,10 +119,10 @@ const InscricaoPage = () => {
       return;
     }
 
-    if (!validarCPF(cpf)) {
+{/*    if (!validarCPF(cpf)) {
       setErros({ jogador: 'CPF inválido. Verifique os dígitos.' });
       return;
-    }
+    }  */}     
 
     if (cpfJaExiste(cpf)) {
       setErros({ jogador: 'Este CPF já foi cadastrado neste time.' });
@@ -239,7 +239,7 @@ const InscricaoPage = () => {
     setErros({});
 
     if (tipoInscricao === 'individual') {
-      if (!validarCPF(formDataIndividual.cpf)) {
+      {/*if (!validarCPF(formDataIndividual.cpf)) {
         setSubmitMessage('CPF inválido. Verifique os dígitos.');
         setIsSubmitting(false);
         return;
@@ -249,7 +249,7 @@ const InscricaoPage = () => {
         setSubmitMessage('CPF do responsável inválido. Verifique os dígitos.');
         setIsSubmitting(false);
         return;
-      }
+      }*/}
       
       if (!podeAdicionarTime) {
         setSubmitMessage(`Limite de ${LIMITE_TIMES} times atingido. Não é possível adicionar mais times.`);
@@ -395,9 +395,9 @@ const InscricaoPage = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent"
                     placeholder="000.000.000-00"
                   />
-                  {formDataIndividual.cpf && !validarCPF(formDataIndividual.cpf) && (
+                  {/*{formDataIndividual.cpf && !validarCPF(formDataIndividual.cpf) && (
                     <p className="text-red-500 text-xs mt-1">CPF inválido</p>
-                  )}
+                  )}*/}
                 </div>
 
                 <div>
@@ -485,9 +485,9 @@ const InscricaoPage = () => {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent"
                       placeholder="000.000.000-00"
                     />
-                    {formDataTime.responsavel.cpf && !validarCPF(formDataTime.responsavel.cpf) && (
+                    {/*{formDataTime.responsavel.cpf && !validarCPF(formDataTime.responsavel.cpf) && (
                       <p className="text-red-500 text-xs mt-1">CPF inválido</p>
-                    )}
+                    )}*/}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">E-mail do Responsável *</label>
