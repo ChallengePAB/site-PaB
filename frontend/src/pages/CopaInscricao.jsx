@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'; 
-import { Link } from 'react-router-dom'; 
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Trophy, Users, User, Calendar, MapPin } from 'lucide-react';
+import { apiNodeClient } from '../api/api';
 
 const CopaInscricao = () => {
   const [copaData, setCopaData] = useState(null);
@@ -10,18 +11,17 @@ const CopaInscricao = () => {
   useEffect(() => {
     const fetchCopaData = async () => {
       try {
-        const res = await fetch('http://localhost:3001/api/eventos/copa'); 
-        if (!res.ok) throw new Error('Falha ao buscar dados');
-        const data = await res.json();
+        const response = await apiNodeClient.get('/api/eventos/copa');
+        const data = response.data;
         setCopaData(data);
-      } catch (err) {
-        console.error("Erro ao carregar dados da copa:", err);
+      } catch (error) {
+        console.error("Erro ao carregar dados da copa:", (error.response?.data?.message || error.message));
       } finally {
         setLoading(false);
       }
     };
     fetchCopaData();
-  }, []); 
+  }, []);
 
   if (loading) {
     return (
@@ -52,7 +52,7 @@ const CopaInscricao = () => {
           </div>
           {/* DADOS DINÂMICOS */}
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            {copaData.titulo} 
+            {copaData.titulo}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             {copaData.subtitulo}

@@ -1,14 +1,12 @@
 import { useState, useContext } from 'react';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../components/AuthContext'; // CAMINHO ATUALIZADO
-import { apiNodeClient } from '../api/api'; // CAMINHO ATUALIZADO
+import { AuthContext } from '../components/AuthContext';
+import { apiNodeClient } from '../api/api'; 
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-
-  // ATUALIZADO: Removidos os campos de jogadora do estado
   const [formData, setFormData] = useState({
     email: '',
     password: '',

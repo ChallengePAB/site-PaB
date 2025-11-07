@@ -25,9 +25,9 @@ export default function NoticiaPage() {
         const outros = allNews.filter(n => n.id != id).slice(0, 4);
         setOutrosArtigos(outros);
 
-      } catch (err) {
-        console.error("Erro ao buscar notícia:", err);
-        setError(err.message);
+      } catch (error) {
+        console.error("Erro ao buscar notícia:", error);
+        setError(error.message);
       } finally {
         setLoading(false);
       }

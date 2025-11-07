@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Youtube, Instagram } from "lucide-react"; 
 import { FaTiktok } from "react-icons/fa"; 
+import { apiNodeClient } from '../api/api'; 
 
 const PlayerProfile = () => {
   const { id } = useParams();
@@ -10,9 +11,8 @@ const PlayerProfile = () => {
   useEffect(() => {
     const fetchPlayer = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/jogadoras/${id}`);
-        const data = await response.json();
-        setPlayer(data);
+        const response = await apiNodeClient.get(`/jogadoras/${id}`);
+        setPlayer(response.data); 
       } catch (error) {
         console.error("Erro ao carregar jogadora:", error);
       }
@@ -31,7 +31,7 @@ const PlayerProfile = () => {
         <img
           src={player.foto || "/jogadora-padrao.png"}
           alt={player.nome}
-          className="w-40 h-40 mx-auto rounded-full object-cover shadow-lg"
+          className="w-50 h-auto mx-auto object-cover shadow-lg"
         />
 
         {/* Nome */}
