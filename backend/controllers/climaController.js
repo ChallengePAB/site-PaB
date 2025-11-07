@@ -6,8 +6,6 @@
 let latestClima = {
   temp: null,      // Começa como nulo
   humidity: null,  // Começa como nulo
-  description: "Aguardando dados do sensor...",
-  local: "Encontro PaB"
 };
 
 /**

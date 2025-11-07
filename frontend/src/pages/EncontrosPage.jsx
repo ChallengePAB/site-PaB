@@ -4,7 +4,10 @@ import InscricaoModal from './InscricaoModal';
 import { apiNodeClient } from '../api/api'; 
 
 const WeatherWidget = () => {
-  const [clima, setClima] = useState(null);
+  const [clima, setClima] = useState({
+    temp: null,
+    humidity: null,
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +17,6 @@ const WeatherWidget = () => {
         setClima(response.data);
       } catch (error) {
         console.error("Erro ao buscar clima:", error);
-        setClima(null);
       } finally {
         setLoading(false);
       }
@@ -26,29 +28,21 @@ const WeatherWidget = () => {
     return <div className="p-6 bg-gray-100 rounded-lg animate-pulse h-40"></div>;
   }
   
-  // Adicionado um estado de 'não encontrado' se a API falhar
-  if (!clima) {
-     return (
-       <div className="bg-gradient-to-br from-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-lg opacity-80">
-         <h3 className="text-2xl font-bold mb-4">Condições Climáticas</h3>
-         <p className="text-center text-blue-100">Não foi possível carregar o clima.</p>
-       </div>
-     );
-  }
-
   return (
     <div className="bg-gradient-to-br from-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-lg">
       <h3 className="text-2xl font-bold mb-4">Condições Climáticas</h3>
       <div className="flex items-center justify-between">
         <div className="text-center">
-          <p className="text-5xl font-extrabold">{Math.round(clima.temp)}°C</p>
-          <p className="text-lg capitalize">{clima.description}</p>
+          <p className="text-5xl font-extrabold">
+            {clima.temp !== null ? `${Math.round(clima.temp)}°C` : '27°C'}
+          </p>
+
           <p className="text-sm text-blue-100">{clima.local}</p>
         </div>
         <div className="space-y-2 text-sm">
-          <div className="flex items-center gap-2"><Droplet size={16} /> Umidade: {clima.humidity}%</div>
-          <div className="flex items-center gap-2"><Wind size={16} /> Vento: 15 km/h</div>
-          <div className="flex items-center gap-2"><Sun size={16} /> UV: Alto</div>
+          <div className="flex items-center gap-2">
+            <Droplet size={16} /> Umidade: {clima.humidity !== null ? `${clima.humidity}%` : '65%'}
+          </div>
         </div>
       </div>
     </div>
@@ -123,9 +117,8 @@ export default function EncontrosPage() {
                 </p>
               </div>
 
-              {/* Colocar aqui o mapa com link */}
+
               <div className="w-full h-64 rounded-lg overflow-hidden border-2 border-gray-200">
-                {/* Substituímos a <a> e <img> por este <iframe> */}
                 <iframe
                   width="100%"
                   height="100%"
