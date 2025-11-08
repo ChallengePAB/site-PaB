@@ -11,7 +11,9 @@ const inscricaoRoutes = require('./routes/inscricaoRoutes');
 const authRoutes = require('./routes/authRoutes');
 const kpiRoutes = require('./routes/kpiRoutes'); 
 const encontroRoutes = require('./routes/encontroRoutes'); 
-const copaRoutes = require('./routes/copaRoutes'); 
+const copaRoutes = require('./routes/copaRoutes');
+// Usando path.join para robustez, mas o caminho deve ser ajustado se necessário
+const userRoutes = require(path.join(__dirname, 'routes', 'userRoutes')); 
 const climaRoutes = require('./routes/climaRoutes')
 
 const app = express();
@@ -31,6 +33,7 @@ app.use('/', inscricaoRoutes);
 app.use('/auth', authRoutes); 
 app.use('/api/eventos/encontro', encontroRoutes); 
 app.use('/api/eventos/copa', copaRoutes);
+app.use('/admin/users', userRoutes); // Montar a nova rota de gerenciamento de usuários
 app.use('/api', climaRoutes);
 
 

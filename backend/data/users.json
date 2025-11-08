@@ -284,7 +284,7 @@
     "nome": "Ana Maria",
     "email": "mariaana@gmail.com",
     "password": "$2b$10$zd4mVd36iUe5MLup71plxeV9fVPnRsneO0qZOfX3Khr/OnFdB69Ju",
-    "role": "admin"
+    "role": "jogadora"
   },
   {
     "id": 1761938354165,
@@ -315,10 +315,10 @@
     "role": "jogadora"
   },
   {
-    "id": 1762195479140,
-    "nome": "Leo",
-    "email": "1234@gmail.com",
-    "password": "$2b$10$GJNsuk.M8aqXgRMEAskC4.j/xfQUAXVKS2TAyjcXszOOf7gwbeZFO",
+    "id": 1762552662463,
+    "nome": "Comum",
+    "email": "comum@gmail.com",
+    "password": "$2b$10$mCvxe8w2HRcxGWTFfj37mOi3n/yNML5DA6RsJFoN4HxhO5Pmntm1G",
     "role": "comum"
   }
 ]
