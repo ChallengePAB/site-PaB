@@ -1,22 +1,23 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiNodeClient } from '../api/api';
 import { AuthContext } from '../components/AuthContext';
 import { User, Mail, MapPin, Activity, Award, Image, Plus, X, Eye, EyeOff, Trash2, Lock } from 'lucide-react';
 
 const EditarPerfil = () => {
   const { token, role, logout, userId } = useContext(AuthContext);
-	const navigate = useNavigate();
-	const [isLoading, setIsLoading] = useState(true);
-	const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [novoConteudo, setNovoConteudo] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  
+
   const [perfil, setPerfil] = useState({
     nome: '',
     idade: '',
     altura: '',
-    pe_dominante: 'Direito',
+    pe_dominante: '',
     clube_atual: '',
     posicao: '',
     foto: '',
@@ -28,93 +29,66 @@ const EditarPerfil = () => {
     oculta: false
   });
 
-	  useEffect(() => {
-	    if (role !== 'jogadora' && role !== 'comum') {
-	      navigate('/home');
-	      return;
-	    }
-	    carregarPerfil();
-	  }, [role, navigate, userId]);
+  useEffect(() => {
+    if (role !== 'jogadora' && role !== 'comum') {
+      navigate('/home');
+      return;
+    }
+    carregarPerfil();
+  }, [role, navigate, userId]);
 
-		  const carregarPerfil = async () => {
-		    try {
-		      if (role === 'jogadora') {
-		        const response = await fetch("http://localhost:3001/jogadoras/perfil/meu", {
-		          headers: {
-		            'Authorization': `Bearer ${token}`
-		          }
-		        });
-		
-		        if (!response.ok) {
-		          throw new Error('Erro ao carregar perfil de jogadora');
-		        }
-		        const jogadoraData = await response.json();
-		        setPerfil(jogadoraData);
-		
-		      } else if (role === 'comum') {
-		        const response = await fetch('http://localhost:3001/auth/me', {
-		          headers: {
-		            'Authorization': `Bearer ${token}`
-		          }
-		        });
-		        
-		        if (!response.ok) {
-		          throw new Error('Erro ao carregar dados do usuário');
-		        }
-		        const comumData = await response.json();
-		        setPerfil({ nome: comumData.nome });
-		      }
-		    } catch (error) {
-		      setMessage('Erro ao carregar perfil: ' + error.message);
-		    } finally {
-		      setIsLoading(false);
-		    }
-		  };
-		
-		  const handleInputChange = (e) => {
-		    const { name, value, type, checked } = e.target;
-		    setPerfil(prev => ({
-		      ...prev,
-		      [name]: type === 'checkbox' ? checked : value
-		    }));
-		  };
-		
-		  const handleSubmit = async (e) => {
+  const carregarPerfil = async () => {
+    try {
+      if (role === 'jogadora') {
+
+        const response = await apiNodeClient.get("/jogadoras/perfil/meu");
+
+        const jogadoraData = response.data;
+        setPerfil(jogadoraData);
+
+      } else if (role === 'comum') {
+        const response = await apiNodeClient.get('/auth/me');
+
+        const comumData = response.data;
+        setPerfil({ nome: comumData.nome });
+      }
+    } catch (error) {
+      setMessage('Erro ao carregar perfil: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setPerfil(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
     setMessage('');
 
     try {
-      let url = '';
-      let body = {};
-      
+      let response;
+
       if (role === 'jogadora') {
-        url = 'http://localhost:3001/jogadoras/perfil/atualizar';
-        body = perfil;
+        response = await apiNodeClient.put('/jogadoras/perfil/atualizar', perfil);
       } else if (role === 'comum') {
-        url = 'http://localhost:3001/auth/update-profile';
-        body = { nome: perfil.nome };
-      }
-      
-      const response = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(body)
-      });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Erro ao atualizar perfil');
+        response = await apiNodeClient.put('/auth/update-profile', { nome: perfil.nome });
       }
+
+      const data = response.data;
 
       setMessage('Perfil atualizado com sucesso!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
-      setMessage('Erro: ' + error.message);
+
+      setMessage('Erro: ' + (error.response?.data?.message || error.message));
     } finally {
       setIsSaving(false);
     }
@@ -139,24 +113,17 @@ const EditarPerfil = () => {
 
   const handleExcluirPerfil = async () => {
     try {
-      const response = await fetch('http://localhost:3001/jogadoras/perfil/excluir', {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
 
-      const data = await response.json();
+      const response = await apiNodeClient.delete('/jogadoras/perfil/excluir');
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Erro ao excluir perfil');
-      }
-
-      alert('Perfil excluído com sucesso!');
+      const data = response.data;
+      console.log('Perfil excluído com sucesso!');
       logout();
       navigate('/login');
     } catch (error) {
-      alert('Erro ao excluir perfil: ' + error.message);
+
+      setMessage('Erro ao excluir perfil: ' + (error.response?.data?.message || error.message));
+      setShowDeleteModal(false);
     }
   };
 
@@ -191,8 +158,8 @@ const EditarPerfil = () => {
           {/* Mensagem de feedback */}
           {message && (
             <div className={`mx-8 mt-6 p-4 rounded-lg ${
-              message.includes('sucesso') 
-                ? 'bg-green-50 text-green-800 border border-green-200' 
+              message.includes('sucesso')
+                ? 'bg-green-50 text-green-800 border border-green-200'
                 : 'bg-red-50 text-red-800 border border-red-200'
             }`}>
               {message}
@@ -219,7 +186,7 @@ const EditarPerfil = () => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
                   />
                 </div>
-                
+
                 {role === 'jogadora' && (
                   <>
                     <div>
@@ -329,25 +296,18 @@ const EditarPerfil = () => {
                 type="button"
                 onClick={async () => {
                   try {
-                    const response = await fetch("http://localhost:3001/auth/change-password", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                      },
-                      body: JSON.stringify({
-                        currentPassword: perfil.currentPassword,
-                        newPassword: perfil.newPassword
-                      })
+
+                    const response = await apiNodeClient.post("/auth/change-password", {
+                      currentPassword: perfil.currentPassword,
+                      newPassword: perfil.newPassword
                     });
 
-                    const data = await response.json();
-                    if (!response.ok) throw new Error(data.message || "Erro ao alterar senha");
+                    const data = response.data;
 
                     setMessage("Senha atualizada com sucesso!");
                     setPerfil((prev) => ({ ...prev, currentPassword: "", newPassword: "" }));
                   } catch (error) {
-                    setMessage("Erro: " + error.message);
+                    setMessage("Erro: " + (error.response?.data?.message || error.message));
                   }
                 }}
                 className="mt-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
@@ -564,11 +524,11 @@ const EditarPerfil = () => {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900">Confirmar Exclusão</h3>
               </div>
-              
+
               <p className="text-gray-700 mb-6">
                 Tem certeza que deseja excluir seu perfil? Esta ação não pode ser desfeita e todos os seus dados serão permanentemente removidos.
               </p>
-              
+
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowDeleteModal(false)}

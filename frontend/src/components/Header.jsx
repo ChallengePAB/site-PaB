@@ -35,8 +35,8 @@ const Header = () => {
                 {/* Desktop */}
                 <nav className="hidden md:flex items-center space-x-8">
                   <NavLink to="/home" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Noticias</NavLink>
-                  <NavLink to="/copa" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Copa</NavLink>
                   <NavLink to="/talentos" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Peneiras e Talentos</NavLink>
+                  <NavLink to="/copa" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Copa</NavLink>
                   <NavLink to="/encontros" className="text-gray-700 hover:text-purple-600 transition-colors" style={({ isActive }) => isActive ? activeLinkStyle : undefined}>Encontros</NavLink>
 
                   {isLogged ? (
@@ -75,12 +75,12 @@ const Header = () => {
 
             {/* Mobile Navigation */}
             {isMenuOpen && (
-              <nav className="md:hidden mt-4 pb-4 border-t border-gray-200">
+              <nav className="md:hidden mt-4 pb-4 border-t border-gray-200 bg-white">
                 <div className="flex flex-col space-y-4 pt-4">
                     <Link to="/home" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Noticias</Link>
-                    <Link to="/copa" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Copa</Link>
                     <Link to="/talentos" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Peneiras e Talentos</Link>
-                    <Link to="/tabela" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Tabela</Link>
+                    <Link to="/copa" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Copa</Link>
+                    <Link to="/encontros" className="text-gray-700 hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Encontros</Link>
 
                       {isLogged ? (
                         <>
@@ -90,15 +90,15 @@ const Header = () => {
                                   className="flex items-center gap-2 text-gray-700 hover:text-purple-600 text-left"
                               >
                                   <User className="w-5 h-5" />
-s                               Meu Perfil
+                                  Meu Perfil
                               </button>
                             )}
                             {role === 'admin' && (
                               <button 
-                              D onClick={handleAdminClick} 
+                                  onClick={handleAdminClick} 
                                   className="flex items-center gap-2 text-purple-600 hover:text-purple-800 text-left"
                               >
-                        D       <ShieldCheck className="w-5 h-5" />
+                                  <ShieldCheck className="w-5 h-5" />
                                   Painel Admin
                               </button>
                             )}

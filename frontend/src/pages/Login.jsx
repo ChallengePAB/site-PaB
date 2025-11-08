@@ -2,6 +2,7 @@ import { useState, useContext } from 'react';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../components/AuthContext';
+import { apiNodeClient } from '../api/api'; 
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,13 +11,7 @@ const Login = () => {
     email: '',
     password: '',
     confirmPassword: '',
-	    nome: '',
-	    role: 'jogadora', 
-	    idade: '',
-    altura: '',
-    pe_dominante: 'Direito',
-    clube_atual: '',
-    posicao: ''
+    nome: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
@@ -27,7 +22,7 @@ const Login = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
-      ...prev,
+    ...prev,
       [name]: value
     }));
   };
@@ -42,65 +37,38 @@ const Login = () => {
         throw new Error('As senhas não coincidem.');
       }
 
-      const url = `http://localhost:3001/auth/${isLogin ? 'login' : 'register'}`;
+      const url = `/auth/${isLogin ? 'login' : 'register'}`;
+
       const body = isLogin 
         ? { email: formData.email, password: formData.password }
         : { 
             nome: formData.nome, 
             email: formData.email, 
             password: formData.password, 
-            role: formData.role,
-            idade: formData.idade,
-            altura: formData.altura,
-            pe_dominante: formData.pe_dominante,
-            clube_atual: formData.clube_atual,
-	            posicao: formData.posicao
-	          };
-	          
-	          // Remove campos de jogadora se a role for 'comum'
-	          if (formData.role === 'comum') {
-	            delete body.idade;
-	            delete body.altura;
-	            delete body.pe_dominante;
-	            delete body.clube_atual;
-	            delete body.posicao;
-	          }
-	        
-	      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
+            role: 'comum', 
+          };
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Erro no servidor.');
-      }
+      const response = await apiNodeClient.post(url, body);
+      const data = response.data; 
 
       if (isLogin) {
-        login(data.token, data.role, data.userId, data.jogadoraId);   // atualiza contexto
-        navigate('/home');              // redireciona pra home ao invés de ficar na página de login
+        login(data.token, data.role, data.userId, data.jogadoraId); 
+        navigate('/home'); 
       } else {
         setMessage('Conta criada com sucesso! Faça login para continuar.');
         setIsLogin(true); 
       }
-      
+
       setFormData({ 
         email: '', 
         password: '', 
         confirmPassword: '', 
         nome: '', 
-        role: 'jogadora',
-        idade: '',
-        altura: '',
-        pe_dominante: 'Direito',
-        clube_atual: '',
-        posicao: ''
       });
 
     } catch (error) {
-      setMessage(error.message);
+      const errorMessage = error.response?.data?.message || error.message || 'Erro desconhecido';
+      setMessage(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -114,24 +82,8 @@ const Login = () => {
       password: '',
       confirmPassword: '',
       nome: '',
-      role: 'jogadora',
-      idade: '',
-      altura: '',
-      pe_dominante: 'Direito',
-      clube_atual: '',
-      posicao: ''
     });
   };
-
-  const posicoes = [
-    'Goleira',
-    'Zagueira',
-    'Lateral Direita',
-    'Lateral Esquerda',
-    'Volante',
-    'Meia',
-    'Atacante'
-  ];
 
   return (
     <section id="login" className="py-16 bg-gray-50">
@@ -162,130 +114,20 @@ const Login = () => {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
-{!isLogin && (
-	                  <>
-	                    {/* Seleção de Tipo de Conta (Movido para o início) */}
-	                    <div className="mb-6">
-	                      <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Conta</label>
-	                      <div className="flex space-x-4">
-	                        <label className="inline-flex items-center">
-	                          <input
-	                            type="radio"
-	                            name="role"
-	                            value="jogadora"
-	                            checked={formData.role === 'jogadora'}
-	                            onChange={handleInputChange}
-	                            className="form-radio text-purple-600"
-	                          />
-	                          <span className="ml-2 text-gray-700">Jogadora</span>
-	                        </label>
-	                        <label className="inline-flex items-center">
-	                          <input
-	                            type="radio"
-	                            name="role"
-	                            value="comum"
-	                            checked={formData.role === 'comum'}
-	                            onChange={handleInputChange}
-	                            className="form-radio text-purple-600"
-	                          />
-	                          <span className="ml-2 text-gray-700">Comum</span>
-	                        </label>
-	                      </div>
-	                    </div>
-	                    
-	                    <div>
-	                      <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
-	                      <div className="relative">
-	                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-	                        <input type="text" id="nome" name="nome" value={formData.nome} onChange={handleInputChange} required={!isLogin} className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" placeholder="Digite seu nome completo"/>
-	                      </div>
-	                    </div>
-                    {formData.role === 'jogadora' && (
-                      <>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label htmlFor="idade" className="block text-sm font-medium text-gray-700 mb-2">Idade</label>
-                            <input 
-                              type="number" 
-                              id="idade" 
-                              name="idade" 
-	                              value={formData.idade} 
-	                              onChange={handleInputChange} 
-	                              required={formData.role === 'jogadora'}
-	                              min="14"
-                              max="40"
-                              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" 
-                              placeholder="Ex: 20"
-                            />
-                          </div>
-
-                          <div>
-                            <label htmlFor="altura" className="block text-sm font-medium text-gray-700 mb-2">Altura</label>
-                            <input 
-	                              type="text" 
-	                              id="altura" 
-	                              name="altura" 
-	                              value={formData.altura} 
-	                              onChange={handleInputChange} 
-	                              required={formData.role === 'jogadora'}
-	                              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" 
-	                              placeholder="Ex: 1.70m"
-                            />
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Pé Dominante</label>
-                          <select
-	                            name="pe_dominante"
-	                            value={formData.pe_dominante}
-	                            onChange={handleInputChange}
-	                            required={formData.role === 'jogadora'}
-	                            className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400"
-                          >
-                            <option value="Direito">Direito</option>
-                            <option value="Esquerdo">Esquerdo</option>
-                            <option value="Ambos">Ambos</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label htmlFor="clube_atual" className="block text-sm font-medium text-gray-700 mb-2">Clube Atual</label>
-                          <input 
-	                            type="text" 
-	                            id="clube_atual" 
-	                            name="clube_atual" 
-	                            value={formData.clube_atual} 
-	                            onChange={handleInputChange} 
-	                            required={formData.role === 'jogadora'}
-	                            className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" 
-	                            placeholder="Ex: Corinthians"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Posição</label>
-                          <select
-	                            name="posicao"
-	                            value={formData.posicao}
-	                            onChange={handleInputChange}
-	                            required={formData.role === 'jogadora'}
-	                            className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400"
-                          >
-                            <option value="">Selecione uma posição</option>
-                            {posicoes.map(pos => (
-                              <option key={pos} value={pos}>{pos}</option>
-                            ))}
-                          </select>
-                        </div>
-                      </>
-	                    )}
-	                  </>   	               
-		                )}  
-		              
-
-		               	                <div>
-	                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
+                {!isLogin && (
+                  <>
+                    <div>
+                      <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                        <input type="text" id="nome" name="nome" value={formData.nome} onChange={handleInputChange} required={!isLogin} className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" placeholder="Digite seu nome completo"/>
+                      </div>
+                    </div>
+                  </> 
+                )}  
+                  
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} required className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400" placeholder="seu@email.com"/>
@@ -321,7 +163,7 @@ const Login = () => {
               <div className="my-6 flex items-center">
                 <div className="flex-grow border-t border-gray-300"></div>
               </div>
-  
+    
               {isLogin && (
                 <div className="mt-4 text-center">
                   <a href="#" className="text-sm text-purple-600 hover:text-purple-800">
