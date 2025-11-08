@@ -4,9 +4,6 @@ Passa a Bola é uma plataforma web completa dedicada a conectar, valorizar e dar
 
 Este projeto utiliza uma arquitetura **Cliente-Servidor unificada**, com um frontend em **React** (hospedado na Vercel) e um backend monolítico em **Node.js** (hospedado no Render).
 
-## 📸 Screenshot
-
-(Aqui você pode adicionar um screenshot da sua página inicial funcionando)
 
 ## 🌐 Acesso ao Site
 
