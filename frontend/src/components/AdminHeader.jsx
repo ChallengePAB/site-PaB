@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Newspaper, Users, ShieldCheck, LogOut, Trophy, CalendarHeart } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Users, ShieldCheck, LogOut, Trophy, CalendarHeart, UserCog } from 'lucide-react'; // Adicionado UserCog para Gerenciar Usuários
 import { useAuth } from '../components/AuthContext'; 
 
 const AdminHeader = () => {
@@ -55,6 +55,13 @@ const AdminHeader = () => {
             >
             <CalendarHeart className="h-4 w-4" />
               Gerenciar Encontros
+            </NavLink>
+            <NavLink
+              to="/admin/users"
+              className={({ isActive }) => isActive ? activeLinkClass : linkClass}
+            >
+            <UserCog className="h-4 w-4" />
+              Gerenciar Usuários
             </NavLink>
 	          </nav>
 	          {/* Botão de Logout */}

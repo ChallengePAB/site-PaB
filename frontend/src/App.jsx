@@ -13,6 +13,7 @@ import PlayerProfile from './pages/PlayerProfile';
 import { AuthProvider } from './components/AuthContext';
 import EditarPerfil from './pages/EditarPerfil';
 import AdminJogadoras from './admin/AdminJogadoras';
+import AdminUserList from './admin/AdminUserList'; 
 import AdminNoticias from './admin/AdminNoticias';
 import AdminDashboard from './admin/AdminDashboard'; 
 import EncontrosPage from './pages/EncontrosPage';
@@ -44,7 +45,8 @@ function App() {
             <Route path="/admin/jogadoras" element={<AdminJogadoras />} />
             <Route path="/admin/noticias" element={<AdminNoticias />} />  
             <Route path="/admin/copa" element={<AdminCopa />} />
-            <Route path="/admin/encontros" element={<AdminEncontros />} />                      
+            <Route path="/admin/encontros" element={<AdminEncontros />} />
+            <Route path="/admin/users" element={<AdminUserList />} />                      
           </Routes>
         </main>
         <Footer /> 
@@ -54,4 +56,3 @@ function App() {
 }
 
 export default App;
-
