@@ -10,7 +10,7 @@ Este projeto utiliza uma arquitetura **Cliente-Servidor unificada**, com um fron
 Você não precisa instalar nada para ver o projeto! A aplicação está disponível publicamente, hospedada na **Vercel**, e consome a API backend hospedada no **Render**.
 
 Acesse o site ao vivo aqui:
-[https://site-pab.vercel.app/]([https://site-pab.vercel.app/](https://site-pab.vercel.app/))
+[https://site-pab.vercel.app/](https://site-pab.vercel.app/)
 
 ## ✨ Funcionalidades Principais
 
